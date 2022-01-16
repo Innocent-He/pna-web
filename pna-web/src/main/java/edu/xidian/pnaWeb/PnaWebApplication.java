@@ -1,0 +1,15 @@
+package edu.xidian.pnaWeb;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+@MapperScan(basePackages = "edu.xidian.pnaWeb.web.dao")
+@SpringBootApplication
+public class PnaWebApplication {
+	public static void main(String[] args) {
+		SpringApplication.run(PnaWebApplication.class, args);
+	}
+}
