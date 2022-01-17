@@ -26,7 +26,7 @@ public class TaskPO {
 	/**
 	 * 提交者用户id
 	 */
-	private Long ownerId;
+	private String ownerName;
 	/**
 	 * 算法名称
 	 */
@@ -35,6 +35,9 @@ public class TaskPO {
 	 * 状态 0排队中 1执行中 2执行成功 3执行失败
 	 */
 	private Integer status;
+	/**
+	 * 算法执行结果
+	 */
 	private String result;
 	@TableField(fill = FieldFill.INSERT)
 	private LocalDateTime updateTime;

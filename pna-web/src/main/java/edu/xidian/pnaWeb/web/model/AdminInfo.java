@@ -20,7 +20,7 @@ import lombok.Data;
 @Builder
 public class AdminInfo {
     private Long id;
-    private String username;
-    private String password;
+    private String userName;
+    private String passWord;
     private String email;
 }

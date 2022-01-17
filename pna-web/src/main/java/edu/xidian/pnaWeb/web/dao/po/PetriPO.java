@@ -1,28 +1,24 @@
-package edu.xidian.pnaWeb.petri.module;
+package edu.xidian.pnaWeb.web.dao.po;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 /**
  * @Description
  * @Author He
- * @Date 2021/10/5 17:36
+ * @Date 2022/1/17 13:25
  */
-@Builder
 @Data
-public class PetriDO {
+@Builder
+public class PetriPO {
 	private Long id;
 	private String ownerId;
 	private String desc;
 	private String name;
-	private int[][] preMatrix;
-	private int[][] postMatrix;
-	private int[] marking;
+	private String postJson;
+	private String preJson;
 	private String webJson;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;

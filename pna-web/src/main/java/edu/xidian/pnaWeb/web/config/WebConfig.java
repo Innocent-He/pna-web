@@ -31,24 +31,6 @@ public class WebConfig implements WebMvcConfigurer {
 		return new ServerEndpointExporter();
 	}
 
-//	@Bean
-//	public FilterRegistrationBean registerAuthFilter() {
-//		FilterRegistrationBean registration = new FilterRegistrationBean();
-//		registration.setFilter(new Filter() {
-//			@Override
-//			public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-//				HttpServletResponse req = (HttpServletResponse) servletResponse;
-//				if (!StpUtil.isLogin()) {
-//				}
-//				filterChain.doFilter(servletRequest, servletResponse);
-//			}
-//		});
-//		registration.addUrlPatterns("/*");
-//		registration.setName("authFilter");
-//		registration.setOrder(1);  //值越小，Filter越靠前。
-//		return registration;
-//	}
-
 //	@Override
 //	public void addInterceptors(InterceptorRegistry registry) {
 //		// 注册Sa-Token的路由拦截器
@@ -56,8 +38,6 @@ public class WebConfig implements WebMvcConfigurer {
 //				.addPathPatterns("/**")
 //				.excludePathPatterns("/user/doLogin");
 //	}
-
-
 
 	/**
 	 * 解决CORS跨域问题

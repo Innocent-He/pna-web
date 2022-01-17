@@ -1,13 +1,12 @@
 package edu.xidian.pnaWeb.web.service;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
-import edu.xidian.pnaWeb.web.common.Constant;
+import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.dao.AdminMapper;
 import edu.xidian.pnaWeb.web.dao.po.AdminPO;
 import edu.xidian.pnaWeb.web.exception.BizException;

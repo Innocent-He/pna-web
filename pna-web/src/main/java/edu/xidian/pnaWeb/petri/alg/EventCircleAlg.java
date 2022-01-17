@@ -1,17 +1,17 @@
 package edu.xidian.pnaWeb.petri.alg;
 
-import edu.xidian.pnaWeb.petri.module.EventCircleInfo;
-import edu.xidian.pnaWeb.petri.module.PetriDO;
-import edu.xidian.pnaWeb.petri.module.ReachGraphInfo;
-import edu.xidian.pnaWeb.petri.module.StateNode;
+import edu.xidian.pnaWeb.petri.context.AlgContext;
+import edu.xidian.pnaWeb.petri.module.*;
+import edu.xidian.pnaWeb.util.PetriUtils;
+import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.model.AdminContext;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @Description
@@ -20,22 +20,28 @@ import java.util.stream.Stream;
  */
 @Service
 @Slf4j
-public class EventCircleAlg {
+public class EventCircleAlg implements AlgActuator {
+	@Resource
+	private AlgContext algContext;
 	@Resource
 	private ReachableGraphAlg reachableGraphAlg;
 
-	@Resource
-	private PetriDomain petriDomain;
-
-	public EventCircleInfo generateEventCircle() {
-		AdminContext adminContext = AdminContext.USER_INFO.get();
-		ReachGraphInfo reachGraphInfo = adminContext.getReachGraphInfo();
-		PetriDO petriDO = adminContext.getPetriDO();
-		if (reachGraphInfo == null) {
-			reachGraphInfo = reachableGraphAlg.generateReachGraph(petriDO);
+	@Override
+	public boolean apply(AlgReqDO algReqDO) {
+		if (StringUtils.equals(algReqDO.getAlgName(), Constant.EVENT_CIRCLE)) {
+			return true;
 		}
-		Map<Integer, Set<Integer>> postTranGraph = petriDomain.buildTranGraph(petriDO);
-		log.info(postTranGraph.toString());
+		return false;
+	}
+
+	@Override
+	public String execute(AlgReqDO algReqDO) {
+		return this.generateEventCircle(algReqDO.getPetriDO()).toString();
+	}
+
+	public EventCircleInfo generateEventCircle(PetriDO petriDO) {
+		ReachGraphInfo reachGraphInfo = reachableGraphAlg.generateReachGraph(petriDO);
+		Map<Integer, Set<Integer>> postTranGraph = PetriUtils.buildTranGraph(petriDO);
 		List<Set<Integer>> stateNotFires = reachGraphInfo.getStateNotFires();
 		Map<Integer, List<List<Integer>>> eventWait = generateEventWait(stateNotFires, postTranGraph);
 		Map<Integer, Set<Integer>> deadTran = getStateDeadTran(reachGraphInfo);
@@ -44,6 +50,7 @@ public class EventCircleAlg {
 
 	/**
 	 * 获取每个可达状态下的ew结构
+	 *
 	 * @param stateNotFires 每个可达状态下disable的变迁
 	 * @return 每个状态下的ew
 	 */
@@ -88,7 +95,6 @@ public class EventCircleAlg {
 		}
 		stack.pop();
 	}
-
 
 
 	/**
@@ -139,46 +145,4 @@ public class EventCircleAlg {
 	}
 
 
-//	private Set<Integer> dfs(StateNode curState, List<Set<Integer>> notFireTrans, Set<Integer> viewed) {
-//		if (deadTrans.get(curState.getStateNo()) != null) {
-//			return deadTrans.get(curState);
-//		}
-//		if (viewed.contains(curState.getStateNo())) {
-//			Set<Integer> allNotFire = new HashSet<>();
-//			for (int i = 0; i < tranGraph.size(); i++) {
-//				allNotFire.add(i);
-//			}
-//			return allNotFire;
-//		}
-//
-//		Set<Integer> curRes = new HashSet<>();
-//		Set<Integer> curNotFires = notFireTrans.get(curState.getStateNo());
-//		// 如果当前状态没有不可以发射的变迁，则返回空集合
-//		// 如果当前状态出现过，则返回空集合
-//		if (CollectionUtils.isEmpty(curNotFires)) {
-//			return curRes;
-//		}
-//		viewed.add(curState.getStateNo());
-//		Set<Integer> allChildDeadTrans = new HashSet<>();
-//		List<StateNode> childNodes = curState.getChildNodes();
-//		// 如果当前变迁没有可达状态，那么就将它当前所有的不可发射变迁返回
-//		if (childNodes == null) {
-//			return notFireTrans.get(curState.getStateNo());
-//		}
-//		// 拿到所有子状态的不可发射变迁列表
-//		for (StateNode childNode : childNodes) {
-//			Set<Integer> notFires = dfs(childNode, notFireTrans, viewed);
-//			if (notFires != null) {
-//				allChildDeadTrans.addAll(notFires);
-//			}
-//		}
-//
-//		for (Integer curNotFire : curNotFires) {
-//			if (allChildDeadTrans.contains(curNotFire)) {
-//				curRes.add(curNotFire);
-//			}
-//		}
-//		deadTrans.put(curState.getStateNo(), curRes);
-//		return curRes;
-//	}
 }

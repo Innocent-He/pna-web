@@ -1,26 +1,16 @@
 package edu.xidian.pnaWeb;
 
-import com.alibaba.fastjson.JSON;
 import edu.xidian.pnaWeb.petri.alg.AcNetAlg;
-import edu.xidian.pnaWeb.petri.alg.FcNetAlg;
 import edu.xidian.pnaWeb.petri.alg.PetriNetAlg;
 import edu.xidian.pnaWeb.petri.alg.ReachableGraphAlg;
-import edu.xidian.pnaWeb.petri.module.PetriDO;
-import edu.xidian.pnaWeb.petri.module.TranNode;
-import edu.xidian.pnaWeb.web.model.PetriDataDTO;
-import edu.xidian.pnaWeb.web.service.api.PetriDataService;
+import edu.xidian.pnaWeb.web.model.PetriDTO;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 /**
  * @Description
@@ -37,8 +27,8 @@ public class ReachGraphTest {
 	@Test
 	public void test1() {
 		PetriNetAlg petriNetAlg = new AcNetAlg();
-		PetriDataDTO petriDataDTO = petriNetAlg.generateNet(10, 13);
-		System.out.println(petriDataDTO);
+		PetriDTO petriDTO = petriNetAlg.generateNet(10, 13);
+		System.out.println(petriDTO);
 	}
 	@Test
 	public void test2() {

@@ -1,6 +1,7 @@
 package edu.xidian.pnaWeb.web.service.api;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
 
 /**
@@ -9,4 +10,5 @@ import edu.xidian.pnaWeb.web.dao.po.TaskPO;
  * @Date 2022/1/16 23:03
  */
 public interface TaskService extends IService<TaskPO> {
+	public void submitTask(AlgReqDO algReqDO);
 }

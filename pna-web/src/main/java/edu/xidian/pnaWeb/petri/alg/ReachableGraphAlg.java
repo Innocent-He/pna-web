@@ -1,11 +1,14 @@
 package edu.xidian.pnaWeb.petri.alg;
 
+import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.petri.module.ReachGraphInfo;
 import edu.xidian.pnaWeb.petri.module.StateNode;
 import edu.xidian.pnaWeb.util.PetriUtils;
+import edu.xidian.pnaWeb.web.model.PetriDTO;
 import lombok.Builder;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -16,7 +19,7 @@ import java.util.*;
  * @Date 2021/10/12 16:37
  */
 @Service
-public class ReachableGraphAlg {
+public class ReachableGraphAlg implements AlgActuator{
 
 	public ReachGraphInfo generateReachGraph(PetriDO petriDO) {
 		return doGenerateReachGraph(petriDO, 2000);
@@ -110,11 +113,24 @@ public class ReachableGraphAlg {
 		return reachGraphInfo;
 	}
 
+	@Override
+	public boolean apply(AlgReqDO algReqDO) {
+		if (StringUtils.equals(algReqDO.getAlgName(),"reach")) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String execute(AlgReqDO algReqDO) {
+		ReachGraphInfo reachGraphInfo = this.generateReachGraph(algReqDO.getPetriDO());
+		return reachGraphInfo.toString();
+	}
+
 	@Builder
 	@Data
 	public static class StateKey {
 		private int[] marking;
-
 		@Override
 		public boolean equals(Object o) {
 			if (this == o) return true;
@@ -122,7 +138,6 @@ public class ReachableGraphAlg {
 			StateKey stateKey = (StateKey) o;
 			return Arrays.equals(marking, stateKey.marking);
 		}
-
 		@Override
 		public int hashCode() {
 			return Arrays.hashCode(marking);

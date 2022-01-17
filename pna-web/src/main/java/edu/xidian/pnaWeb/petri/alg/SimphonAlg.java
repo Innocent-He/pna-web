@@ -4,6 +4,7 @@ import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.petri.module.SimphonInfo;
 import edu.xidian.pnaWeb.util.PetriUtils;
 import edu.xidian.pnaWeb.web.model.AdminContext;
+import edu.xidian.pnaWeb.web.model.PetriDTO;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,7 +16,7 @@ import java.util.stream.Collectors;
  * @Date 2021/10/24 21:32
  */
 @Service
-public class SimphonAlg {
+public class SimphonAlg implements AlgActuator{
 	public SimphonInfo generateSimphon(){
 		List<List<Integer>> simphons=new ArrayList<>();
 		List<List<Integer>> strictSimphons=new ArrayList<>();
@@ -56,5 +57,15 @@ public class SimphonAlg {
 		queue.push(curIdx);
 		dfs(res,curIdx+1,n,queue);
 		queue.pop();
+	}
+
+	@Override
+	public boolean apply(PetriDTO petriDTO) {
+		return false;
+	}
+
+	@Override
+	public String execute(PetriDTO petriDTO) {
+		return null;
 	}
 }

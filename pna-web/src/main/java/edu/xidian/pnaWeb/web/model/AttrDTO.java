@@ -18,6 +18,14 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class AttrDTO implements Serializable {
 	/**
+	 * petriId
+	 */
+	private Long id;
+	/**
+	 * 创造者id(未登录用户为id地址)
+	 */
+	private String ownerId;
+	/**
 	 * 名称
 	 */
 	private String name;

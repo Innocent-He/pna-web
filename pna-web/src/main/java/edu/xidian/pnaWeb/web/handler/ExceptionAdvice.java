@@ -1,6 +1,6 @@
 package edu.xidian.pnaWeb.web.handler;
 
-import edu.xidian.pnaWeb.web.common.Constant;
+import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.exception.BizException;
 import edu.xidian.pnaWeb.web.exception.TimeOutException;
 import edu.xidian.pnaWeb.web.model.Response;

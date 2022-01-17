@@ -1,9 +1,6 @@
 package edu.xidian.pnaWeb.web.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,12 +15,18 @@ import java.util.Map;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class PetriDataDTO implements Serializable {
+@Builder
+public class PetriDTO implements Serializable {
+	/**
+	 * petri网属性
+	 */
 	private AttrDTO attr;
+	/**
+	 * 节点列表
+	 */
 	private List<NodeDTO> nodeList;
+	/**
+	 * 连接弧列表
+	 */
 	private List<LinkDTO> linkList;
-	private String methodName;
-	private Map params;
-	private String status;
-	private Boolean editNew;
 }

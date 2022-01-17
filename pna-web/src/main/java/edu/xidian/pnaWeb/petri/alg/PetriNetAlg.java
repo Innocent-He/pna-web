@@ -5,11 +5,8 @@ import edu.xidian.pnaWeb.petri.module.TranNode;
 import edu.xidian.pnaWeb.web.model.AttrDTO;
 import edu.xidian.pnaWeb.web.model.LinkDTO;
 import edu.xidian.pnaWeb.web.model.NodeDTO;
-import edu.xidian.pnaWeb.web.model.PetriDataDTO;
-import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
+import edu.xidian.pnaWeb.web.model.PetriDTO;
 
-import javax.xml.soap.Node;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -21,7 +18,7 @@ import java.util.*;
 public abstract class PetriNetAlg {
 	public static final Random RANDOM = new Random();
 
-	public PetriDataDTO generateNet(Integer placeCount, Integer tranCount) {
+	public PetriDTO generateNet(Integer placeCount, Integer tranCount) {
 		List<PlaceNode> placeNodes = new ArrayList<>();
 		List<TranNode> tranNodes = new ArrayList<>();
 
@@ -34,15 +31,15 @@ public abstract class PetriNetAlg {
 		return buildPetriData(placeNodes, tranNodes);
 	}
 
-	private PetriDataDTO buildPetriData(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
-		PetriDataDTO petriDataDTO = new PetriDataDTO();
-		paddingLink(placeNodes, petriDataDTO);
-		paddingAttr(petriDataDTO, placeNodes.size(), tranNodes.size());
+	private PetriDTO buildPetriData(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
+		PetriDTO petriDTO = new PetriDTO();
+		paddingLink(placeNodes, petriDTO);
+		paddingAttr(petriDTO, placeNodes.size(), tranNodes.size());
 		List<NodeDTO> allNodes = new ArrayList<>();
 		allNodes.addAll(placeNodes);
 		allNodes.addAll(tranNodes);
-		petriDataDTO.setNodeList(allNodes);
-		return petriDataDTO;
+		petriDTO.setNodeList(allNodes);
+		return petriDTO;
 	}
 
 	private void nodePlacement(Integer placeCount, Integer tranCount, List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
@@ -68,14 +65,14 @@ public abstract class PetriNetAlg {
 
 
 
-	private void paddingAttr(PetriDataDTO petriDataDTO, Integer placeCount, Integer tranCount) {
+	private void paddingAttr(PetriDTO petriDTO, Integer placeCount, Integer tranCount) {
 		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		AttrDTO attrDTO = new AttrDTO(UUID.randomUUID().toString(), nowDate, "ac网", placeCount + 1, tranCount + 1);
-		petriDataDTO.setAttr(attrDTO);
+		petriDTO.setAttr(attrDTO);
 	}
 
 
-	private void paddingLink(List<PlaceNode> placeNodes, PetriDataDTO petriDataDTO) {
+	private void paddingLink(List<PlaceNode> placeNodes, PetriDTO petriDTO) {
 		int idx = 0;
 		List<LinkDTO> allLink = new ArrayList<>();
 		for (PlaceNode placeNode : placeNodes) {
@@ -88,7 +85,7 @@ public abstract class PetriNetAlg {
 				allLink.add(linkDTO);
 			}
 		}
-		petriDataDTO.setLinkList(allLink);
+		petriDTO.setLinkList(allLink);
 	}
 	protected abstract void nodeConnect(List<PlaceNode> placeNodes, List<TranNode> tranNodes);
 

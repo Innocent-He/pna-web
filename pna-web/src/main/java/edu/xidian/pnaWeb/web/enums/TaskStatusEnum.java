@@ -18,7 +18,14 @@ public enum TaskStatusEnum {
 		this.code=code;
 	}
 
-	public static String getStatus(Integer code) {
+	public String status(Integer code) {
+		return this.status;
+	}
+	public Integer code() {
+		return this.code;
+	}
+
+	public static String statusOfCode(Integer code) {
 		return map.get(code);
 	}
 
