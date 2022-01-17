@@ -6,74 +6,80 @@
       @cancel="algVisible=false"
       :footer="null"
     >
-      <a-form
+      <a-form-model
         id="components-form-demo-validate-other"
-        :form="form"
-        @submit="handleSubmit"
+        :form="algReq"
+        @submit="submit"
       >
-        <slot name="alg" :data="params"></slot>
-        <a-form-item label="最长等待时间">
+        <slot name="alg" :data="algReq"></slot>
+        <a-form-model-item label="最长等待时间">
           <a-slider
             v-decorator="['slider']"
             :marks="{ 0: '30min', 20: '1h', 40: '2h', 60: '5h', 80: '1d', 100: '无限制' }"
           />
-        </a-form-item>
-        <a-form-item >
-          <a-checkbox-group
-            v-decorator="['checkbox-group', { initialValue: ['A', 'B'] }]"
-            style="width: 100%;"
-          >
-            <a-checkbox v-if="$store.state.userId" name="enableEmail" v-model="enableEmail">
+        </a-form-model-item>
+        <a-form-model-item>
+          <a-checkbox-group v-model="algReq.enableEmail">
+            <a-checkbox v-if="$store.state.userId" name="enableEmail">
               邮箱通知结果
             </a-checkbox>
-            <a-checkbox v-else disabled name="enableEmail" v-model="enableEmail" style="display: block;width: 100%">
+            <a-checkbox v-else disabled name="enableEmail" style="display: block;width: 100%">
               邮箱通知结果,此功能需要登录账号
             </a-checkbox>
-
           </a-checkbox-group>
-        </a-form-item>
-        <a-button type="primary" html-type="submit" class="alg-form-button">
+        </a-form-model-item>
+        <a-button type="primary" @click="submit" class="alg-form-button">
           提交
         </a-button>
-      </a-form>
+      </a-form-model>
     </a-modal>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  beforeCreate() {
-    this.form = this.$form.createForm(this, {name: 'submit_alg'});
-  },
   name: "AlgForm",
+  props: ['flowData','activeAlg'],
   data() {
     return {
-      params:{},
+      algReq: {
+        params: {
+          step: null,
+        },
+        algName:'',
+        petri: this.flowData
+      },
       algVisible: false,
-      enableEmail:false,
+      enableEmail: false,
     }
   },
   methods: {
-    handleSubmit(e) {
+    submit(e) {
       e.preventDefault();
-      let that = this
-      that.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          //todo 请求后端做登录
-          that.$store.commit("login", {
-            "avatar": "asdas"
-          })
-          that.$store.commit("closeModel");
+      let that = this;
+      that.algReq.petri.attr.ownerName=that.$store.state.userName;
+      axios.post("/api/algReq",that.algReq).then(({data}) => {
+        if (data.success) {
+          that.$message.success(data.message);
+          that.algVisible = false;
+        } else {
+          this.$message.error(data.message);
         }
-      });
+      })
     },
+  },
+  watch:{
+    activeAlg(val){
+      this.algReq.algName=val;
+    }
   }
 }
 </script>
 
 <style scoped>
-.alg-form-button{
+.alg-form-button {
   display: block;
   margin: 10px auto;
 }

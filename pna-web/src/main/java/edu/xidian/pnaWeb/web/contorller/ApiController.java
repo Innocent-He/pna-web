@@ -9,11 +9,13 @@ import edu.xidian.pnaWeb.web.model.*;
 import edu.xidian.pnaWeb.web.service.api.AlgorithmService;
 import edu.xidian.pnaWeb.web.service.api.TaskService;
 import edu.xidian.pnaWeb.web.transform.AlgTrans;
+import edu.xidian.pnaWeb.web.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -51,15 +53,22 @@ public class ApiController {
 					.map((AlgTrans::transToDTO))
 					.collect(Collectors.toList());
 		} else {
-			taskDTOS=taskService.list(new QueryWrapper<TaskPO>().eq("owner_id",ownerId))
+			taskDTOS=taskService.list(new QueryWrapper<TaskPO>().eq("owner_name",ownerId))
 					.stream()
 					.map((AlgTrans::transToDTO))
 					.collect(Collectors.toList());
 		}
 		return Response.success(taskDTOS);
 	}
+	@GetMapping("/cancel/{taskId}")
+	public Response cancelTask(@PathVariable(value = "taskId") Long taskId) {
+		taskService.cancelTask(taskId);
+		return Response.success();
+	}
 
-	@PostMapping("/generateNet")
+
+
+		@PostMapping("/generateNet")
 	public Response generatePetriNet(@RequestBody String dataJson) {
 		log.info(dataJson);
 		Future<String> future = null;
@@ -79,6 +88,10 @@ public class ApiController {
 			AdminContext.USER_INFO.remove();
 		}
 		return Response.success(result);
+	}
+	@GetMapping("/ip")
+	public Response<String> getIp(HttpServletRequest request) {
+		return Response.success(Util.getIpAddr(request));
 	}
 
 }

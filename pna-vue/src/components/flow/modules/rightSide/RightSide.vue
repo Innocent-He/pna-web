@@ -6,7 +6,7 @@
           <a-icon type="calculator" />
           算法
         </span>
-        <Algorithm></Algorithm>
+        <Algorithm :flowData="flowData"></Algorithm>
       </a-tab-pane>
       <a-tab-pane key="admin" id="adminTab">
         <span slot="tab" @click="activeKey='admin'">
@@ -33,7 +33,7 @@ import AlgForm from "./AlgForm"
 import Algorithm from "./Algorithm";
 export default {
   name: "RightSide",
-  props:['placeId','tranId','flowData'],
+  props:['flowData'],
   components:{
     Algorithm,
     TaskList,
@@ -50,7 +50,7 @@ export default {
 
 <style scoped>
 
-#admin{
+#admin {
   flex-direction: column;
   justify-content: center;
   align-items: center;

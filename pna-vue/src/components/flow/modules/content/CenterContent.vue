@@ -10,8 +10,6 @@
         :selectGroup.sync="currentSelectGroup"
         :plumb="plumb"
         :currentTool="currentTool"
-        :placeId="placeId"
-        :tranId="tranId"
       >
       </flow-area>
 
@@ -32,7 +30,7 @@ import {flowConfig} from "../../config/args-config";
 
 export default {
   name: "CenterContent",
-  props:['browserType','flowData','select','selectGroup','plumb','currentTool','placeId','tranId'],
+  props:['browserType','flowData','select','selectGroup','plumb','currentTool'],
   components: {
     OptionHeader,
     FlowArea,

@@ -1,52 +1,56 @@
 <template>
 
   <a-modal :visible="loginFlag" @cancel="loginFlag=false" :footer="null">
-    <a-form
+    <a-form-model
+      ref="loginForm"
       id="components-form-demo-normal-login"
-      :form="form"
+      :model="form"
       class="login-form"
-      @submit="handleSubmit"
     >
-      <a-form-item>
+      <a-form-model-item
+        has-feedback
+        label="UserName"
+        prop="user"
+      >
         <a-input
-          v-decorator="userDecorator"
+          v-model="form.userName"
           placeholder="Username"
         >
           <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)"/>
         </a-input>
-      </a-form-item>
-      <a-form-item>
+      </a-form-model-item>
+
+      <a-form-model-item
+        has-feedback
+        label="PassWord"
+        prop="pass"
+      >
         <a-input
-          v-decorator="pswDecorator"
+          v-model="form.passWord"
+          placeholder="PassWord"
           type="password"
-          placeholder="Password"
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)"/>
         </a-input>
-      </a-form-item>
-      <a-form-item>
-        <a-checkbox
-          v-decorator="[
-          'remember',
-          {
-            valuePropName: 'checked',
-            initialValue: true,
-          },
-        ]"
+      </a-form-model-item>
+
+
+      <a-form-model-item>
+        <a-checkbox v-model="form.remember"
         >
-        记住我
+          记住我
         </a-checkbox>
         <a-button class="login-form-forgot" @click="openForget" type="link">
           忘记密码？
         </a-button>
-        <a-button type="primary" html-type="submit" class="login-form-button">
+        <a-button type="primary" html-type="submit" @click="handleSubmit" class="login-form-button">
           登录
         </a-button>
         <a-button @click="openRegister" type="link">
           注册账号
         </a-button>
-      </a-form-item>
-    </a-form>
+      </a-form-model-item>
+    </a-form-model>
   </a-modal>
 </template>
 
@@ -54,35 +58,17 @@
 import axios from "axios";
 
 export default {
-  beforeCreate() {
-    this.form = this.$form.createForm(this, { name: 'normal_login' });
-  },
   data() {
     return {
-      userDecorator:[
-        'username',
-        {
-          rules: [{
-            required: true,
-            message: '请输入用户名!',
-            whitespace:true
-          }]
-        }
-      ],
-      pswDecorator: [
-        'password',
-        {
-          rules: [{
-            required: true,
-            message: '请输入密码!',
-            whitespace:true
-          }]
-        },
-      ],
+      form: {
+        userName: '',
+        passWord: '',
+        remember:true,
+      },
       show: false,
       rules: {
-        email: [{validator: this.validPassWord, trigger: 'change'}],
-        pass: [{validator: this.validEmail, trigger: 'change'}],
+        user: [{required: true, message: '请输入用户名', trigger: 'blur'}],
+        pass: [{required: true, message: '请输入密码', trigger: 'blur'}],
       },
     };
   },
@@ -105,23 +91,22 @@ export default {
   },
   methods: {
 
-    handleSubmit(e) {
-      e.preventDefault();
-      let that=this
-      that.form.validateFields((err, values) => {
-        if (!err) {
-          console.log('Received values of form: ', values);
-          axios.post("/api/login",values).then(({ data }) => {
-            console.log(data)
+    handleSubmit() {
+      let that=this;
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          axios.post("/api/login",this.form ).then(({data}) => {
             if (data.success) {
               this.$message.success("登录成功！");
               that.$store.commit("closeModel");
-              that.$store.commit("login",data.data)
+              that.$store.commit("login", data.data)
             } else {
-              this.$message.success("登录失败！失败原因:"+data.message);
+              this.$message.success("登录失败！失败原因:" + data.message);
             }
           });
-
+        } else {
+          console.log('error submit!!');
+          return false;
         }
       });
     },

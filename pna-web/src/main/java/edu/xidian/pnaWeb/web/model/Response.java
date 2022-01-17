@@ -1,5 +1,6 @@
 package edu.xidian.pnaWeb.web.model;
 
+import com.baomidou.mybatisplus.extension.api.R;
 import lombok.Data;
 
 /**
@@ -14,7 +15,7 @@ public class Response<T> {
 	private String message;
 	private String errorCode;
 
-	public static Response error(String errorCode,String msg) {
+	public static Response error(String errorCode, String msg) {
 		Response response = new Response();
 		response.setSuccess(false);
 		response.setMessage(msg);
@@ -23,16 +24,19 @@ public class Response<T> {
 	}
 
 
-
 	public static Response success() {
-		Response response = new Response();
-		response.setSuccess(true);
-		return response;
+		return Response.success(null);
 	}
 
-	public static <T> Response success(T data) {
+	public static <T> Response<T> success(T data) {
+		return Response.success(data, null);
+	}
+
+
+	public static <T> Response<T> success(T data, String message) {
 		Response<T> response = new Response();
 		response.setSuccess(true);
+		response.setMessage(message);
 		response.setData(data);
 		return response;
 	}

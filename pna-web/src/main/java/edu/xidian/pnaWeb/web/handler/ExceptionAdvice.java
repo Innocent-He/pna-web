@@ -21,17 +21,19 @@ public class ExceptionAdvice {
 
 	@ExceptionHandler(value = TimeOutException.class)
 	public Response timeOutHandler(TimeOutException e) {
+		log.error(e.toString());
 		return Response.error(e.getCode(), e.getMessage());
 	}
 
 	@ExceptionHandler(value = BizException.class)
-	public Response bizHandler(BizException bizException) {
-		return Response.error(bizException.getCode(), bizException.getMessage());
+	public Response bizHandler(BizException e) {
+		log.error(e.toString());
+		return Response.error(e.getCode(), e.getMessage());
 	}
 
 	@ExceptionHandler(value = Exception.class)
 	public Response exceptionHandler(Exception e) {
-		log.error(e.getMessage());
+		log.error(e.toString());
 		return Response.error(Constant.SYSTEM_ERROR_CODE, Constant.SYSTEM_ERROR_MESSAGE);
 	}
 }

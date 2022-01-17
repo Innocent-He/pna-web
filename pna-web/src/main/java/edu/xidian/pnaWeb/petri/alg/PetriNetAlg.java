@@ -67,7 +67,7 @@ public abstract class PetriNetAlg {
 
 	private void paddingAttr(PetriDTO petriDTO, Integer placeCount, Integer tranCount) {
 		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		AttrDTO attrDTO = new AttrDTO(UUID.randomUUID().toString(), nowDate, "ac网", placeCount + 1, tranCount + 1);
+		AttrDTO attrDTO = new AttrDTO(UUID.randomUUID().timestamp(),"random","custom", nowDate, "ac网", placeCount + 1, tranCount + 1);
 		petriDTO.setAttr(attrDTO);
 	}
 

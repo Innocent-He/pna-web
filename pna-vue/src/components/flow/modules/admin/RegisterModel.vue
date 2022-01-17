@@ -56,7 +56,7 @@ export default {
         password: "",
       },
       userDecorator:[
-        'username',
+        'userName',
         {
           rules: [{
             required: true,
@@ -76,7 +76,7 @@ export default {
         },
       ],
       pswDecorator: [
-        'password',
+        'passWord',
         {
           rules: [{
             required: true,

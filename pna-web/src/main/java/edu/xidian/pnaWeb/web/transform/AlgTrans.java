@@ -14,7 +14,7 @@ import edu.xidian.pnaWeb.web.model.TaskDTO;
  */
 public class AlgTrans {
 	public static AlgReqDO transToDO(AlgRequest algRequest) {
-		PetriDO petriDO = PetriTrans.transToDO(algRequest.getPetriDTO());
+		PetriDO petriDO = PetriTrans.transToDO(algRequest.getPetri());
 		return AlgReqDO.builder()
 				.algName(algRequest.getAlgName())
 				.params(algRequest.getParams())
@@ -25,7 +25,7 @@ public class AlgTrans {
 	public static TaskDTO transToDTO(TaskPO taskPO) {
 		return TaskDTO.builder()
 				.id(taskPO.getId())
-				.status(TaskStatusEnum.statusOfCode(taskPO.getStatus()))
+				.status(taskPO.getStatus())
 				.ownerName(taskPO.getOwnerName())
 				.result(taskPO.getResult())
 				.createTime(taskPO.getCreateTime())

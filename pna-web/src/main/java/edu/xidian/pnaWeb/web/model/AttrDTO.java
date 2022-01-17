@@ -24,7 +24,7 @@ public class AttrDTO implements Serializable {
 	/**
 	 * 创造者id(未登录用户为id地址)
 	 */
-	private String ownerId;
+	private String ownerName;
 	/**
 	 * 名称
 	 */

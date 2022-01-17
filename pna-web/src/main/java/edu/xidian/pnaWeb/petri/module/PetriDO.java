@@ -17,7 +17,7 @@ import java.util.Arrays;
 @Data
 public class PetriDO {
 	private Long id;
-	private String ownerId;
+	private String ownerName;
 	private String desc;
 	private String name;
 	private int[][] preMatrix;

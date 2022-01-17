@@ -100,9 +100,7 @@ export default {
     "plumb",
     "select",
     "selectGroup",
-    "currentTool",
-    "placeId",
-    "tranId"
+    "currentTool"
   ],
   components: {
     jsplumb,
@@ -466,10 +464,10 @@ export default {
       that.clipboard.forEach(function(node, index) {
         let newNode = Object.assign({}, node);
         if (node.type==="place") {
-          newNode.id = "p-" + that.placeId;
+          newNode.id = "p-" + that.flowData.attr.maxPlaceId;
           that.$bus.$emit("placeIdInc");
         } else if (node.type == "transaction") {
-          newNode.id = "t-" + that.tranId;
+          newNode.id = "t-" + that.flowData.attr.maxTranId;
           that.$bus.$emit("tranInc");
         }
         let nodePos = that.computeNodePos(
@@ -774,10 +772,10 @@ export default {
 
       let newNode = Object.assign({}, node);
       if (newNode.type==="place") {
-        newNode.id = "p-" + that.placeId;
+        newNode.id = "p-" + that.flowData.attr.maxPlaceId;
         that.$bus.$emit("placeIdInc");
       } else if (newNode.type === "transaction") {
-        newNode.id = "t-" + that.tranId;
+        newNode.id = "t-" + that.flowData.attr.maxTranId;
         that.$bus.$emit("tranIdInc");
       }
       newNode.height = 50;

@@ -32,17 +32,17 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminPO> implemen
 
 	@Override
 	public AdminInfo login(AdminInfo adminInfo) {
-		String encodePass = encodePass(adminInfo.getPassword());
+		log.info(adminInfo.toString());
+		String encodePass = encodePass(adminInfo.getPassWord());
 		AdminPO adminPO = adminMapper.selectOne(new QueryWrapper<AdminPO>()
-				.eq("user_name", adminInfo.getUsername())
+				.eq("user_name", adminInfo.getUserName())
 				.eq("pass_word", encodePass));
 		if (Objects.isNull(adminPO)) {
 			throw new BizException(Constant.LOGIN_FAILED_CODE,Constant.LOGIN_FAILED_MESSAGE);
 		}
-		log.info(adminPO.toString());
 		StpUtil.login(adminPO.getId());
 		return AdminInfo.builder()
-				.username(adminPO.getUserName())
+				.userName(adminPO.getUserName())
 				.email(adminPO.getEmail())
 				.id(adminPO.getId()).build();
 	}
@@ -53,7 +53,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminPO> implemen
 
 	private void checkValid(AdminInfo adminInfo) {
 		AdminPO adminPO = adminMapper.selectOne(Wrappers.lambdaQuery(AdminPO.class)
-				.eq(AdminPO::getUserName, adminInfo.getUsername())
+				.eq(AdminPO::getUserName, adminInfo.getUserName())
 				.or()
 				.eq(AdminPO::getEmail, adminInfo.getEmail()));
 		if (adminPO != null) {
@@ -67,9 +67,9 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminPO> implemen
 	@Override
 	public void register(AdminInfo adminInfo) {
 		checkValid(adminInfo);
-		AdminPO admin = AdminPO.builder().userName(adminInfo.getUsername())
+		AdminPO admin = AdminPO.builder().userName(adminInfo.getUserName())
 				.email(adminInfo.getEmail())
-				.passWord(encodePass(adminInfo.getPassword()))
+				.passWord(encodePass(adminInfo.getPassWord()))
 				.build();
 		log.info(admin.toString());
 		adminMapper.insert(admin);

@@ -16,14 +16,14 @@
       <a-icon type="share-alt"/>
       Test
     </a-button>
-    <AlgForm ref="algform">
-      <template slot="alg" slot-scope="params" v-if="activeAlg=='reach'">
-        <a-form-item label="限制发射步数:">
+    <AlgForm ref="algform" :flowData="flowData" :activeAlg="activeAlg">
+      <template slot="alg" slot-scope="props" v-if="activeAlg=='reach'">
+        <a-form-model-item label="限制发射步数:">
           <a-input
-            v-model.number="step"
+            v-model.number="props.data.params.step"
             placeholder="Please enter number of transmit steps"
           />
-        </a-form-item>
+        </a-form-model-item>
       </template>
       <template v-else-if="activeAlg=='simphon'">
 
@@ -44,19 +44,21 @@ export default {
   components: {
     AlgForm,
   },
-  props: ["flowData", "placeId", "tranId", "editFlag"],
+  props: ["flowData"],
   data() {
     return {
       activeAlg: '',
-      step: null,
     };
   },
   methods: {
+    logStr(date) {
+      console.log(date)
+    },
     activeAlgModel(alg) {
       this.activeAlg = alg;
       this.$refs.algform.algVisible = true;
     },
-  }
+  },
 };
 </script>
 

@@ -2,15 +2,19 @@ package edu.xidian.pnaWeb.petri.context;
 
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
+import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.enums.TaskStatusEnum;
+import edu.xidian.pnaWeb.web.exception.BizException;
 import edu.xidian.pnaWeb.web.service.api.TaskService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.Objects;
 import java.util.concurrent.locks.LockSupport;
 
 /**
@@ -30,9 +34,9 @@ public class TaskCenter implements InitializingBean {
 	private TaskService taskService;
 
 	public void pushTask(AlgReqDO algReqDO) {
-		TaskPO taskPO=TaskPO.builder().algName(algReqDO.getAlgName())
+		TaskPO taskPO = TaskPO.builder().algName(algReqDO.getAlgName())
 				.status(TaskStatusEnum.WAITING.code())
-				.ownerId(algReqDO.getPetriDO().getOwnerId())
+				.ownerName(algReqDO.getPetriDO().getOwnerName())
 				.algName(algReqDO.getAlgName())
 				.build();
 		taskService.save(taskPO);
@@ -50,7 +54,12 @@ public class TaskCenter implements InitializingBean {
 					// 当前队列无任务则阻塞
 					LockSupport.park();
 				}
-				AlgReqDO algReqDO = taskDeque.pollFirst();
+				AlgReqDO algReqDO;
+				// 避免取消任务时造成影响
+				synchronized (TaskCenter.class) {
+					algReqDO = taskDeque.pollFirst();
+				}
+				if (algReqDO.isCancel()) continue;
 				TaskPO running = TaskPO.builder()
 						.id(algReqDO.getId())
 						.status(TaskStatusEnum.RUNNING.code())
@@ -77,5 +86,18 @@ public class TaskCenter implements InitializingBean {
 				}
 			}
 		}, "taskThread");
+		taskThread.start();
+	}
+
+	public void cancelTask(Long taskId) {
+		synchronized (TaskCenter.class) {
+			for (AlgReqDO algReqDO : taskDeque) {
+				if (Objects.equals(taskId, algReqDO.getId())) {
+					algReqDO.setCancel(true);
+					break;
+				}
+			}
+			throw new BizException(Constant.TASK_CANCEL_FAILED_CODE,Constant.TASK_CANCEL_FAILED_MESSAGE);
+		}
 	}
 }

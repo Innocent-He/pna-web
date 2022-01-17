@@ -32,20 +32,9 @@ public class AlgContext implements ApplicationContextAware {
 		throw new BizException(Constant.NO_SUCH_ALG_CODE,Constant.NO_SUCH_ALG_MESSAGE);
 	}
 
-	public String executeAlg(AlgReqDO algReqDO, String algName) {
-		String originAlgName = algReqDO.getAlgName();
-		algReqDO.setAlgName(algName);
-		for (AlgActuator algActuator : algActuators) {
-			if (algActuator.apply(algReqDO)) {
-				algReqDO.setAlgName(originAlgName);
-				return algActuator.execute(algReqDO);
-			}
-		}
-		throw new BizException(Constant.NO_SUCH_ALG_CODE,Constant.NO_SUCH_ALG_MESSAGE);
-	}
 
 	/**
-	 * 注入容器中所有算法处理器
+	 * 注入容器中所有算法执行器
 	 * @param applicationContext
 	 * @throws BeansException
 	 */

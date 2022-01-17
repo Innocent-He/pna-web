@@ -17,4 +17,5 @@ public class AlgReqDO {
 	private Map params;
 	private PetriDO petriDO;
 	private String algName;
+	private boolean cancel;
 }

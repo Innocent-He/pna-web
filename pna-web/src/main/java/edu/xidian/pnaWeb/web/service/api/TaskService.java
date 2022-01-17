@@ -11,4 +11,6 @@ import edu.xidian.pnaWeb.web.dao.po.TaskPO;
  */
 public interface TaskService extends IService<TaskPO> {
 	public void submitTask(AlgReqDO algReqDO);
+
+	void cancelTask(Long taskId);
 }

@@ -1,10 +1,13 @@
 package edu.xidian.pnaWeb.petri.alg;
 
+import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.petri.module.SimphonInfo;
 import edu.xidian.pnaWeb.util.PetriUtils;
+import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.model.AdminContext;
 import edu.xidian.pnaWeb.web.model.PetriDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,10 +20,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SimphonAlg implements AlgActuator{
-	public SimphonInfo generateSimphon(){
+	public SimphonInfo generateSimphon(PetriDO petriDO){
 		List<List<Integer>> simphons=new ArrayList<>();
 		List<List<Integer>> strictSimphons=new ArrayList<>();
-		PetriDO petriDO = AdminContext.USER_INFO.get().getPetriDO();
 		List<List<Integer>> subSets = generateSubset(petriDO.getMarking().length);
 		for (List<Integer> subSet : subSets) {
 			Set<Integer> preTran=new HashSet<>();
@@ -59,13 +61,19 @@ public class SimphonAlg implements AlgActuator{
 		queue.pop();
 	}
 
+
+
 	@Override
-	public boolean apply(PetriDTO petriDTO) {
+	public boolean apply(AlgReqDO algReqDO) {
+		if (StringUtils.equals(algReqDO.getAlgName(), Constant.Siphon)) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
-	public String execute(PetriDTO petriDTO) {
-		return null;
+	public String execute(AlgReqDO algReqDO) {
+		SimphonInfo simphonInfo = this.generateSimphon(algReqDO.getPetriDO());
+		return simphonInfo.toString();
 	}
 }

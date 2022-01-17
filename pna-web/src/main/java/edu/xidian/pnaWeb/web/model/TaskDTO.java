@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 public class TaskDTO {
 	private Long id;
 	private String ownerName;
-	private String status;
+	private String algName;
+	private Integer status;
 	private String result;
 	private LocalDateTime createTime;
 	private LocalDateTime updateTime;

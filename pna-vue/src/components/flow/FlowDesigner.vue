@@ -10,13 +10,11 @@
         :selectGroup.sync="currentSelectGroup"
         :plumb="plumb"
         :currentTool="currentTool"
-        :placeId="placeId"
-        :tranId="tranId"
         ></CenterContent>
       <RightSide
-        :placeId="placeId"
-        :tranId="tranId"
-        :flowData="flowData"></RightSide>
+        :flowData="flowData">
+
+      </RightSide>
     </a-layout>
     <LoginModel/>
     <RegisterModel/>
@@ -101,16 +99,15 @@ export default {
         nodeList: [],
         linkList: [],
         attr: {
+          id:null,
           name: "",
           des: "",
-          createTime: ""
+          createTime: "",
+          maxPlaceId: 1,
+          maxTranId: 1,
         },
         status: flowConfig.flowStatus.CREATE
       },
-      placeId: 1,
-      tranId: 1,
-      result: "",
-      editFlag: false
     };
   },
   methods: {
@@ -144,10 +141,10 @@ export default {
         that.moveNode(type);
       })
       that.$bus.$on('placeIdInc', () => {
-        this.placeId ++;
+        this.flowData.attr.maxPlaceId ++;
       })
       that.$bus.$on('tranIdInc', () => {
-        this.tranId ++;
+        this.flowData.attr.maxTranId ++;
       })
       that.$bus.$on('generatePetriNet', (type) => {
         this.generatePetriNet(type);
@@ -326,66 +323,14 @@ export default {
     },
     initFlow() {
       const that = this;
-
-      axios.interceptors.request.use(
-        function (config) {
-          // Do something before request is sent
-          // 数据请求前，将组件库的 Toast轻提示打开
-          that.spinning = true;
-          return config;
-        },
-        function (error) {
-          // Do something with request error
-          return Promise.reject(error);
+      axios.get('/api/ip').then(({data})=>{
+        if (data.success) {
+          that.$store.commit('login',{userName:data.data})
         }
-      );
-      // Add a response interceptor
-      axios.interceptors.response.use(
-        function (response) {
-          // Do something with response data
-          //请求得到数据之后，关闭loading
-          that.spinning = false;
-          return response;
-        },
-        function (error) {
-          // Do something with response error
-          that.spinning = false;
-          return Promise.reject(error);
-        }
-      );
-      Date.prototype.format = function (fmt) {
-        var o = {
-          "M+": this.getMonth() + 1, //月份
-          "d+": this.getDate(), //日
-          "h+": this.getHours(), //小时
-          "m+": this.getMinutes(), //分
-          "s+": this.getSeconds(), //秒
-          "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-          S: this.getMilliseconds() //毫秒
-        };
-        if (/(y+)/.test(fmt)) {
-          fmt = fmt.replace(
-            RegExp.$1,
-            (this.getFullYear() + "").substr(4 - RegExp.$1.length)
-          );
-        }
-        for (var k in o) {
-          if (new RegExp("(" + k + ")").test(fmt)) {
-            fmt = fmt.replace(
-              RegExp.$1,
-              RegExp.$1.length == 1
-                ? o[k]
-                : ("00" + o[k]).substr(("" + o[k]).length)
-            );
-          }
-        }
-        return fmt;
-      };
+      })
       if (that.flowData.status == flowConfig.flowStatus.CREATE) {
         that.flowData.attr.name = "flow-" + ZFSN.getId();
-        that.flowData.attr.createTime = new Date().format(
-          "yyyy-MM-dd hh:mm:ss"
-        );
+        that.flowData.attr.createTime = new Date().format("yyyy-MM-dd hh:mm:ss");
       } else {
         that.loadFlow();
       }
@@ -399,8 +344,8 @@ export default {
       }
       let loadData = JSON.parse(json);
       console.log(loadData);
-      that.placeId = loadData.attr.maxPlaceId;
-      that.tranId = loadData.attr.maxTranId;
+      that.flowData.attr.maxPlaceId = loadData.attr.maxPlaceId;
+      that.flowData.attr.maxTranId = loadData.attr.maxTranId;
       that.flowData.attr.name = loadData.attr.name;
       that.flowData.config = loadData.config;
       that.flowData.status = flowConfig.flowStatus.LOADING;
@@ -521,7 +466,7 @@ export default {
       let reader = new FileReader();
       reader.readAsText(file, "UTF-8");
       reader.onload = function () {
-        that.loadFlow(this.result);
+        // that.loadFlow(this.result);
       };
       return false;
     },
@@ -529,8 +474,8 @@ export default {
       const that = this;
       let petriObj = Object.assign({}, that.flowData);
       petriObj.linkList.forEach(link => delete link.cls);
-      petriObj.attr.maxPlaceId = that.placeId;
-      petriObj.attr.maxTranId = that.tranId;
+      petriObj.attr.maxPlaceId = that.flowData.attr.maxPlaceId;
+      petriObj.attr.maxTranId = that.flowData.attr.maxTranId;
       if (!that.checkFlow()) return;
       petriObj.status = flowConfig.flowStatus.SAVE;
 
@@ -583,8 +528,8 @@ export default {
       that.flowData.nodeList.forEach(function (node, index) {
         that.plumb.remove(node.id);
       });
-      that.placeId = 1;
-      that.tranId = 1;
+      that.flowData.attr.maxPlaceId = 1;
+      that.flowData.attr.maxTranId = 1;
       that.currentSelect = {};
       that.currentSelectGroup = [];
       that.flowData.nodeList = [];

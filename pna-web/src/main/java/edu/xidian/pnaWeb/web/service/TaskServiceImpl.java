@@ -23,4 +23,9 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper,TaskPO> implements T
 	public void submitTask(AlgReqDO algReqDO) {
 		taskCenter.pushTask(algReqDO);
 	}
+
+	@Override
+	public void cancelTask(Long taskId) {
+		taskCenter.cancelTask(taskId);
+	}
 }

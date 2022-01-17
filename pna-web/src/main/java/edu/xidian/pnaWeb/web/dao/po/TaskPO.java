@@ -1,9 +1,6 @@
 package edu.xidian.pnaWeb.web.dao.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -21,7 +18,7 @@ public class TaskPO {
 	/**
 	 * 主键
 	 */
-	@TableId(value = "id")
+	@TableId(value = "id",type = IdType.AUTO)
 	private Long id;
 	/**
 	 * 提交者用户id
@@ -39,8 +36,8 @@ public class TaskPO {
 	 * 算法执行结果
 	 */
 	private String result;
-	@TableField(fill = FieldFill.INSERT)
-	private LocalDateTime updateTime;
 	@TableField(fill = FieldFill.INSERT_UPDATE)
+	private LocalDateTime updateTime;
+	@TableField(fill = FieldFill.INSERT)
 	private LocalDateTime createTime;
 }

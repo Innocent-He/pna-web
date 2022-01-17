@@ -15,5 +15,6 @@ import java.util.Map;
 public class AlgRequest {
 	private Map params;
 	private String algName;
-	private PetriDTO petriDTO;
+	private PetriDTO petri;
+	private Boolean emailEnable;
 }

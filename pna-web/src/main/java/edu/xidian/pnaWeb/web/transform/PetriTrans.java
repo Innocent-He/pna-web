@@ -6,8 +6,8 @@ import edu.xidian.pnaWeb.web.dao.po.PetriPO;
 import edu.xidian.pnaWeb.web.model.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 
 /**
  * @Description
@@ -15,6 +15,8 @@ import java.util.List;
  * @Date 2022/1/17 13:18
  */
 public class PetriTrans {
+	static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 	public static PetriDO transToDO(PetriDTO petriDTO) {
 		AttrDTO attr = petriDTO.getAttr();
 		int maxPlaceId = attr.getMaxPlaceId(), maxTranId = attr.getMaxTranId();
@@ -46,10 +48,10 @@ public class PetriTrans {
 		}
 		PetriDO petriDO = PetriDO.builder()
 				.id(attr.getId())
-				.ownerId(attr.getOwnerId())
+				.ownerName(attr.getOwnerName())
 				.desc(attr.getDes())
 				.name(attr.getName())
-				.createTime(LocalDateTime.parse(attr.getCreateTime()))
+				.createTime(LocalDateTime.parse(attr.getCreateTime(), dateTimeFormatter))
 				.postMatrix(post)
 				.preMatrix(pre)
 				.marking(initToken)
@@ -57,15 +59,17 @@ public class PetriTrans {
 				.build();
 		return petriDO;
 	}
+
 	public static PetriDTO transToDTO(PetriDO petriDO) {
 		return JSON.parseObject(petriDO.getWebJson(), PetriDTO.class);
 	}
+
 	public static PetriPO transToPO(PetriDO petriDO) {
-		String postJon=JSON.toJSONString(petriDO.getPostMatrix());
-		String preJon=JSON.toJSONString(petriDO.getPreMatrix());
+		String postJon = JSON.toJSONString(petriDO.getPostMatrix());
+		String preJon = JSON.toJSONString(petriDO.getPreMatrix());
 		return PetriPO.builder()
 				.id(petriDO.getId())
-				.ownerId(petriDO.getOwnerId())
+				.ownerName(petriDO.getOwnerName())
 				.desc(petriDO.getDesc())
 				.name(petriDO.getName())
 				.createTime(petriDO.getCreateTime())
@@ -75,12 +79,13 @@ public class PetriTrans {
 				.webJson(petriDO.getWebJson())
 				.build();
 	}
+
 	public static PetriDO transToDO(PetriPO petriPO) {
 		int[][] postMatrix = JSON.parseObject(petriPO.getPostJson(), int[][].class);
 		int[][] preMatrix = JSON.parseObject(petriPO.getPreJson(), int[][].class);
 		return PetriDO.builder()
 				.id(petriPO.getId())
-				.ownerId(petriPO.getOwnerId())
+				.ownerName(petriPO.getOwnerName())
 				.name(petriPO.getName())
 				.desc(petriPO.getDesc())
 				.createTime(petriPO.getCreateTime())

@@ -14,6 +14,7 @@ public class Constant {
 	 */
 	public static final String REACH_GRAPH="reach";
 	public static final String EVENT_CIRCLE="ew";
+	public static final String Siphon="siphon";
 
 
 
@@ -30,6 +31,7 @@ public class Constant {
 	public static final String EMAIL_REPEAT_CODE="510";
 	public static final String LOGIN_FAILED_CODE="511";
 	public static final String NO_SUCH_ALG_CODE="512";
+	public static final String TASK_CANCEL_FAILED_CODE="513";
 
 
 	/**
@@ -42,6 +44,7 @@ public class Constant {
 	public static final String EMAIL_REPEAT_MESSAGE="当前邮箱已存在";
 	public static final String LOGIN_FAILED_MESSAGE="用户名或者密码错误，请检查后重试";
 	public static final String NO_SUCH_ALG_MESSAGE="当前算法还没实现";
+	public static final String TASK_CANCEL_FAILED_MESSAGE="任务取消失败，可能已经在执行";
 
 
 

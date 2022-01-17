@@ -4,29 +4,34 @@
     class="demo-infinite-container"
     :infinite-scroll-disabled="busy"
     :infinite-scroll-distance="10"
-    style="padding: 0 10px;align-self: stretch;flex-grow: 1"
+    style="padding: 0 10px; height:450px;align-self: stretch;flex-grow: 1"
   >
+    <a-button @click="refresh" type="primary">刷新列表</a-button>
     <a-list :data-source="data" :locale="{emptyText:'当前没有执行中的任务'}">
-        <a-list-item slot="renderItem"  slot-scope="{ id,subTime,algName,status,owner }" >
-          <a-list-item-meta :description="subTime|datetime">
+        <a-list-item slot="renderItem"  slot-scope="{ id,algName,status,ownerName,createTime }" >
+          <a-list-item-meta :description="createTime|datetime">
             <v-card-text slot="title">{{ algName }}
-              <template v-if="status=='success'">
+              <template v-if="status==2">
                 <a-icon type="check-circle" theme="twoTone" two-tone-color="#52c41a" />
+                运行成功
               </template>
-              <template v-else-if="status=='running'">
+              <template v-else-if="status==1">
                 <a-icon type="clock-circle" theme="twoTone" two-tone-color="#52c41a"/>
+                运行中
               </template>
-              <template v-else-if="status=='error'">
-                <a-icon type="info-circle" theme="twoTone" two-tone-color="red"/>
+              <template v-else-if="status==0">
+                <a-icon type="clock-circle" theme="twoTone" two-tone-color="#FFCC00"/>
+                等待执行中
               </template>
               <template v-else>
-                <a-icon type="clock-circle" theme="twoTone" two-tone-color="#FFCC00"/>
+                <a-icon type="info-circle" theme="twoTone" two-tone-color="red"/>
+                运行失败
               </template>
-              {{ status }}
+
             </v-card-text>
-            <v-card-text slot="title">{{ owner }}</v-card-text>
+            <v-card-text slot="title">{{ ownerName }}</v-card-text>
           </a-list-item-meta>
-          <a-button v-if="isOwner" type="link" @click="cancelTask(id)">Cancel</a-button>
+          <a-button v-if="isOwner&&status==0" type="link" @click="cancelTask(id)">Cancel</a-button>
         </a-list-item>
       <a-spin v-if="loading" class="demo-loading"/>
     </a-list>
@@ -38,6 +43,7 @@
 import infiniteScroll from 'vue-infinite-scroll';
 import {RecycleScroller} from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
+import axios from "axios";
 
 export default {
   name: "TaskList",
@@ -47,104 +53,34 @@ export default {
   },
   data() {
     return {
-      data: [{
-        id: 0,
-        owner:"黄蓉",
-        algName: "可达图",
-        subTime: new Date(),
-        status: "error"
-      }, {
-        id: 1,
-        owner:"sadads",
-        algName: "ew",
-        subTime: new Date(),
-        status: "success"
-
-      }, {
-        id: 2,
-        owner:"曦寒",
-        algName: "ew",
-        subTime: new Date(),
-        status: "running"
-      }, {
-        id: 3,
-        owner:"",
-        algName: "ew",
-        subTime: new Date(),
-        status: "waiting"
-      },
-        {
-          id: 4,
-          owner:"",
-          algName: "asdf",
-          subTime: new Date(),
-          status: "waiting"
-        },
-        {
-          id: 5,
-          owner:"",
-          algName: "asdf",
-          subTime: new Date(),
-          status: "waiting"
-        },
-        {
-          id: 6,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "waiting"
-        },
-        {
-          id: 7,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "waiting"
-        },
-        {
-          id: 8,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "正在运行"
-        },
-        {
-          id: 9,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "正在运行"
-        },{
-          id: 10,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "正在运行"
-        },{
-          id: 11,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "正在运行"
-        },{
-          id: 21,
-          algName: "asdf",
-          subTime: new Date(),
-          status: "正在运行"
-        }],
+      data: [],
       isOwner: true,
       loading: false,
       busy: false,
     }
   },
   methods: {
+    refresh() {
+      this.handleInfiniteOnLoad()
+    },
     cancelTask(id){
       //todo 取消任务执行
+      axios.get('/api/cancel/'+id).then(({data})=>{
+        if (data.success) {
+          this.$message.success('取消任务成功')
+        }else{
+          this.$message.error('取消失败，请检查任务状态');
+        }
+      })
     },
     fetchData(callback) {
-      reqwest({
-        url: "fakeDataUrl",
-        type: 'json',
-        method: 'get',
-        contentType: 'application/json',
-        success: res => {
-          callback(res);
-        },
-      });
+      axios.get('/api/tasks/'+this.$store.state.userName).then(({data})=>{
+        if (data.success) {
+          callback(data);
+        }else{
+          this.$message.error('获取列表失败');
+        }
+      })
     },
     handleInfiniteOnLoad() {
       const data = this.data;
@@ -156,16 +92,20 @@ export default {
         this.loading = false
         return;
       }
-      // this.fetchData(res => {
-      //   this.data = data.concat(res.results).map((item, index) => ({ ...item, index }));
-      //   this.loading = false;
-      // });
+      this.fetchData(res => {
+        this.data = data.concat(res.data).map((item, index) => ({ ...item, index }));
+        this.loading = false;
+      });
     },
   }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+$primary-color: #409EFF;
+
+
+
 .demo-infinite-container {
   border-radius: 4px;
   overflow: auto;
