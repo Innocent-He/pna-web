@@ -18,4 +18,5 @@ public class AlgReqDO {
 	private PetriDO petriDO;
 	private String algName;
 	private boolean cancel;
+	private boolean emailEnable;
 }

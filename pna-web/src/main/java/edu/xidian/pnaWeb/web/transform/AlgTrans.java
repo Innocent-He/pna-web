@@ -3,7 +3,6 @@ package edu.xidian.pnaWeb.web.transform;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
-import edu.xidian.pnaWeb.web.enums.TaskStatusEnum;
 import edu.xidian.pnaWeb.web.model.AlgRequest;
 import edu.xidian.pnaWeb.web.model.TaskDTO;
 

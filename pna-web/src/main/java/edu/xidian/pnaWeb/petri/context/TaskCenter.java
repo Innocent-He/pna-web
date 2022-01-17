@@ -1,10 +1,13 @@
 package edu.xidian.pnaWeb.petri.context;
 
+import cn.dev33.satoken.stp.StpUtil;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
 import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.enums.TaskStatusEnum;
 import edu.xidian.pnaWeb.web.exception.BizException;
+import edu.xidian.pnaWeb.web.service.api.MessageService;
 import edu.xidian.pnaWeb.web.service.api.TaskService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -32,6 +35,8 @@ public class TaskCenter implements InitializingBean {
 	private AlgContext algContext;
 	@Resource
 	private TaskService taskService;
+	@Resource
+	private MessageService messageService;
 
 	public void pushTask(AlgReqDO algReqDO) {
 		TaskPO taskPO = TaskPO.builder().algName(algReqDO.getAlgName())
@@ -73,6 +78,9 @@ public class TaskCenter implements InitializingBean {
 							.status(TaskStatusEnum.SUCCESS.code())
 							.result(result)
 							.build();
+					if (algReqDO.isEmailEnable()) {
+						noticeUser(algReqDO);
+					}
 					// 更新状态 结果
 					taskService.updateById(success);
 				} catch (Exception e) {
@@ -87,6 +95,11 @@ public class TaskCenter implements InitializingBean {
 			}
 		}, "taskThread");
 		taskThread.start();
+	}
+
+	private void noticeUser(AlgReqDO algReqDO) {
+		PetriDO petriDO = algReqDO.getPetriDO();
+
 	}
 
 	public void cancelTask(Long taskId) {

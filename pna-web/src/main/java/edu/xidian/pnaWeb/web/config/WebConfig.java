@@ -3,12 +3,14 @@ package edu.xidian.pnaWeb.web.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import edu.xidian.pnaWeb.web.handler.AdminInfoInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
@@ -31,13 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
 		return new ServerEndpointExporter();
 	}
 
-//	@Override
-//	public void addInterceptors(InterceptorRegistry registry) {
-//		// 注册Sa-Token的路由拦截器
-//		registry.addInterceptor(new SaRouteInterceptor())
-//				.addPathPatterns("/**")
-//				.excludePathPatterns("/user/doLogin");
-//	}
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new AdminInfoInterceptor());
+	}
 
 	/**
 	 * 解决CORS跨域问题

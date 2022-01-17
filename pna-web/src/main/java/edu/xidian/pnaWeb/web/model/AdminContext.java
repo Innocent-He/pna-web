@@ -13,9 +13,11 @@ import lombok.Data;
  */
 @Data
 public class AdminContext {
-	public static final InheritableThreadLocal<AdminContext> USER_INFO=new InheritableThreadLocal<>();
-	private PetriDO petriDO;
-	private ReachGraphInfo reachGraphInfo;
-	private SimphonInfo simphonInfo;
-	private EventCircleInfo eventCircleInfo;
+	/**
+	 * InheritableThreadLocal确保在子线程也能读取父线程数据
+	 */
+	public static final ThreadLocal<AdminContext> USER_INFO=new InheritableThreadLocal<>();
+	private Long userId;
+	private String userName;
+	private String email;
 }
