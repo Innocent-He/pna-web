@@ -58,10 +58,9 @@ public class PetriUtils {
 	 * @param placeId 库所序号
 	 * @return 所有前置变迁
 	 */
-	public static List<Integer> getPreTran(int placeId) {
+	public static List<Integer> getPreTran(PetriDO petriDO,int placeId) {
 		List<Integer> trans = new ArrayList<>();
-		AdminContext adminContext = AdminContext.USER_INFO.get();
-		int[][] preMatrix = adminContext.getPetriDO().getPreMatrix();
+		int[][] preMatrix = petriDO.getPreMatrix();
 		for (int i = 0; i < preMatrix[placeId].length; i++) {
 			if (preMatrix[placeId][i] != 0) {
 				trans.add(i);
@@ -76,10 +75,10 @@ public class PetriUtils {
 	 * @param placeId 库所序号
 	 * @return 所有后置变迁
 	 */
-	public static List<Integer> getPostTran(int placeId) {
+	public static List<Integer> getPostTran(PetriDO petriDO,int placeId) {
 		List<Integer> trans = new ArrayList<>();
-		AdminContext adminContext = AdminContext.USER_INFO.get();
-		int[][] postMatrix = adminContext.getPetriDO().getPostMatrix();
+		// todo 改为threadlocal
+		int[][] postMatrix = petriDO.getPostMatrix();
 		for (int i = 0; i < postMatrix[placeId].length; i++) {
 			if (postMatrix[placeId][i] != 0) {
 				trans.add(i);

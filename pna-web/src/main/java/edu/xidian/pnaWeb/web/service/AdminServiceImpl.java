@@ -1,5 +1,6 @@
 package edu.xidian.pnaWeb.web.service;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * @Description
@@ -33,6 +35,15 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminPO> implemen
 	@Override
 	public AdminInfo login(AdminInfo adminInfo) {
 		log.info(adminInfo.toString());
+		// 如果是临时用户,通过userName是否为ip格式判断
+		if (checkCasualUser(adminInfo)) {
+			// 在登录时会默认创建一个token
+			StpUtil.login(adminInfo.getUserName());
+			SaSession session = StpUtil.getTokenSession();
+			session.set("admin",adminInfo);
+			return adminInfo;
+		}
+
 		String encodePass = encodePass(adminInfo.getPassWord());
 		AdminPO adminPO = adminMapper.selectOne(new QueryWrapper<AdminPO>()
 				.eq("user_name", adminInfo.getUserName())
@@ -40,11 +51,29 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminPO> implemen
 		if (Objects.isNull(adminPO)) {
 			throw new BizException(Constant.LOGIN_FAILED_CODE,Constant.LOGIN_FAILED_MESSAGE);
 		}
-		StpUtil.login(adminPO.getId());
-		return AdminInfo.builder()
+
+		AdminInfo admin = AdminInfo.builder()
 				.userName(adminPO.getUserName())
 				.email(adminPO.getEmail())
-				.id(adminPO.getId()).build();
+				.id(adminPO.getId())
+				.build();
+		StpUtil.login(admin.getId());
+		SaSession session = StpUtil.getTokenSession();
+		session.set("admin",admin);
+		return admin;
+	}
+
+	/**
+	 * 判断是否为临时用户
+	 * @param adminInfo
+	 * @return
+	 */
+	private boolean checkCasualUser(AdminInfo adminInfo) {
+		String ipRegex="((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})(\\.((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})){3}";
+		if (Pattern.matches(ipRegex,adminInfo.getUserName())) {
+			return true;
+		}
+		return false;
 	}
 
 	private String encodePass(String originPass) {

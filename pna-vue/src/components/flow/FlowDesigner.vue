@@ -16,8 +16,7 @@
 
       </RightSide>
     </a-layout>
-    <LoginModel/>
-    <RegisterModel/>
+
   </div>
 </template>
 
@@ -34,19 +33,13 @@ import html2canvas from "html2canvas";
 import canvg from "canvg";
 import {ZFSN} from "./util/ZFSN.js";
 import FlowArea from "./modules/content/FlowArea";
-import axios from "axios";
 import LeftSide from "./modules/leftSide/LeftSide";
 import CenterContent from "./modules/content/CenterContent";
 import RightSide from "./modules/rightSide/RightSide";
-import LoginModel from "./modules/admin/LoginModel";
-import RegisterModel from "./modules/admin/RegisterModel";
-
-axios.defaults.withCredentials = true;
+import {ip,login} from "./util/FetchData"
 export default {
   name: "vfd",
   components: {
-    RegisterModel,
-    LoginModel,
     RightSide,
     CenterContent,
     jsplumb,
@@ -323,11 +316,15 @@ export default {
     },
     initFlow() {
       const that = this;
-      axios.get('/api/ip').then(({data})=>{
-        if (data.success) {
-          that.$store.commit('login',{userName:data.data})
-        }
-      })
+      let index=document.cookie.indexOf("pna-token")
+      if (index==-1){
+        ip().then(({data}) => {
+          if (data.success) {
+            that.$store.commit('changeUserName', data.data)
+            login(that.$store.state.userInfo);
+          }
+        });
+      }
       if (that.flowData.status == flowConfig.flowStatus.CREATE) {
         that.flowData.attr.name = "flow-" + ZFSN.getId();
         that.flowData.attr.createTime = new Date().format("yyyy-MM-dd hh:mm:ss");
@@ -604,26 +601,27 @@ export default {
       }
     },
     generatePetriNet(netType) {
-      let that = this;
-      let placeCount = this.placeCount;
-      let tranCount = this.tranCount;
-      axios({
-        contentType: "application/json;charset=UTF-8",
-        method: "post",
-        url: flowConfig.serverConfig.generateUrl,
-        data: {
-          placeCount,
-          tranCount,
-          netType
-        }
-      }).then(function (response) {
-        let resData = response.data;
-        if (resData.success) {
-          that.loadFlow(resData.data);
-        } else {
-          that.$message.error("server has error:" + resData.errorMessage);
-        }
-      });
+      //todo 生成图重写
+      // let that = this;
+      // let placeCount = this.placeCount;
+      // let tranCount = this.tranCount;
+      // axios({
+      //   contentType: "application/json;charset=UTF-8",
+      //   method: "post",
+      //   url: flowConfig.serverConfig.generateUrl,
+      //   data: {
+      //     placeCount,
+      //     tranCount,
+      //     netType
+      //   }
+      // }).then(function (response) {
+      //   let resData = response.data;
+      //   if (resData.success) {
+      //     that.loadFlow(resData.data);
+      //   } else {
+      //     that.$message.error("server has error:" + resData.errorMessage);
+      //   }
+      // });
     },
   },
 };

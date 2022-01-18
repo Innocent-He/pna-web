@@ -14,5 +14,4 @@ import java.util.Map;
 public interface AlgorithmService {
 
 	String generatePetriNet(GenerateRequest request);
-	String algRequest(AlgReqDO algReqDO);
 }

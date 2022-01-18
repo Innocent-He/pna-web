@@ -28,8 +28,8 @@ public class SimphonAlg implements AlgActuator{
 			Set<Integer> preTran=new HashSet<>();
 			Set<Integer> postTran=new HashSet<>();
 			for (Integer placeId : subSet) {
-				postTran.addAll(PetriUtils.getPostTran(placeId));
-				preTran.addAll(PetriUtils.getPreTran(placeId));
+				postTran.addAll(PetriUtils.getPostTran(petriDO,placeId));
+				preTran.addAll(PetriUtils.getPreTran(petriDO,placeId));
 			}
 			if (postTran.containsAll(preTran)) {
 				simphons.add(subSet);

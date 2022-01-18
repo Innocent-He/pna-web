@@ -7,16 +7,17 @@ import 'ant-design-vue/dist/antd.css'
 import router from './router'
 import VueContextMenu from 'vue-contextmenu'
 import vcolorpicker from 'vcolorpicker'
-
+import axios from "axios";
 import store from "./store"
 import dayjs from "dayjs";
 import vuetify from "./plugins/vuetify";
-
+import VueCookies from 'vue-cookies'
 Vue.config.productionTip = false
 
 Vue.use(Antd)
 Vue.use(VueContextMenu)
 Vue.use(vcolorpicker)
+Vue.use(VueCookies)
 
 
 Vue.filter("date", function(value) {
@@ -40,6 +41,11 @@ Vue.filter("num", function(value) {
   }
   return value;
 });
+
+
+
+
+
 
 Date.prototype.format = function (fmt) {
   var o = {

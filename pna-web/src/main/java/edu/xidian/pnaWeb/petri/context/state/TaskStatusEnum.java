@@ -1,7 +1,10 @@
-package edu.xidian.pnaWeb.web.enums;
+package edu.xidian.pnaWeb.petri.context.state;
+
+import edu.xidian.pnaWeb.web.exception.BizException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @Author He
@@ -9,7 +12,11 @@ import java.util.Map;
  */
 
 public enum TaskStatusEnum {
-	WAITING(0,"等待中"),RUNNING(1,"执行中"),SUCCESS(2,"执行成功"),FAILED(3,"执行失败");
+	WAITING(0,"等待中")
+	,RUNNING(1,"执行中")
+	,SUCCESS(2,"执行成功")
+	,FAILED(3,"执行失败")
+	,CANCELED(4,"取消执行");
 	private String status;
 	private Integer code;
 	private static Map<Integer,String> map=new HashMap<>();
@@ -17,8 +24,7 @@ public enum TaskStatusEnum {
 		this.status=status;
 		this.code=code;
 	}
-
-	public String status(Integer code) {
+	public String status() {
 		return this.status;
 	}
 	public Integer code() {
@@ -28,11 +34,9 @@ public enum TaskStatusEnum {
 	public static String statusOfCode(Integer code) {
 		return map.get(code);
 	}
-
 	static {
 		for (TaskStatusEnum status : TaskStatusEnum.values()) {
 			map.put(status.code, status.status);
 		}
 	}
-
 }

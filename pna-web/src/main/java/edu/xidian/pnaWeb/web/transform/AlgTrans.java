@@ -15,6 +15,7 @@ public class AlgTrans {
 	public static AlgReqDO transToDO(AlgRequest algRequest) {
 		PetriDO petriDO = PetriTrans.transToDO(algRequest.getPetri());
 		return AlgReqDO.builder()
+				.email(algRequest.getEmail())
 				.algName(algRequest.getAlgName())
 				.params(algRequest.getParams())
 				.petriDO(petriDO)

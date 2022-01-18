@@ -1,6 +1,6 @@
 <template>
 
-  <a-modal :visible="registerFlag" @cancel="registerFlag=false" :footer="null">
+  <a-modal :visible="registerVisible" @cancel="registerVisible=false" :footer="null">
     <a-form
       id="components-form-demo-normal-login"
       :form="form"
@@ -42,14 +42,14 @@
 </template>
 
 <script>
-import axios from "axios";
-
+import {register} from "../../util/FetchData";
 export default {
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: 'normal_register' });
   },
   data() {
     return {
+      registerVisible:false,
       adminInfo: {
         username: "",
         email: "",
@@ -93,14 +93,6 @@ export default {
     };
   },
   computed: {
-    registerFlag: {
-      set(value) {
-        this.$store.state.registerFlag = value;
-      },
-      get() {
-        return this.$store.state.registerFlag;
-      }
-    },
     isMobile() {
       const clientWidth = document.documentElement.clientWidth;
       if (clientWidth > 960) {
@@ -115,15 +107,14 @@ export default {
       let that=this;
       this.form.validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
-          axios.post("/api/register",values).then(({ data }) => {
+          register(values).then(({ data }) => {
             if (data.success) {
               this.$message.success("注册成功！");
+              that.registerVisible=false;
             } else {
               this.$message.success("注册失败！失败原因:"+data.message);
             }
           });
-          that.$store.commit("closeModel");
         }
       });
     },

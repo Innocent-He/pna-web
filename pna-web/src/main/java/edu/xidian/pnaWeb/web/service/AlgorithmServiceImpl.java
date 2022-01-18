@@ -42,10 +42,4 @@ public class AlgorithmServiceImpl implements AlgorithmService {
 		}
 		return JSON.toJSONString(petriDTO);
 	}
-
-	@Override
-	public String algRequest(AlgReqDO algReqDO) {
-
-		return null;
-	}
 }

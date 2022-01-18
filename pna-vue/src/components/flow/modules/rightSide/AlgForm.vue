@@ -19,14 +19,12 @@
           />
         </a-form-model-item>
         <a-form-model-item>
-          <a-checkbox-group v-model="algReq.enableEmail">
-            <a-checkbox v-if="$store.state.userId" name="enableEmail">
-              邮箱通知结果
-            </a-checkbox>
-            <a-checkbox v-else disabled name="enableEmail" style="display: block;width: 100%">
-              邮箱通知结果,此功能需要登录账号
-            </a-checkbox>
-          </a-checkbox-group>
+          <a-checkbox v-if="$store.state.userInfo.email" v-model="enableEmail">
+            邮箱通知结果
+          </a-checkbox>
+          <a-checkbox v-else :disabled="true">
+            邮箱通知结果,此功能需要登录账号
+          </a-checkbox>
         </a-form-model-item>
         <a-button type="primary" @click="submit" class="alg-form-button">
           提交
@@ -37,19 +35,20 @@
 </template>
 
 <script>
-import axios from "axios";
+import {algRequest} from "../../util/FetchData";
 
 export default {
   name: "AlgForm",
-  props: ['flowData','activeAlg'],
+  props: ['flowData', 'activeAlg'],
   data() {
     return {
       algReq: {
         params: {
           step: null,
         },
-        algName:'',
-        petri: this.flowData
+        algName: '',
+        petri: this.flowData,
+        email: this.email,
       },
       algVisible: false,
       enableEmail: false,
@@ -59,8 +58,7 @@ export default {
     submit(e) {
       e.preventDefault();
       let that = this;
-      that.algReq.petri.attr.ownerName=that.$store.state.userName;
-      axios.post("/api/algReq",that.algReq).then(({data}) => {
+      algRequest(that.algReq).then(({data}) => {
         if (data.success) {
           that.$message.success(data.message);
           that.algVisible = false;
@@ -70,9 +68,23 @@ export default {
       })
     },
   },
-  watch:{
-    activeAlg(val){
-      this.algReq.algName=val;
+  computed: {
+    email() {
+      if (this.enableEmail) {
+        return this.$store.state.userInfo.email;
+      }
+      return '';
+    }
+  },
+  watch: {
+    activeAlg(val) {
+      this.algReq.algName = val;
+    },
+    email: {
+      handler(val) {
+        this.algReq.email = val;
+      },
+      deep: true,
     }
   }
 }

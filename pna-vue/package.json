@@ -47,6 +47,7 @@
     "vcolorpicker": "^0.1.8",
     "vue": "^2.6.11",
     "vue-contextmenu": "^1.5.9",
+    "vue-cookies": "^1.7.4",
     "vue-infinite-scroll": "^2.0.2",
     "vue-json-viewer": "^2.2.1",
     "vue-router": "^3.1.6",

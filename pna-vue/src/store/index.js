@@ -10,10 +10,12 @@ export default new Vuex.Store({
     loginFlag: false,
     registerFlag: false,
     forgetFlag: false,
-    userId: null,
-    avatar: null,
-    userName: null,
-    email: null,
+    userInfo:{
+      userId: null,
+      avatar: null,
+      userName: null,
+      email: null,
+    }
   },
   mutations: {
 
@@ -21,32 +23,37 @@ export default new Vuex.Store({
       state.currentSelect.token = token;
     },
 
+    changeUserName(state, userName) {
+      state.userInfo.userName=userName;
+    },
+
     login(state, user) {
-      state.userId = user.id;
-      state.userName = user.userName;
-      state.email = user.email;
+      state.userInfo.userId = user.id;
+      state.userInfo.userName = user.userName;
+      state.userInfo.email = user.email;
+      state.userInfo.avatar = user.avatar;
     },
 
     logout(state) {
-      state.userId = null;
-      state.avatar = null;
-      state.userName = null;
-      state.email = null;
+      state.userInfo.userId = null;
+      state.userInfo.avatar = null;
+      state.userInfo.userName = null;
+      state.userInfo.email = null;
     },
 
     saveLoginUrl(state, url) {
       state.loginUrl = url;
     },
     saveEmail(state, email) {
-      state.email = email;
+      state.userInfo.email = email;
     },
 
     updateUserInfo(state, user) {
-      state.userName = user.nickname;
+      state.userInfo.userName = user.nickname;
     },
 
     updateAvatar(state, avatar) {
-      state.avatar = avatar;
+      state.userInfo.avatar = avatar;
     },
 
     closeModel(state) {

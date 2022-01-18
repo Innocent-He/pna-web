@@ -1,11 +1,8 @@
 package edu.xidian.pnaWeb;
 
-import com.alibaba.fastjson.JSON;
-import com.google.common.collect.Maps;
 import edu.xidian.pnaWeb.petri.alg.AcNetAlg;
 import edu.xidian.pnaWeb.petri.alg.PetriNetAlg;
 import edu.xidian.pnaWeb.petri.alg.ReachableGraphAlg;
-import edu.xidian.pnaWeb.web.model.AlgRequest;
 import edu.xidian.pnaWeb.web.model.PetriDTO;
 import org.junit.Test;
 
@@ -13,7 +10,6 @@ import javax.annotation.Resource;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.concurrent.*;
 
 /**
@@ -81,9 +77,6 @@ public class ReachGraphTest {
 	}
 	@Test
 	public void test5() {
-		HashMap<Object, Object> map = Maps.newHashMap();
-		map.put("sad",1);
-		AlgRequest sdas = AlgRequest.builder().algName("sdas").params(map).emailEnable(true).build();
-		System.out.println(JSON.toJSONString(sdas));
+
 	}
 }

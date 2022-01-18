@@ -1,7 +1,7 @@
 <template>
 <div id="admin">
   <template
-    v-if="!this.$store.state.userId"
+    v-if="!this.$store.state.userInfo.userId"
   >
     <a-button
       @click="openLogin"
@@ -26,31 +26,37 @@
     </a-avatar>
     <a-button
     @click="logout" id="logout" size="small">退出登录</a-button>
-    <TaskList></TaskList>
+    <TaskList :userName="$store.state.userInfo.userName"></TaskList>
   </template>
+  <LoginModel ref="login"/>
+  <RegisterModel ref="register"/>
 </div>
 </template>
 
 <script>
-import axios from "axios";
 import TaskList from "./TaskList";
+import LoginModel from "../admin/LoginModel";
+import RegisterModel from "../admin/RegisterModel";
+import {logout} from "../../util/FetchData"
 export default {
   name: "Admin",
   components:{
     TaskList,
+    LoginModel,
+    RegisterModel
   },
   methods:{
     openLogin() {
-      this.$store.state.loginFlag = true;
+      this.$refs.login.loginVisible=true;
     },
     logout() {
-      //todo 记得做退出登录逻辑
-      axios.get("http://127.0.0.1:9001/logout/"+this.$store.state.userId).then(({ data }) => {
+      logout().then(({ data }) => {
         if (data.success) {
           this.$message.success("注销成功");
           this.$store.commit("logout");
+          this.$cookies.remove("pna-token",'/')
         } else {
-          this.$toast({ type: "error", message: data.message });
+          this.$message.error( "注销失败，原因:"+data.message);
         }
       });
     }

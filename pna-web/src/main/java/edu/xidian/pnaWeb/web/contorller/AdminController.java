@@ -35,9 +35,9 @@ public class AdminController {
 	/**
 	 * 退出
 	 */
-	@GetMapping("/logout/{userId}")
-	public Response logout(@PathVariable("userId") Long userId) {
-		StpUtil.logout(userId);
+	@GetMapping("/logout")
+	public Response logout() {
+		StpUtil.logoutByTokenValue(StpUtil.getTokenValue());
 		return Response.success();
 	}
 }

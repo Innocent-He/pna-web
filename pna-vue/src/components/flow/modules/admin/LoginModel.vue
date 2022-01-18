@@ -1,6 +1,6 @@
 <template>
 
-  <a-modal :visible="loginFlag" @cancel="loginFlag=false" :footer="null">
+  <a-modal :visible="loginVisible" @cancel="loginVisible=false" :footer="null">
     <a-form-model
       ref="loginForm"
       id="components-form-demo-normal-login"
@@ -51,15 +51,21 @@
         </a-button>
       </a-form-model-item>
     </a-form-model>
+    <RegisterModel ref="register"/>
   </a-modal>
 </template>
 
 <script>
-import axios from "axios";
+import {login} from "../../util/FetchData"
+import RegisterModel from "../admin/RegisterModel";
 
 export default {
+  components:{
+    RegisterModel
+  },
   data() {
     return {
+      loginVisible:false,
       form: {
         userName: '',
         passWord: '',
@@ -73,14 +79,6 @@ export default {
     };
   },
   computed: {
-    loginFlag: {
-      set(value) {
-        this.$store.state.loginFlag = value;
-      },
-      get() {
-        return this.$store.state.loginFlag;
-      }
-    },
     isMobile() {
       const clientWidth = document.documentElement.clientWidth;
       if (clientWidth > 960) {
@@ -95,10 +93,10 @@ export default {
       let that=this;
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          axios.post("/api/login",this.form ).then(({data}) => {
+          login(this.form).then(({data}) => {
             if (data.success) {
               this.$message.success("登录成功！");
-              that.$store.commit("closeModel");
+              that.loginVisible=false;
               that.$store.commit("login", data.data)
             } else {
               this.$message.success("登录失败！失败原因:" + data.message);
@@ -111,8 +109,7 @@ export default {
       });
     },
     openRegister() {
-      this.$store.state.loginFlag = false;
-      this.$store.state.registerFlag = true;
+      this.$refs.register.registerVisible=true;
     },
     openForget() {
       this.$store.state.loginFlag = false;

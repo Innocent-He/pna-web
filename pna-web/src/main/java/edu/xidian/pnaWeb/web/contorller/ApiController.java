@@ -46,7 +46,7 @@ public class ApiController {
 	@GetMapping("/tasks/{ownerId}")
 	public Response taskList(@PathVariable(value = "ownerId") String ownerId) {
 		List<TaskDTO> taskDTOS=null;
-		if (StringUtils.isBlank(ownerId)) {
+		if (StringUtils.equals(ownerId,"all")) {
 			taskDTOS = taskService
 					.list()
 					.stream()

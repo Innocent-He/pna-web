@@ -51,9 +51,6 @@ export default {
     };
   },
   methods: {
-    logStr(date) {
-      console.log(date)
-    },
     activeAlgModel(alg) {
       this.activeAlg = alg;
       this.$refs.algform.algVisible = true;

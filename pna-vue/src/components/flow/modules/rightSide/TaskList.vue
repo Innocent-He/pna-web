@@ -31,7 +31,7 @@
             </v-card-text>
             <v-card-text slot="title">{{ ownerName }}</v-card-text>
           </a-list-item-meta>
-          <a-button v-if="isOwner&&status==0" type="link" @click="cancelTask(id)">Cancel</a-button>
+          <a-button v-if="$store.state.userInfo.userName==ownerName&&status==0" type="link" @click="cancelTask(id)">Cancel</a-button>
         </a-list-item>
       <a-spin v-if="loading" class="demo-loading"/>
     </a-list>
@@ -43,7 +43,7 @@
 import infiniteScroll from 'vue-infinite-scroll';
 import {RecycleScroller} from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
-import axios from "axios";
+import {taskList,cancelTask} from "../../util/FetchData";
 
 export default {
   name: "TaskList",
@@ -51,10 +51,15 @@ export default {
   components: {
     RecycleScroller,
   },
+  props:{
+    userName:{
+      type:String,
+      default:'all',
+    }
+  },
   data() {
     return {
       data: [],
-      isOwner: true,
       loading: false,
       busy: false,
     }
@@ -64,39 +69,35 @@ export default {
       this.handleInfiniteOnLoad()
     },
     cancelTask(id){
-      //todo 取消任务执行
-      axios.get('/api/cancel/'+id).then(({data})=>{
+      cancelTask(id).then(({data})=>{
         if (data.success) {
-          this.$message.success('取消任务成功')
+          this.$message.success('取消成功')
         }else{
           this.$message.error('取消失败，请检查任务状态');
         }
       })
     },
     fetchData(callback) {
-      axios.get('/api/tasks/'+this.$store.state.userName).then(({data})=>{
+      taskList(this.userName).then(({data})=>{
         if (data.success) {
+          this.$message.success("刷新成功")
           callback(data);
         }else{
-          this.$message.error('获取列表失败');
+          this.$message.error('刷新失败');
         }
       })
     },
     handleInfiniteOnLoad() {
       const data = this.data;
       this.loading = true;
-      if (data.length > 0) {
-        this.$message.success('获取任务列表成功');
-        this.busy = true;
-        this.loading = false;
-        this.loading = false
-        return;
-      }
       this.fetchData(res => {
         this.data = data.concat(res.data).map((item, index) => ({ ...item, index }));
         this.loading = false;
       });
     },
+  },
+  computed:{
+
   }
 }
 </script>

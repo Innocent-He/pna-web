@@ -16,5 +16,5 @@ public class AlgRequest {
 	private Map params;
 	private String algName;
 	private PetriDTO petri;
-	private Boolean emailEnable;
+	private String email;
 }
