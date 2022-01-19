@@ -6,9 +6,8 @@
     :infinite-scroll-distance="10"
     style="padding: 0 10px; height:450px;align-self: stretch;flex-grow: 1"
   >
-    <a-button @click="refresh" type="primary">刷新列表</a-button>
-    <a-list :data-source="data" :locale="{emptyText:'当前没有执行中的任务'}">
-        <a-list-item slot="renderItem"  slot-scope="{ id,algName,status,ownerName,createTime }" >
+    <a-list :data-source="tasks" :locale="{emptyText:'当前没有执行中的任务'}">
+        <a-list-item slot="renderItem"  slot-scope="{ id,result,algName,status,ownerName,createTime }" >
           <a-list-item-meta :description="createTime|datetime">
             <v-card-text slot="title">{{ algName }}
               <template v-if="status==2">
@@ -27,11 +26,13 @@
                 <a-icon type="info-circle" theme="twoTone" two-tone-color="red"/>
                 运行失败
               </template>
-
             </v-card-text>
             <v-card-text slot="title">{{ ownerName }}</v-card-text>
           </a-list-item-meta>
-          <a-button v-if="$store.state.userInfo.userName==ownerName&&status==0" type="link" @click="cancelTask(id)">Cancel</a-button>
+          <a-button v-if="isOwner(ownerName)&&status===0" type="link" @click="cancelTask(id)">Cancel</a-button>
+          <a-button v-else-if="isOwner(ownerName)&&status===2&&algName==='generate'" type="link" @click="generateNet(result)">Generate</a-button>
+          <a-button v-else-if="isOwner(ownerName)&&status===2" type="link" @click="download(result)">Download</a-button>
+          <a-button v-if="isOwner(ownerName)&&(status===2||status===3)" type="link" @click="deleteTask(id)">Delete</a-button>
         </a-list-item>
       <a-spin v-if="loading" class="demo-loading"/>
     </a-list>
@@ -43,7 +44,7 @@
 import infiniteScroll from 'vue-infinite-scroll';
 import {RecycleScroller} from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
-import {taskList,cancelTask} from "../../util/FetchData";
+import {taskList,cancelTask,deleteTask} from "../../util/FetchData";
 
 export default {
   name: "TaskList",
@@ -51,23 +52,31 @@ export default {
   components: {
     RecycleScroller,
   },
-  props:{
-    userName:{
-      type:String,
-      default:'all',
-    }
+  props:['userName'],
+  mounted() {
+    let that=this;
+    that.$bus.$on('clearTask',()=>{
+      that.tasks.splice(0);
+      that.taskReq.pageNo=1;
+      that.handleInfiniteOnLoad();
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off('clearTask');
   },
   data() {
     return {
-      data: [],
+      tasks: [],
       loading: false,
       busy: false,
+      taskReq:{
+        pageNo:1,
+        pageSize:10,
+        ownerName:this.userName,
+      }
     }
   },
   methods: {
-    refresh() {
-      this.handleInfiniteOnLoad()
-    },
     cancelTask(id){
       cancelTask(id).then(({data})=>{
         if (data.success) {
@@ -77,24 +86,62 @@ export default {
         }
       })
     },
-    fetchData(callback) {
-      taskList(this.userName).then(({data})=>{
+
+    handleInfiniteOnLoad() {
+      let that=this;
+      const originData = this.tasks;
+      this.loading = true;
+      taskList(that.taskReq).then(({data})=>{
         if (data.success) {
-          this.$message.success("刷新成功")
-          callback(data);
+          if (data.data.totalCount <= originData.length) {
+            that.$message.warning('已加载全部数据');
+            that.busy=true;
+            that.loading=false;
+            return;
+          }
+          this.$message.success("刷新成功");
+          this.tasks = originData.concat(data.data.content).map((item, index) => ({ ...item, index }));
+          that.loading=false;
+          that.taskReq.pageNo++;
         }else{
           this.$message.error('刷新失败');
         }
       })
     },
-    handleInfiniteOnLoad() {
-      const data = this.data;
-      this.loading = true;
-      this.fetchData(res => {
-        this.data = data.concat(res.data).map((item, index) => ({ ...item, index }));
-        this.loading = false;
-      });
+    generateNet(result) {
+      this.$bus.$emit("loadFlow",result);
     },
+    isOwner(algName){
+      return algName===this.$store.state.userInfo.userName;
+    },
+    deleteTask(taskId) {
+      deleteTask(taskId).then(({data})=>{
+          if (data.success) {
+            this.$message.success("清除成功");
+            this.$bus.$emit('clearTask');
+            this.handleInfiniteOnLoad()
+            return;
+          }
+        this.$message.error("清除失败");
+      })
+    },
+    download(result) {
+      const data = `\uFEFF${result}`;
+      const blob = new Blob([data], {type: "text,charset=UTF-8"});
+      const downloadElement = document.createElement("a");
+      // 创建下载链接
+      const href = window.URL.createObjectURL(blob);
+      downloadElement.href = href;
+      // 下载文件名
+      downloadElement.download = `result.txt`;
+      document.body.appendChild(downloadElement);
+      downloadElement.click();
+      // 移除元素
+      document.body.removeChild(downloadElement);
+      // 释放blob对象
+      window.URL.revokeObjectURL(href);
+      this.$message.success("下载结果成功");
+    }
   },
   computed:{
 

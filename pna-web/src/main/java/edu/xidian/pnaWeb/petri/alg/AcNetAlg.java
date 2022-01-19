@@ -1,9 +1,11 @@
 package edu.xidian.pnaWeb.petri.alg;
 
+import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.petri.module.PlaceNode;
 import edu.xidian.pnaWeb.petri.module.TranNode;
 import edu.xidian.pnaWeb.web.model.NodeDTO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -102,6 +104,16 @@ public class AcNetAlg extends PetriNetAlg {
 		selectedPlace.addPreTran(tranNode);
 		return true;
 	}
+
+	@Override
+	public boolean apply(AlgReqDO algReqDO) {
+		String netType = (String) algReqDO.getParams().get("netType");
+		if (StringUtils.equals(netType, "ac")) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public void nodeConnect(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
 		NodeDTO initialNode = placeNodes.get(0), curNode = initialNode;

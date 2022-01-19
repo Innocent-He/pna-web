@@ -1,5 +1,5 @@
 import { flowConfig } from "../config/args-config.js";
-export let ZFSN = {
+export let Utils = {
   seqNo: 1,
   consoleLog: function(strArr) {
     let log = "";
@@ -26,13 +26,7 @@ export let ZFSN = {
       }
     }
   },
-  loginGetUUID() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
-      return (c === "x" ? (Math.random() * 16) | 0 : "r&0x3" | "0x8").toString(
-        16
-      );
-    });
-  },
+
   getUUID: function() {
     let s = [];
     let hexDigits = "0123456789abcdef";

@@ -56,7 +56,7 @@ public class TaskCenter implements InitializingBean {
 	}
 
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		taskThread = new Thread(() -> {
 			while (true) {
 				if (taskDeque.isEmpty()) {
@@ -71,6 +71,7 @@ public class TaskCenter implements InitializingBean {
 				beforeExecute(algReqDO);
 				try {
 					String result = algContext.executeAlg(algReqDO);
+					log.info(result);
 					afterRunning(algReqDO,result);
 					afterComplete(algReqDO);
 				} catch (Exception e) {

@@ -44,6 +44,9 @@ export default {
     return {
       algReq: {
         params: {
+          netType:'',
+          tranCount:0,
+          placeCount:0,
           step: null,
         },
         algName: '',
@@ -60,7 +63,7 @@ export default {
       let that = this;
       algRequest(that.algReq).then(({data}) => {
         if (data.success) {
-          that.$message.success(data.message);
+          that.$message.success("提交成功");
           that.algVisible = false;
         } else {
           this.$message.error(data.message);

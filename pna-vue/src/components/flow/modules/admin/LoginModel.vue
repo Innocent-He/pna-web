@@ -97,13 +97,13 @@ export default {
             if (data.success) {
               this.$message.success("登录成功！");
               that.loginVisible=false;
-              that.$store.commit("login", data.data)
+              that.$store.commit("login", data.data);
+              that.$bus.$emit('clearTask')
             } else {
               this.$message.success("登录失败！失败原因:" + data.message);
             }
           });
         } else {
-          console.log('error submit!!');
           return false;
         }
       });

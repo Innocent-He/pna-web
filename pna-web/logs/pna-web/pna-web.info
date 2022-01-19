@@ -1,0 +1,24 @@
+2022-01-19 19:52:06,332 INFO [main] e.x.p.PnaWebApplicationTests [StartupInfoLogger.java:50] Starting PnaWebApplicationTests on DESKTOP-RD5KGV1 with PID 3632 (started by H in E:\codes\project\pna\pna-web)
+2022-01-19 19:52:06,333 INFO [main] e.x.p.PnaWebApplicationTests [SpringApplication.java:648] No active profile set, falling back to default profiles: default
+2022-01-19 19:52:07,200 INFO [main] o.s.d.r.c.RepositoryConfigurationDelegate [RepositoryConfigurationDelegate.java:247] Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-19 19:52:07,204 INFO [main] o.s.d.r.c.RepositoryConfigurationDelegate [RepositoryConfigurationDelegate.java:127] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-19 19:52:07,266 INFO [main] o.s.d.r.c.RepositoryConfigurationDelegate [RepositoryConfigurationDelegate.java:185] Finished Spring Data repository scanning in 41ms. Found 0 Redis repository interfaces.
+2022-01-19 19:52:10,472 INFO [main] o.s.s.c.ThreadPoolTaskExecutor [ExecutorConfigurationSupport.java:171] Initializing ExecutorService 'applicationTaskExecutor'
+2022-01-19 19:52:11,284 INFO [main] e.x.p.PnaWebApplicationTests [StartupInfoLogger.java:59] Started PnaWebApplicationTests in 5.547 seconds (JVM running for 6.515)
+2022-01-19 19:52:11,635 INFO [main] c.z.h.HikariDataSource [HikariDataSource.java:110] MyHikariCP - Starting...
+2022-01-19 19:52:13,589 INFO [main] c.z.h.HikariDataSource [HikariDataSource.java:123] MyHikariCP - Start completed.
+2022-01-19 19:52:13,706 INFO [Thread-2] o.s.s.c.ThreadPoolTaskExecutor [ExecutorConfigurationSupport.java:208] Shutting down ExecutorService 'applicationTaskExecutor'
+2022-01-19 19:52:13,707 INFO [Thread-2] c.z.h.HikariDataSource [HikariDataSource.java:350] MyHikariCP - Shutdown initiated...
+2022-01-19 19:52:13,938 INFO [Thread-2] c.z.h.HikariDataSource [HikariDataSource.java:352] MyHikariCP - Shutdown completed.
+2022-01-19 19:52:42,921 INFO [main] e.x.p.PnaWebApplicationTests [StartupInfoLogger.java:50] Starting PnaWebApplicationTests on DESKTOP-RD5KGV1 with PID 2900 (started by H in E:\codes\project\pna\pna-web)
+2022-01-19 19:52:42,923 INFO [main] e.x.p.PnaWebApplicationTests [SpringApplication.java:648] No active profile set, falling back to default profiles: default
+2022-01-19 19:52:43,657 INFO [main] o.s.d.r.c.RepositoryConfigurationDelegate [RepositoryConfigurationDelegate.java:247] Multiple Spring Data modules found, entering strict repository configuration mode!
+2022-01-19 19:52:43,660 INFO [main] o.s.d.r.c.RepositoryConfigurationDelegate [RepositoryConfigurationDelegate.java:127] Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2022-01-19 19:52:43,706 INFO [main] o.s.d.r.c.RepositoryConfigurationDelegate [RepositoryConfigurationDelegate.java:185] Finished Spring Data repository scanning in 30ms. Found 0 Redis repository interfaces.
+2022-01-19 19:52:46,619 INFO [main] o.s.s.c.ThreadPoolTaskExecutor [ExecutorConfigurationSupport.java:171] Initializing ExecutorService 'applicationTaskExecutor'
+2022-01-19 19:52:47,411 INFO [main] e.x.p.PnaWebApplicationTests [StartupInfoLogger.java:59] Started PnaWebApplicationTests in 4.844 seconds (JVM running for 5.57)
+2022-01-19 19:52:47,682 INFO [main] c.z.h.HikariDataSource [HikariDataSource.java:110] MyHikariCP - Starting...
+2022-01-19 19:52:49,664 INFO [main] c.z.h.HikariDataSource [HikariDataSource.java:123] MyHikariCP - Start completed.
+2022-01-19 19:52:49,905 INFO [Thread-2] o.s.s.c.ThreadPoolTaskExecutor [ExecutorConfigurationSupport.java:208] Shutting down ExecutorService 'applicationTaskExecutor'
+2022-01-19 19:52:49,907 INFO [Thread-2] c.z.h.HikariDataSource [HikariDataSource.java:350] MyHikariCP - Shutdown initiated...
+2022-01-19 19:52:50,071 INFO [Thread-2] c.z.h.HikariDataSource [HikariDataSource.java:352] MyHikariCP - Shutdown completed.

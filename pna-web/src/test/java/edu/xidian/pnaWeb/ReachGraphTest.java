@@ -26,34 +26,11 @@ public class ReachGraphTest {
 	@Test
 	public void test1() {
 		PetriNetAlg petriNetAlg = new AcNetAlg();
-		PetriDTO petriDTO = petriNetAlg.generateNet(10, 13);
-		System.out.println(petriDTO);
 	}
 	@Test
 	public void test2() {
 
 		int nThreads = Runtime.getRuntime().availableProcessors();
-
-		ThreadPoolExecutor threadPoolExecutor = new ThreadPoolExecutor(nThreads, nThreads, 10, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>(1024));
-		Future<Object> future = threadPoolExecutor.submit(() -> {
-			try {
-				Thread.sleep(9000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			return new Object();
-		});
-		Object result=null;
-		try {
-			result = future.get(5, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-		} catch (TimeoutException e) {
-			e.printStackTrace();
-		}
-		System.out.println(result);
 	}
 	@Test
 	public void validJudge() {

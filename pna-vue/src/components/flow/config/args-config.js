@@ -12,8 +12,8 @@ export let flowConfig = {
 			[
 				'Arrow',
 				{
-					width: 10, 
-					length: 10, 
+					width: 10,
+					length: 10,
 					location: 1
 				}
 			]
@@ -263,8 +263,6 @@ export let flowConfig = {
 		}
 	},
 	serverConfig:{
-		// algUrl:"http://82.157.55.18:9000/getResult",
-		algUrl:"http://localhost:9000/getResult",
 		generateUrl:"http://localhost:9000/generateNet",
 	}
 };

@@ -24,6 +24,7 @@ public class AlgTrans {
 
 	public static TaskDTO transToDTO(TaskPO taskPO) {
 		return TaskDTO.builder()
+				.algName(taskPO.getAlgName())
 				.id(taskPO.getId())
 				.status(taskPO.getStatus())
 				.ownerName(taskPO.getOwnerName())

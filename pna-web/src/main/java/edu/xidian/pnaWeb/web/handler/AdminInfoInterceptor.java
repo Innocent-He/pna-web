@@ -12,9 +12,9 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.nio.charset.StandardCharsets;
 
 /**
  * @Description 用户信息存储在ThreadLocal
@@ -29,9 +29,11 @@ public class AdminInfoInterceptor implements HandlerInterceptor {
 		try {
 			if (!StpUtil.isLogin()) {
 				ServletOutputStream outputStream = httpServletResponse.getOutputStream();
-				Response response = Response.error("304", "用户未登录");
+				httpServletResponse.setStatus(401);
+				Response response = Response.error("401", "用户信息已过期");
 				outputStream.write(JSON.toJSONBytes(response));
 				outputStream.flush();
+				outputStream.close();
 				return false;
 			}
 			String token = StpUtil.getTokenValue();
@@ -50,12 +52,27 @@ public class AdminInfoInterceptor implements HandlerInterceptor {
 		return false;
 	}
 
+	private void extendTimeout(HttpServletRequest httpServletRequest) {
+		long tokenTimeout = StpUtil.getTokenTimeout();
+		// saToken续签token时未延长cookie过期时间，因此在这里需要对cookie过期时间操作
+		if (tokenTimeout < 60 * 60 * 24) {
+			StpUtil.updateLastActivityToNow();
+			Cookie[] cookies = httpServletRequest.getCookies();
+			for (Cookie cookie : cookies) {
+				if (StringUtils.equals(cookie.getName(), "pna-token")) {
+					cookie.setMaxAge(60*60*24*30);
+				}
+			}
+		}
+	}
+
 	@Override
 	public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
 	}
 
 	@Override
 	public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+		extendTimeout(httpServletRequest);
 		// 防止内存泄漏
 		AdminContext.USER_INFO.remove();
 	}

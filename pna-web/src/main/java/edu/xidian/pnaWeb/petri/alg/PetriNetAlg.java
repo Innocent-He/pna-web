@@ -1,11 +1,14 @@
 package edu.xidian.pnaWeb.petri.alg;
 
+import com.alibaba.fastjson.JSON;
+import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.petri.module.PlaceNode;
 import edu.xidian.pnaWeb.petri.module.TranNode;
 import edu.xidian.pnaWeb.web.model.AttrDTO;
 import edu.xidian.pnaWeb.web.model.LinkDTO;
 import edu.xidian.pnaWeb.web.model.NodeDTO;
 import edu.xidian.pnaWeb.web.model.PetriDTO;
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -15,20 +18,26 @@ import java.util.*;
  * @Author He
  * @Date 2021/11/16 14:54
  */
-public abstract class PetriNetAlg {
+public abstract class PetriNetAlg implements AlgActuator{
 	public static final Random RANDOM = new Random();
 
-	public PetriDTO generateNet(Integer placeCount, Integer tranCount) {
+	public String execute(AlgReqDO algReqDO) {
+		Map params = algReqDO.getParams();
+		Integer placeCount = (Integer) params.get("placeCount");
+		Integer tranCount = (Integer) params.get("tranCount");
+		return generateNet(placeCount,tranCount);
+	}
+
+	public String generateNet(Integer placeCount, Integer tranCount) {
 		List<PlaceNode> placeNodes = new ArrayList<>();
 		List<TranNode> tranNodes = new ArrayList<>();
 
 		nodePlacement(placeCount, tranCount, placeNodes, tranNodes);
-
 		do {
 			nodeConnect(placeNodes, tranNodes);
 		} while (!this.algPostProcess(placeNodes, tranNodes));
 
-		return buildPetriData(placeNodes, tranNodes);
+		return JSON.toJSONString(buildPetriData(placeNodes, tranNodes));
 	}
 
 	private PetriDTO buildPetriData(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
@@ -67,7 +76,7 @@ public abstract class PetriNetAlg {
 
 	private void paddingAttr(PetriDTO petriDTO, Integer placeCount, Integer tranCount) {
 		String nowDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		AttrDTO attrDTO = new AttrDTO(UUID.randomUUID().timestamp(),"random","custom", nowDate, "ac网", placeCount + 1, tranCount + 1);
+		AttrDTO attrDTO = new AttrDTO(new Date().getTime(),"random","custom", nowDate, "ac网", placeCount + 1, tranCount + 1);
 		petriDTO.setAttr(attrDTO);
 	}
 
@@ -95,5 +104,6 @@ public abstract class PetriNetAlg {
 
 	protected abstract boolean algPostProcess(List<PlaceNode> placeNodes, List<TranNode> tranNodes);
 
+	public abstract boolean apply(AlgReqDO algReqDO) ;
 
 }

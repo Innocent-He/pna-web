@@ -17,23 +17,49 @@
       Test
     </a-button>
     <AlgForm ref="algform" :flowData="flowData" :activeAlg="activeAlg">
-      <template slot="alg" slot-scope="props" v-if="activeAlg=='reach'">
-        <a-form-model-item label="限制发射步数:">
-          <a-input
-            v-model.number="props.data.params.step"
-            placeholder="Please enter number of transmit steps"
-          />
-        </a-form-model-item>
-      </template>
-      <template v-else-if="activeAlg=='simphon'">
+      <template slot="alg" slot-scope="props">
+        <template v-if="activeAlg=='reach'">
+          <a-form-model-item label="限制发射步数:">
+            <a-input
+              v-model.number="props.data.params.step"
+              placeholder="Please enter number of transmit steps"
+            />
+          </a-form-model-item>
 
-      </template>
-      <template v-else-if="activeAlg=='ew'">
+        </template>
 
-      </template>
-      <template v-else-if="activeAlg=='test'">
+        <template v-else-if="activeAlg=='simphon'">
 
+        </template>
+
+        <template v-else-if="activeAlg=='ew'">
+
+        </template>
+
+        <template v-else-if="activeAlg=='generate'">
+          <a-form-model-item label="库所数目:">
+            <a-input
+              v-model.number="props.data.params.placeCount"
+            />
+          </a-form-model-item>
+          <a-form-model-item label="变迁数目:">
+            <a-input
+              v-model.number="props.data.params.tranCount"
+            />
+          </a-form-model-item>
+          <a-form-model-item label="网类型:">
+            <a-radio-group v-model="props.data.params.netType">
+              <a-radio value="ac">Ac</a-radio>
+              <a-radio value="fc">Fc</a-radio>
+            </a-radio-group>
+          </a-form-model-item>
+        </template>
+        <template v-else>
+
+        </template>
       </template>
+
+
     </AlgForm>
   </div>
 </template>
@@ -45,6 +71,12 @@ export default {
     AlgForm,
   },
   props: ["flowData"],
+  mounted() {
+    let that = this;
+    that.$bus.$on('generateNet', () => {
+      that.activeAlgModel('generate');
+    })
+  },
   data() {
     return {
       activeAlg: '',

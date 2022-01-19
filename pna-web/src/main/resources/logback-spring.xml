@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="false">
+    <contextName>PNA-WEB</contextName>  <!-- 项目名 -->
+
+    <springProperty scope="context" name="logging.path"  source="logging.path"/>
+    <springProperty scope="context" name="project.name" source="spring.application.name"/>
+
+
+
+    <property name="LOG_PATH" value="${logging.path}"/>    <!-- 日志存放目录 -->
+    <property name="APP_NAME" value="${project.name}"/> <!-- 项目目录，日志存放目录可能存放多个项目 -->
+<!--    <springProfile name="dev"></springProfile>-->
+    <!-- error file 配置error级别相关的日志 -->
+    <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}${APP_NAME}/${APP_NAME}.error</file>    <!-- error日志目录路径+日志文件名 -->
+        <!-- 文件存放策略，如果一个文件存放不下，怎么创建新的文件 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--日志文件的命名方式：%d：日期，日期格式；%i是变量，1、2、3等-->
+            <fileNamePattern>log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>  <!-- 单个日志文件大小上限，大小到5MB后创建新日志文件存储 -->
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory> <!-- 日志文件最多存储多久，单位：天 -->
+        </rollingPolicy>
+        <append>true</append>   <!-- 以追加的方式存储，而不是覆盖 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <!-- 日志记录格式：日期 级别 哪个线程 哪个类 哪个文件 哪一行 具体日期信息 换行 -->
+            <pattern>%d %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+            <charset>utf-8</charset>	<!-- 编码方式 -->
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">  <!-- 过滤器 -->
+            <level>error</level>    <!-- 筛选error级别的日志 -->
+            <onMatch>ACCEPT</onMatch>   <!-- 是这个级别的就记录 -->
+            <onMismatch>DENY</onMismatch>   <!-- 不是这个级别的拒绝记录 -->
+        </filter>
+    </appender>
+
+    <!-- 各个级别的配置方式大同小异，注释参考error -->
+    <!-- warn file -->
+    <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}${APP_NAME}/${APP_NAME}.warn</file>    <!-- error日志目录路径+日志文件名 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>log-warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <append>true</append>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>warn</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!-- info file -->
+    <appender name="CONSOLE_INFO" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 日志输出格式：日期 日志级别 线程 类 [文件名:哪行] -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight(%-5level) %magenta([%-15.15(%thread)])  %cyan( %-50.50(%logger{50} )) : %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- 过滤器 -->
+            <level>debug</level>    <!-- 允许打印debug以上级别的日志 -->
+        </filter>
+    </appender>
+
+    <!-- console 控制台：日志打印到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 日志输出格式：日期 日志级别 线程 类 [文件名:哪行] -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight(%-5level) %magenta([%-15.15(%thread)])  %cyan( %-50.50(%logger{50} )) : %msg%n</pattern>
+            <charset>utf-8</charset>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- 过滤器 -->
+            <level>debug</level>    <!-- 允许打印debug以上级别的日志 -->
+        </filter>
+    </appender>
+
+<!--    <logger name="edu.xidian.pnaWeb.petri" level="debug"/>   &lt;!&ndash; 单独声明哪个包下的日志是什么级别 &ndash;&gt;-->
+
+    <root level="info"> <!-- 所有项目根目录的级别是info-->
+        <!-- 最后，启用这些日志配置 -->
+        <appender-ref ref="FILE_ERROR"/>
+        <appender-ref ref="FILE_WARN"/>
+        <appender-ref ref="CONSOLE_INFO"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+</configuration>

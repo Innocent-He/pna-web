@@ -1,5 +1,4 @@
 import * as api from '../config/axiosConfig'
-import axios from "axios";
 
 export function login(params) {
   return api.post('/api/login', params)
@@ -18,8 +17,12 @@ export function register(params) {
   return api.post('/api/register',params);
 }
 
-export function taskList(userName){
-  return api.get('/api/tasks/'+userName)
+export function taskList(taskReq){
+  return api.post('/api/tasks',taskReq)
+}
+
+export function  deleteTask(taskId){
+  return api.get('/api/delete/task/'+taskId);
 }
 
 export function cancelTask(taskId){
@@ -29,3 +32,8 @@ export function cancelTask(taskId){
 export function algRequest(algReq) {
   return api.post("/api/algReq", algReq)
 }
+export function generateNet(params){
+  return api.post('/api/generateNet',params)
+}
+
+

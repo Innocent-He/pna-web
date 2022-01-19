@@ -1,30 +1,9 @@
 <template>
   <a-layout-header class="header-option">
-    <a-modal title="Generate petri net" v-model="netVisible" @cancel="netVisible=false">
-      <a-input
-        v-model.number="placeCount"
-        placeholder="Please enter number of place count"
-      />
-      <br/>
-      <br/>
-      <a-input
-        v-model.number="tranCount"
-        placeholder="Please enter number of tran count"
-      />
-
-      <template slot="footer">
-        <a-button key="acNet" type="primary" @click="$bus.$emit('generatePetriNet','ac')">
-          AcNet
-        </a-button>
-        <a-button key="fcNet" type="primary" @click="$bus.$emit('generatePetriNet','fc')">
-          FcNet
-        </a-button>
-      </template>
-    </a-modal>
 
     <a-tooltip title="generate" placement="bottom">
       <a-button
-        @click="netVisible = true"
+        @click="generatePetriNet"
         class="header-option-button"
         size="small"
         icon="gateway"
@@ -67,21 +46,29 @@
 </template>
 
 <script>
+import {generateNet} from '../../util/FetchData'
 export default {
   name: "OptionHeader.vue",
-  data(){
-    return{
-      netVisible:false,
-      placeCount: null,
-      tranCount: null,
+  data() {
+    return {
+      params: {
+        placeCount: 0,
+        tranCount: 0,
+        netType:'',
+      },
+      netVisible: false,
     }
   },
-  methods:{
+  methods: {
     closeNet() {
       this.netVisible = false;
     },
-    loadPetri(file){
-      this.$bus.$emit('loadPetri',file);
+    loadPetri(file) {
+      this.$bus.$emit('loadPetri', file);
+    },
+    generatePetriNet() {
+      let that = this;
+      that.$bus.$emit('generateNet');
     },
   },
 }

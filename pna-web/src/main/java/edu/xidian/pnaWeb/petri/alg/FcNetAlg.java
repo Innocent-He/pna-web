@@ -1,8 +1,10 @@
 package edu.xidian.pnaWeb.petri.alg;
 
+import edu.xidian.pnaWeb.petri.module.AlgReqDO;
 import edu.xidian.pnaWeb.petri.module.PlaceNode;
 import edu.xidian.pnaWeb.petri.module.TranNode;
 import edu.xidian.pnaWeb.web.model.NodeDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -15,6 +17,15 @@ import java.util.List;
  */
 @Service
 public class FcNetAlg extends PetriNetAlg {
+	@Override
+	public boolean apply(AlgReqDO algReqDO) {
+		String netType = (String) algReqDO.getParams().get("netType");
+		if (StringUtils.equals(netType, "fc")) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	protected void nodeConnect(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
 		clearNodeInfo(placeNodes,tranNodes);

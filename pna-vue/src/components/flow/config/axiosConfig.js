@@ -7,7 +7,7 @@ else if (process.env.NODE_ENV == 'dev') {
   axios.defaults.baseURL = 'http://127.0.0.1:9001';
 }
 else if (process.env.NODE_ENV == 'production') {
-  axios.defaults.baseURL = 'http://pna.codey.com';
+  axios.defaults.baseURL = 'http://pna.codey.top';
 }
 
 const service = axios.create({
@@ -27,6 +27,7 @@ service.interceptors.response.use(
   },
   // 服务器状态码不是200的情况
   error => {
+    console.log(error)
     if (error.response.status) {
       switch (error.response.status) {
         // 401: 未登录

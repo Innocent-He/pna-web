@@ -1,12 +1,8 @@
 package edu.xidian.pnaWeb.web.contorller;
 
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
-import edu.xidian.pnaWeb.web.enums.Constant;
-import edu.xidian.pnaWeb.web.exception.TimeOutException;
 import edu.xidian.pnaWeb.web.model.*;
-import edu.xidian.pnaWeb.web.service.api.AlgorithmService;
 import edu.xidian.pnaWeb.web.service.api.TaskService;
 import edu.xidian.pnaWeb.web.transform.AlgTrans;
 import edu.xidian.pnaWeb.web.utils.Util;
@@ -17,10 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -32,9 +24,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ApiController {
 
-
-	@Resource
-	private AlgorithmService algorithmService;
 	@Resource
 	private TaskService taskService;
 
@@ -43,23 +32,18 @@ public class ApiController {
 		taskService.submitTask(AlgTrans.transToDO(algRequest));
 		return Response.success("算法提交成功！");
 	}
-	@GetMapping("/tasks/{ownerId}")
-	public Response taskList(@PathVariable(value = "ownerId") String ownerId) {
-		List<TaskDTO> taskDTOS=null;
-		if (StringUtils.equals(ownerId,"all")) {
-			taskDTOS = taskService
-					.list()
-					.stream()
-					.map((AlgTrans::transToDTO))
-					.collect(Collectors.toList());
-		} else {
-			taskDTOS=taskService.list(new QueryWrapper<TaskPO>().eq("owner_name",ownerId))
-					.stream()
-					.map((AlgTrans::transToDTO))
-					.collect(Collectors.toList());
-		}
-		return Response.success(taskDTOS);
+
+	@PostMapping("/tasks")
+	public Response<PageResult> taskList(@RequestBody TaskQueryReq queryReq) {
+		return Response.success(taskService.queryTask(queryReq));
 	}
+
+	@GetMapping("/delete/task/{taskId}")
+	public Response deleteTask(@PathVariable(value = "taskId") Long taskId) {
+		taskService.removeById(taskId);
+		return Response.success();
+	}
+
 	@GetMapping("/cancel/{taskId}")
 	public Response cancelTask(@PathVariable(value = "taskId") Long taskId) {
 		taskService.cancelTask(taskId);
@@ -68,27 +52,14 @@ public class ApiController {
 
 
 
-		@PostMapping("/generateNet")
-	public Response generatePetriNet(@RequestBody String dataJson) {
-		log.info(dataJson);
-		Future<String> future = null;
-		String result = null;
-		try {
-			GenerateRequest request = JSON.parseObject(dataJson, GenerateRequest.class);
-			algorithmService.generatePetriNet(request);
-			result = future.get(10, TimeUnit.SECONDS);
-		} catch (InterruptedException e) {
-			log.error(e.toString());
-		} catch (ExecutionException e) {
-			log.error(e.toString());
-		} catch (TimeoutException e) {
-			future.cancel(true);
-			throw new TimeOutException(Constant.TIME_OUT_CODE,Constant.TIME_OUT_MESSAGE);
-		} finally {
-			AdminContext.USER_INFO.remove();
-		}
-		return Response.success(result);
+	@PostMapping("/generateNet")
+	public Response generatePetriNet(@RequestBody GenerateRequest request) {
+
+		return null;
 	}
+
+
+
 	@GetMapping("/ip")
 	public Response<String> getIp(HttpServletRequest request) {
 		return Response.success(Util.getIpAddr(request));

@@ -37,7 +37,7 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, AdminPO> implemen
 		log.info(adminInfo.toString());
 		// 如果是临时用户,通过userName是否为ip格式判断
 		if (checkCasualUser(adminInfo)) {
-			// 在登录时会默认创建一个token
+			// 在登录时会默认创建一个token 用将token放入cookie中
 			StpUtil.login(adminInfo.getUserName());
 			SaSession session = StpUtil.getTokenSession();
 			session.set("admin",adminInfo);

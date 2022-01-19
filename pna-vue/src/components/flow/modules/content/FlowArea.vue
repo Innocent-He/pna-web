@@ -89,7 +89,7 @@ import $ from "jquery";
 import "jquery-ui/ui/widgets/draggable";
 import "jquery-ui/ui/widgets/droppable";
 import "jquery-ui/ui/widgets/resizable";
-import { ZFSN } from "../../util/ZFSN.js";
+import { Utils } from "../../util/utils.js";
 import FlowNode from "../FlowNode";
 
 export default {
@@ -129,7 +129,7 @@ export default {
           x: 0,
           y: 0
         },
-        scaleShow: ZFSN.mul(flowConfig.defaultStyle.containerScale.init, 100),
+        scaleShow: Utils.mul(flowConfig.defaultStyle.containerScale.init, 100),
         auxiliaryLine: {
           isOpen: flowConfig.defaultStyle.isOpenAuxiliaryLine,
           isShowXLine: false,
@@ -236,7 +236,7 @@ export default {
           that.rectangleMultiple.flag = false;
         }
       };
-      ZFSN.consoleLog(["初始化快捷键成功..."]);
+      Utils.consoleLog(["初始化快捷键成功..."]);
     },
     initFlowArea() {
       const that = this;
@@ -400,13 +400,13 @@ export default {
       const that = this;
       that.container.scaleOrigin.x = that.mouse.position.x;
       that.container.scaleOrigin.y = that.mouse.position.y;
-      let newScale = ZFSN.add(
+      let newScale = Utils.add(
         that.container.scale,
         flowConfig.defaultStyle.containerScale.onceEnlarge
       );
       if (newScale <= flowConfig.defaultStyle.containerScale.max) {
         that.container.scale = newScale;
-        that.container.scaleShow = ZFSN.mul(that.container.scale, 100);
+        that.container.scaleShow = Utils.mul(that.container.scale, 100);
         that.plumb.setZoom(that.container.scale);
       }
     },
@@ -414,13 +414,13 @@ export default {
       const that = this;
       that.container.scaleOrigin.x = that.mouse.position.x;
       that.container.scaleOrigin.y = that.mouse.position.y;
-      let newScale = ZFSN.sub(
+      let newScale = Utils.sub(
         that.container.scale,
         flowConfig.defaultStyle.containerScale.onceNarrow
       );
       if (newScale >= flowConfig.defaultStyle.containerScale.min) {
         that.container.scale = newScale;
-        that.container.scaleShow = ZFSN.mul(that.container.scale, 100);
+        that.container.scaleShow = Utils.mul(that.container.scale, 100);
         that.plumb.setZoom(that.container.scale);
       }
     },
@@ -542,8 +542,8 @@ export default {
           flowConfig.defaultStyle.alignSpacing.vertical;
         baseX =
           firstX +
-          ZFSN.div(selectGroup[0].width, 2) -
-          ZFSN.div(selectGroup[i].width, 2);
+          Utils.div(selectGroup[0].width, 2) -
+          Utils.div(selectGroup[i].width, 2);
         let f = nodeList.filter(n => n.id == selectGroup[i].id)[0];
         f.tx = baseX;
         f.ty = baseY;
@@ -632,8 +632,8 @@ export default {
       for (let i = 1; i < selectGroup.length; i++) {
         baseY =
           firstY +
-          ZFSN.div(selectGroup[0].height, 2) -
-          ZFSN.div(selectGroup[i].height, 2);
+          Utils.div(selectGroup[0].height, 2) -
+          Utils.div(selectGroup[i].height, 2);
         baseX =
           baseX +
           selectGroup[i - 1].width +

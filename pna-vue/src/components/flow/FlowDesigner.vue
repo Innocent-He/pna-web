@@ -10,7 +10,7 @@
         :selectGroup.sync="currentSelectGroup"
         :plumb="plumb"
         :currentTool="currentTool"
-        ></CenterContent>
+      ></CenterContent>
       <RightSide
         :flowData="flowData">
 
@@ -31,12 +31,13 @@ import "jquery-ui/ui/widgets/droppable";
 import "jquery-ui/ui/widgets/resizable";
 import html2canvas from "html2canvas";
 import canvg from "canvg";
-import {ZFSN} from "./util/ZFSN.js";
+import {Utils} from "./util/utils.js";
 import FlowArea from "./modules/content/FlowArea";
 import LeftSide from "./modules/leftSide/LeftSide";
 import CenterContent from "./modules/content/CenterContent";
 import RightSide from "./modules/rightSide/RightSide";
-import {ip,login} from "./util/FetchData"
+import {ip, login} from "./util/FetchData"
+
 export default {
   name: "vfd",
   components: {
@@ -65,9 +66,6 @@ export default {
 
   data() {
     return {
-      test:{
-        num:1
-      },
       browserType: 3,
       plumb: {},
       field: {
@@ -92,7 +90,7 @@ export default {
         nodeList: [],
         linkList: [],
         attr: {
-          id:null,
+          id: null,
           name: "",
           des: "",
           createTime: "",
@@ -134,10 +132,10 @@ export default {
         that.moveNode(type);
       })
       that.$bus.$on('placeIdInc', () => {
-        this.flowData.attr.maxPlaceId ++;
+        this.flowData.attr.maxPlaceId++;
       })
       that.$bus.$on('tranIdInc', () => {
-        this.flowData.attr.maxTranId ++;
+        this.flowData.attr.maxTranId++;
       })
       that.$bus.$on('generatePetriNet', (type) => {
         this.generatePetriNet(type);
@@ -145,8 +143,17 @@ export default {
       that.$bus.$on('getShortcut', () => {
         this.activeShortcut = true;
       })
-      that.$bus.$on('deleteLink',()=>{
+      that.$bus.$on('deleteLink', () => {
         that.deleteLink();
+      })
+      that.$bus.$on('loadFlow', (json) => {
+        that.loadFlow(json);
+      })
+      that.$bus.$on('saveFlow', () => {
+        that.saveFlow();
+      })
+      that.$bus.$on('loginTemp', () => {
+        that.loginTempAdmin();
       })
     },
     clearEventListener() {
@@ -164,9 +171,12 @@ export default {
       that.$bus.$off('tranIdInc');
       that.$bus.$off('generatePetriNet');
       that.$bus.$off('getShortcut');
+      that.$bus.$off('loadFlow')
+      that.$bus.$off('saveFlow')
+      that.$bus.$off('loginTemp')
     },
-    changeLinkWeight(weight){
-      let that=this;
+    changeLinkWeight(weight) {
+      let that = this;
       that.currentSelect.weight = weight;
       let conn = that.plumb.getConnections({
         source: that.currentSelect.sourceId,
@@ -247,7 +257,7 @@ export default {
           that.flowData.status == flowConfig.flowStatus.CREATE ||
           that.flowData.status == flowConfig.flowStatus.MODIFY
         ) {
-          id = "link-" + ZFSN.getId();
+          id = "link-" + Utils.getId();
           label = "";
         } else if (that.flowData.status == flowConfig.flowStatus.LOADING) {
           let l = that.flowData.linkList[that.flowData.linkList.length - 1];
@@ -286,7 +296,7 @@ export default {
         ConnectionsDetachable: flowConfig.jsPlumbConfig.conn.isDetachable
       });
 
-      ZFSN.consoleLog(["实例化JsPlumb成功..."]);
+      Utils.consoleLog(["实例化JsPlumb成功..."]);
     },
     initNodeSelectArea() {
       $(document).ready(function () {
@@ -300,7 +310,7 @@ export default {
           containment: "window",
           revert: "invalid"
         });
-        ZFSN.consoleLog(["初始化节点选择列表成功..."]);
+        Utils.consoleLog(["初始化节点选择列表成功..."]);
       });
     },
 
@@ -314,10 +324,10 @@ export default {
         return "关闭提示";
       };
     },
-    initFlow() {
-      const that = this;
-      let index=document.cookie.indexOf("pna-token")
-      if (index==-1){
+    loginTempAdmin() {
+      let that = this;
+      let cookie = that.$cookies.get('pna-token')
+      if (!cookie) {
         ip().then(({data}) => {
           if (data.success) {
             that.$store.commit('changeUserName', data.data)
@@ -325,13 +335,17 @@ export default {
           }
         });
       }
+    },
+    initFlow() {
+      const that = this;
+      that.loginTempAdmin();
       if (that.flowData.status == flowConfig.flowStatus.CREATE) {
-        that.flowData.attr.name = "flow-" + ZFSN.getId();
+        that.flowData.attr.name = "flow-" + Utils.getId();
         that.flowData.attr.createTime = new Date().format("yyyy-MM-dd hh:mm:ss");
       } else {
         that.loadFlow();
       }
-      ZFSN.consoleLog(["初始化流程图成功..."]);
+      Utils.consoleLog(["初始化流程图成功..."]);
     },
     loadFlow(json) {
       const that = this;
@@ -340,7 +354,6 @@ export default {
         return;
       }
       let loadData = JSON.parse(json);
-      console.log(loadData);
       that.flowData.attr.maxPlaceId = loadData.attr.maxPlaceId;
       that.flowData.attr.maxTranId = loadData.attr.maxTranId;
       that.flowData.attr.name = loadData.attr.name;
@@ -463,7 +476,7 @@ export default {
       let reader = new FileReader();
       reader.readAsText(file, "UTF-8");
       reader.onload = function () {
-        // that.loadFlow(this.result);
+        that.loadFlow(this.result);
       };
       return false;
     },
@@ -525,6 +538,8 @@ export default {
       that.flowData.nodeList.forEach(function (node, index) {
         that.plumb.remove(node.id);
       });
+      that.flowData.attr.name = "flow-" + Utils.getId();
+      that.flowData.attr.createTime = new Date().format("yyyy-MM-dd hh:mm:ss");
       that.flowData.attr.maxPlaceId = 1;
       that.flowData.attr.maxTranId = 1;
       that.currentSelect = {};
@@ -600,40 +615,19 @@ export default {
         that.plumb.repaintEverything();
       }
     },
-    generatePetriNet(netType) {
-      //todo 生成图重写
-      // let that = this;
-      // let placeCount = this.placeCount;
-      // let tranCount = this.tranCount;
-      // axios({
-      //   contentType: "application/json;charset=UTF-8",
-      //   method: "post",
-      //   url: flowConfig.serverConfig.generateUrl,
-      //   data: {
-      //     placeCount,
-      //     tranCount,
-      //     netType
-      //   }
-      // }).then(function (response) {
-      //   let resData = response.data;
-      //   if (resData.success) {
-      //     that.loadFlow(resData.data);
-      //   } else {
-      //     that.$message.error("server has error:" + resData.errorMessage);
-      //   }
-      // });
-    },
+
   },
 };
 </script>
 
 <style lang="scss">
 $primary-color: #409EFF;
-*{
+* {
   margin: 0;
   padding: 0;
   list-style: none;
 }
+
 .container {
   border: 2px solid #e4e7ed;
   height: 100%;
