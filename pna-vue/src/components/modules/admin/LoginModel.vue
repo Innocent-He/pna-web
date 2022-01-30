@@ -57,7 +57,7 @@
 
 <script>
 import {login} from "../../util/FetchData"
-import RegisterModel from "../admin/RegisterModel";
+import RegisterModel from "./RegisterModel";
 
 export default {
   components:{

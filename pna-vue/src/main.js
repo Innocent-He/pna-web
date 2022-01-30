@@ -7,10 +7,8 @@ import 'ant-design-vue/dist/antd.css'
 import router from './router'
 import VueContextMenu from 'vue-contextmenu'
 import vcolorpicker from 'vcolorpicker'
-import axios from "axios";
 import store from "./store"
 import dayjs from "dayjs";
-import vuetify from "./plugins/vuetify";
 import VueCookies from 'vue-cookies'
 Vue.config.productionTip = false
 
@@ -80,7 +78,6 @@ new Vue({
   el: '#app',
   router,
   store,
-  vuetify,
   components: { App },
   template: '<App/>',
   beforeCreate() {

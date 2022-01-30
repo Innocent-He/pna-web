@@ -32,7 +32,7 @@
         size="small">退出登录
       </a-button>
     </template>
-    <TaskList :userName="$store.state.userInfo.userName"></TaskList>
+    <TaskList :queryAll="false"></TaskList>
     <LoginModel ref="login"/>
     <RegisterModel ref="register"/>
   </div>

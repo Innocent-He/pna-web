@@ -30,25 +30,6 @@ service.interceptors.response.use(
     console.log(error)
     if (error.response.status) {
       switch (error.response.status) {
-        // 401: 未登录
-        // 未登录则跳转登录页面，并携带当前页面的路径
-        // 在登录成功后返回当前页面，这一步需要在登录页操作。
-        case 401:
-          notification.error({
-            message: "请求失败",
-            description: "登录过期，请重新登录"
-          });
-          break;
-        // 403 token过期
-        // 登录过期对用户进行提示
-        // 清除本地token和清空vuex中token对象
-        // 跳转登录页面
-        case 403:
-          notification.error({
-            message: "请求失败",
-            description: "登录过期，请重新登录"
-          });
-          break;
         // 404请求不存在
         case 404:
           notification.error({
@@ -60,7 +41,7 @@ service.interceptors.response.use(
         default:
           notification.error({
             message: "请求失败",
-            description: error.response.data.message
+            description: "请求失败，请检查网络"
           });
       }
       return Promise.reject(error.response);

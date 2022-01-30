@@ -2,13 +2,13 @@ package edu.xidian.pnaWeb.petri.context;
 
 import edu.xidian.pnaWeb.petri.context.state.Action;
 import edu.xidian.pnaWeb.petri.context.state.TaskStateMachine;
+import edu.xidian.pnaWeb.petri.context.state.TaskStatusEnum;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
-import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
 import edu.xidian.pnaWeb.web.enums.Constant;
-import edu.xidian.pnaWeb.petri.context.state.TaskStatusEnum;
 import edu.xidian.pnaWeb.web.exception.BizException;
 import edu.xidian.pnaWeb.web.model.AdminContext;
+import edu.xidian.pnaWeb.web.model.AdminInfo;
 import edu.xidian.pnaWeb.web.service.api.MessageService;
 import edu.xidian.pnaWeb.web.service.api.TaskService;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +41,10 @@ public class TaskCenter implements InitializingBean {
 	private Map<Long, TaskStateMachine> machineMap=new HashMap<>();
 
 	public void pushTask(AlgReqDO algReqDO) {
-		AdminContext adminContext = AdminContext.USER_INFO.get();
+		AdminInfo adminInfo = AdminContext.USER_INFO.get();
 		TaskPO taskPO = TaskPO.builder().algName(algReqDO.getAlgName())
 				.status(TaskStatusEnum.WAITING.code())
-				.ownerName(adminContext.getUserName())
+				.ownerName(adminInfo.getUserName())
 				.algName(algReqDO.getAlgName())
 				.build();
 		taskService.save(taskPO);
@@ -71,12 +71,12 @@ public class TaskCenter implements InitializingBean {
 				beforeExecute(algReqDO);
 				try {
 					String result = algContext.executeAlg(algReqDO);
-					log.info(result);
 					afterRunning(algReqDO,result);
-					afterComplete(algReqDO);
 				} catch (Exception e) {
 					log.error(e.toString());
 					afterError(algReqDO);
+				}finally {
+					afterComplete(algReqDO);
 				}
 			}
 		}, "taskThread");

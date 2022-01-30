@@ -1,10 +1,8 @@
 package edu.xidian.pnaWeb.petri.alg;
 
-import edu.xidian.pnaWeb.petri.module.EventCircleInfo;
-import edu.xidian.pnaWeb.petri.module.PetriDO;
-import edu.xidian.pnaWeb.petri.module.ReachGraphInfo;
-import edu.xidian.pnaWeb.petri.module.StateNode;
-import edu.xidian.pnaWeb.util.PetriUtils;
+import edu.xidian.pnaWeb.petri.module.*;
+import edu.xidian.pnaWeb.petri.util.PetriUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -15,7 +13,7 @@ import java.util.*;
  * @Date 2021/12/21 10:56
  */
 @Component
-public class DeadPredAlg {
+public class DeadPredAlg implements AlgActuator{
 
 	public EventCircleInfo generateReachWithPred(PetriDO petriDO,int step) {
 		Map<Integer, StateNode> reachGraphMap = new HashMap<Integer, StateNode>();
@@ -94,6 +92,19 @@ public class DeadPredAlg {
 				.deadStatesStr(deadStatesStr)
 				.deadStates(deadStates)
 				.build();
+		return null;
+	}
+
+	@Override
+	public boolean apply(AlgReqDO algReqDO) {
+		if (StringUtils.equals(algReqDO.getAlgName(), "deadPred")) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public String execute(AlgReqDO algReqDO) {
 		return null;
 	}
 }

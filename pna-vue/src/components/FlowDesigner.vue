@@ -16,7 +16,6 @@
 
       </RightSide>
     </a-layout>
-
   </div>
 </template>
 
@@ -36,10 +35,10 @@ import FlowArea from "./modules/content/FlowArea";
 import LeftSide from "./modules/leftSide/LeftSide";
 import CenterContent from "./modules/content/CenterContent";
 import RightSide from "./modules/rightSide/RightSide";
-import {ip, login} from "./util/FetchData"
+import {ip, login,userInfo} from "./util/FetchData"
 
 export default {
-  name: "vfd",
+  name: "pna-web",
   components: {
     RightSide,
     CenterContent,
@@ -332,6 +331,12 @@ export default {
           if (data.success) {
             that.$store.commit('changeUserName', data.data)
             login(that.$store.state.userInfo);
+          }
+        });
+      }else{
+        userInfo().then(({data}) => {
+          if (data.success) {
+            that.$store.commit('login', data.data)
           }
         });
       }

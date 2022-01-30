@@ -4,8 +4,14 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import edu.xidian.pnaWeb.web.handler.AdminInfoInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -25,19 +31,22 @@ import java.util.List;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-	/**
-	 * 注入一个ServerEndpointExporter,该Bean会自动注册使用@ServerEndpoint注解申明的websocket endpoint
-	 */
+	//	/**
+//	 * 注入一个ServerEndpointExporter,该Bean会自动注册使用@ServerEndpoint注解申明的websocket endpoint
+//	 */
 //	@Bean
 //	public ServerEndpointExporter serverEndpointExporter() {
 //		return new ServerEndpointExporter();
 //	}
 
+
+
+
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new AdminInfoInterceptor())
 				.addPathPatterns("/*")
-				.excludePathPatterns("/login","/ip","/register","/logout");
+				.excludePathPatterns("/login", "/ip", "/register", "/logout");
 	}
 
 	/**
@@ -60,14 +69,13 @@ public class WebConfig implements WebMvcConfigurer {
 		FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 
-		List<MediaType> fastMediaTypes = new ArrayList<>();
 
 		// 处理中文乱码问题
 		fastJsonConfig.setCharset(Charset.forName("UTF-8"));
 		fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
 		// 设置时间格式
 		fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-
+		List<MediaType> fastMediaTypes = new ArrayList<>();
 		fastMediaTypes.add(MediaType.APPLICATION_JSON);
 		fastJsonHttpMessageConverter.setSupportedMediaTypes(fastMediaTypes);
 
@@ -78,6 +86,7 @@ public class WebConfig implements WebMvcConfigurer {
 		StringHttpMessageConverter stringConverter = new StringHttpMessageConverter();
 		stringConverter.setDefaultCharset(Charset.forName("UTF-8"));
 		stringConverter.setSupportedMediaTypes(fastMediaTypes);
+		converters.clear();
 		converters.add(stringConverter);
 		converters.add(converter);
 	}

@@ -39,12 +39,7 @@ public class AdminInfoInterceptor implements HandlerInterceptor {
 			String token = StpUtil.getTokenValue();
 			SaSession sessionByToken = StpUtil.getTokenSessionByToken(token);
 			AdminInfo admin= (AdminInfo) sessionByToken.get("admin");
-			AdminContext adminContext = AdminContext.builder()
-					.userId(admin.getId())
-					.userName(admin.getUserName())
-					.email(admin.getEmail())
-					.build();
-			AdminContext.USER_INFO.set(adminContext);
+			AdminContext.USER_INFO.set(admin);
 			return true;
 		} catch (Exception e) {
 			log.error("权限判断出错", e);
@@ -61,6 +56,7 @@ public class AdminInfoInterceptor implements HandlerInterceptor {
 			for (Cookie cookie : cookies) {
 				if (StringUtils.equals(cookie.getName(), "pna-token")) {
 					cookie.setMaxAge(60*60*24*30);
+					return;
 				}
 			}
 		}

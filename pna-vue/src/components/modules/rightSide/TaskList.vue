@@ -52,7 +52,7 @@ export default {
   components: {
     RecycleScroller,
   },
-  props:['userName'],
+  props:['queryAll'],
   mounted() {
     let that=this;
     that.$bus.$on('clearTask',()=>{
@@ -72,7 +72,7 @@ export default {
       taskReq:{
         pageNo:1,
         pageSize:10,
-        ownerName:this.userName,
+        queryAll:this.queryAll,
       }
     }
   },

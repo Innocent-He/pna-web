@@ -14,7 +14,7 @@ export let flowConfig = {
 				{
 					width: 10,
 					length: 10,
-					location: 1
+					location: 9
 				}
 			]
 		],
@@ -262,7 +262,4 @@ export let flowConfig = {
 			]
 		}
 	},
-	serverConfig:{
-		generateUrl:"http://localhost:9000/generateNet",
-	}
 };

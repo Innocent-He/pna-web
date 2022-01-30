@@ -4,6 +4,10 @@ export function login(params) {
   return api.post('/api/login', params)
 }
 
+export function userInfo(){
+  return api.get('/api/userInfo');
+}
+
 export function logout() {
   return api.get("/api/logout")
 }

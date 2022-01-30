@@ -1,6 +1,7 @@
 package edu.xidian.pnaWeb.web.contorller;
 
 import cn.dev33.satoken.stp.StpUtil;
+import edu.xidian.pnaWeb.web.model.AdminContext;
 import edu.xidian.pnaWeb.web.model.AdminInfo;
 import edu.xidian.pnaWeb.web.model.Response;
 import edu.xidian.pnaWeb.web.service.api.AdminService;
@@ -22,7 +23,7 @@ public class AdminController {
 	 * 登录
 	 */
 	@PostMapping("/login")
-	public Response login(@RequestBody AdminInfo info) {
+	public Response<AdminInfo> login(@RequestBody AdminInfo info) {
 		return Response.success(adminService.login(info));
 	}
 
@@ -31,7 +32,6 @@ public class AdminController {
 		adminService.register(info);
 		return Response.success();
 	}
-
 	/**
 	 * 退出
 	 */
@@ -39,6 +39,15 @@ public class AdminController {
 	public Response logout() {
 		StpUtil.logoutByTokenValue(StpUtil.getTokenValue());
 		return Response.success();
+	}
+
+	/**
+	 * 获取当前登录用户信息
+	 * @return
+	 */
+	@GetMapping("/userInfo")
+	public Response<AdminInfo> userInfo() {
+		return Response.success(AdminContext.USER_INFO.get());
 	}
 }
 

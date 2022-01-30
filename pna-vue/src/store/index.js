@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
-import {flowConfig} from "../components/flow/config/args-config";
+import {flowConfig} from "../components/config/args-config";
 
 Vue.use(Vuex);
 

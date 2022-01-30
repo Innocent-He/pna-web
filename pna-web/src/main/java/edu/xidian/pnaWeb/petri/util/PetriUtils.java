@@ -1,8 +1,7 @@
-package edu.xidian.pnaWeb.util;
+package edu.xidian.pnaWeb.petri.util;
 
 
 import edu.xidian.pnaWeb.petri.module.PetriDO;
-import edu.xidian.pnaWeb.web.model.AdminContext;
 
 import java.util.*;
 

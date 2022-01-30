@@ -1,10 +1,7 @@
 package edu.xidian.pnaWeb.petri.context.state;
 
-import edu.xidian.pnaWeb.web.exception.BizException;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @Author He

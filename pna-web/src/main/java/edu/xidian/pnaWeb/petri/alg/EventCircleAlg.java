@@ -1,10 +1,8 @@
 package edu.xidian.pnaWeb.petri.alg;
 
-import edu.xidian.pnaWeb.petri.context.AlgContext;
 import edu.xidian.pnaWeb.petri.module.*;
-import edu.xidian.pnaWeb.util.PetriUtils;
+import edu.xidian.pnaWeb.petri.util.PetriUtils;
 import edu.xidian.pnaWeb.web.enums.Constant;
-import edu.xidian.pnaWeb.web.model.AdminContext;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,6 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class EventCircleAlg implements AlgActuator {
-	@Resource
-	private AlgContext algContext;
 	@Resource
 	private ReachableGraphAlg reachableGraphAlg;
 

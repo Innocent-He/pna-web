@@ -1,7 +1,5 @@
 package edu.xidian.pnaWeb.petri.context.state;
 
-import lombok.Data;
-
 /**
  * @Description
  * @Author He

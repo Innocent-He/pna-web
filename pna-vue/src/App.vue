@@ -1,12 +1,15 @@
 <template>
-  <div id="app" style="height: 99%;">
-    <router-view/>
-  </div>
+  <FlowDesigner/>
 </template>
 
 <script>
+import FlowDesigner from "./components/FlowDesigner";
+
 export default {
   name: 'App',
+  components: {
+    FlowDesigner
+  }
 }
 </script>
 

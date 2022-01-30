@@ -20,7 +20,7 @@
           <a-icon type="unordered-list" />
           执行队列
         </span>
-        <TaskList></TaskList>
+        <TaskList :queryAll="true"></TaskList>
       </a-tab-pane>
     </a-tabs>
 

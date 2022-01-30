@@ -945,13 +945,13 @@ $active-color: #409EFF;
     cursor: zoom-out;
   }
   &.canScale {
-    cursor: url(/src/components/flow/assets/search.png), default;
+    cursor: url(/src/assets/search.png), default;
   }
   &.canDrag {
     cursor: grab;
   }
   &.canMultiple {
-    cursor: url(/src/components/flow/assets/multip-pointer.png), default;
+    cursor: url(/src/assets/multip-pointer.png), default;
   }
 }
 

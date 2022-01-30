@@ -13,5 +13,5 @@ import lombok.ToString;
 public class TaskQueryReq {
 	private Integer pageNo=1;
 	private Integer pageSize=10;
-	private String ownerName;
+	private Boolean queryAll;
 }
