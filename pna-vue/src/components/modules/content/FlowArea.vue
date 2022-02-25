@@ -464,11 +464,11 @@ export default {
       that.clipboard.forEach(function(node, index) {
         let newNode = Object.assign({}, node);
         if (node.type==="place") {
-          newNode.id = "p-" + that.flowData.attr.maxPlaceId;
           that.$bus.$emit("placeIdInc");
+          newNode.id = "p-" + that.flowData.attr.maxPlaceId;
         } else if (node.type == "transaction") {
-          newNode.id = "t-" + that.flowData.attr.maxTranId;
           that.$bus.$emit("tranInc");
+          newNode.id = "t-" + that.flowData.attr.maxTranId;
         }
         let nodePos = that.computeNodePos(
           that.mouse.position.x + dis,
@@ -772,11 +772,11 @@ export default {
 
       let newNode = Object.assign({}, node);
       if (newNode.type==="place") {
-        newNode.id = "p-" + that.flowData.attr.maxPlaceId;
         that.$bus.$emit("placeIdInc");
+        newNode.id = "p-" + that.flowData.attr.maxPlaceId;
       } else if (newNode.type === "transaction") {
-        newNode.id = "t-" + that.flowData.attr.maxTranId;
         that.$bus.$emit("tranIdInc");
+        newNode.id = "t-" + that.flowData.attr.maxTranId;
       }
       newNode.height = 50;
       newNode.y = y - 25;

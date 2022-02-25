@@ -1,0 +1,4 @@
+2022-02-17 19:43:22,604 WARN [http-nio-9001-exec-3] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-17 19:49:00,587 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-17 19:52:24,268 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-17 20:25:32,505 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.

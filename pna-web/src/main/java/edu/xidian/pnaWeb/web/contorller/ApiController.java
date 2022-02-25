@@ -34,8 +34,8 @@ public class ApiController {
 	}
 
 	@PostMapping("/tasks")
-	public Response<PageResult> taskList(@RequestBody TaskQueryReq queryReq) {
-		return Response.success(taskService.queryTask(queryReq));
+	public PageResponse<TaskDTO> taskList(@RequestBody TaskQueryReq queryReq) {
+		return PageResponse.success(taskService.queryTask(queryReq));
 	}
 
 	@GetMapping("/delete/task/{taskId}")
@@ -60,9 +60,5 @@ public class ApiController {
 
 
 
-	@GetMapping("/ip")
-	public Response<String> getIp(HttpServletRequest request) {
-		return Response.success(Util.getIpAddr(request));
-	}
 
 }

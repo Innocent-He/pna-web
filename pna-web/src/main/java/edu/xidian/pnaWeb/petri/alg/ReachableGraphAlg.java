@@ -114,10 +114,7 @@ public class ReachableGraphAlg implements AlgActuator{
 
 	@Override
 	public boolean apply(AlgReqDO algReqDO) {
-		if (StringUtils.equals(algReqDO.getAlgName(),"reach")) {
-			return true;
-		}
-		return false;
+		return StringUtils.equals(algReqDO.getAlgName(),"reach");
 	}
 
 	@Override

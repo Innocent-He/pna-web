@@ -1,5 +1,6 @@
 #project
 logs
+.log
 ### Maven ###
 mvnw
 HELP.md

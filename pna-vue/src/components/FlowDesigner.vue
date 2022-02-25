@@ -93,8 +93,8 @@ export default {
           name: "",
           des: "",
           createTime: "",
-          maxPlaceId: 1,
-          maxTranId: 1,
+          maxPlaceId: 0,
+          maxTranId: 0,
         },
         status: flowConfig.flowStatus.CREATE
       },
@@ -545,8 +545,8 @@ export default {
       });
       that.flowData.attr.name = "flow-" + Utils.getId();
       that.flowData.attr.createTime = new Date().format("yyyy-MM-dd hh:mm:ss");
-      that.flowData.attr.maxPlaceId = 1;
-      that.flowData.attr.maxTranId = 1;
+      that.flowData.attr.maxPlaceId = 0;
+      that.flowData.attr.maxTranId = 0;
       that.currentSelect = {};
       that.currentSelectGroup = [];
       that.flowData.nodeList = [];

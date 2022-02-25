@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
- * @Description
+ * @Description 自动生成fc网，功能未实现
  * @Author He
  * @Date 2021/11/23 13:36
  */
@@ -19,11 +20,11 @@ import java.util.List;
 public class FcNetAlg extends PetriNetAlg {
 	@Override
 	public boolean apply(AlgReqDO algReqDO) {
-		String netType = (String) algReqDO.getParams().get("netType");
-		if (StringUtils.equals(netType, "fc")) {
-			return true;
-		}
-		return false;
+		String netType = (String) Optional.ofNullable(algReqDO)
+				.map(AlgReqDO::getParams)
+				.map(map -> map.get("netType"))
+				.orElse("");
+		return StringUtils.equals(netType, "fc");
 	}
 
 	@Override

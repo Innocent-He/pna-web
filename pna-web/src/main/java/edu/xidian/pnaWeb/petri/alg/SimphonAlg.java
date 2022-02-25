@@ -63,10 +63,7 @@ public class SimphonAlg implements AlgActuator{
 
 	@Override
 	public boolean apply(AlgReqDO algReqDO) {
-		if (StringUtils.equals(algReqDO.getAlgName(), Constant.Siphon)) {
-			return true;
-		}
-		return false;
+		return StringUtils.equals(algReqDO.getAlgName(), Constant.Siphon);
 	}
 
 	@Override

@@ -15,9 +15,6 @@ import edu.xidian.pnaWeb.web.model.TaskQueryReq;
 import edu.xidian.pnaWeb.web.service.api.TaskService;
 import edu.xidian.pnaWeb.web.transform.TaskTrans;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,7 +46,7 @@ public class TaskServiceImpl extends ServiceImpl<TaskMapper, TaskPO> implements 
 	public PageResult<TaskDTO> queryTask(TaskQueryReq queryReq) {
 		Page<TaskPO> taskPage = new Page(queryReq.getPageNo(), queryReq.getPageSize());
 		QueryWrapper<TaskPO> taskPOQueryWrapper = new QueryWrapper<>();
-		if (BooleanUtils.isTrue(queryReq.getQueryAll())) {
+		if (Boolean.TRUE==queryReq.getQueryAll()) {
 			IPage<TaskPO> taskPOPage = baseMapper.selectPage(taskPage, taskPOQueryWrapper.orderByAsc("create_time"));
 			List<TaskDTO> taskDTOS = taskPOPage.getRecords().stream().map(TaskTrans::transToDTO).collect(Collectors.toList());
 			return new PageResult(taskDTOS, taskPage.getTotal());

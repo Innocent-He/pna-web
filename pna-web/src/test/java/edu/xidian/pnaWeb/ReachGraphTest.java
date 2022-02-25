@@ -13,7 +13,12 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.*;
+import java.util.stream.IntStream;
 
 /**
  * @Description
@@ -57,6 +62,26 @@ public class ReachGraphTest {
 	}
 	@Test
 	public void test5() {
+		List<Integer> tranIds=IntStream.range(0,5).collect(
+				ArrayList::new,
+				ArrayList::add,
+				ArrayList::addAll);
+		System.out.println(tranIds);
+	}
 
+	Map<Integer,List<Integer>> dependTrans=new HashMap<>();
+	Map<Integer,List<Integer>> placePostTrans=new HashMap<>();
+	Map<Integer,List<Integer>>tranPostPlaces=new HashMap<>();
+	List<List<Integer>> result=new ArrayList<>();
+	public List<Integer> findDependTrans(Integer id,boolean isPlace) {
+		if (isPlace) {
+			return placePostTrans.get(id);
+		}
+		List<List<Integer>> allTrans=new ArrayList<>();
+		for (Integer placeId : tranPostPlaces.get(id)) {
+			List<Integer> dependTrans = findDependTrans(placeId, true);
+			allTrans.add(dependTrans);
+		}
+		return null;
 	}
 }

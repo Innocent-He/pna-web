@@ -12,6 +12,11 @@
       <a-icon type="share-alt"/>
       EventWait
     </a-button>
+    <a-button id="algBtn" type="primary" @click="activeAlgModel('deadPred')">
+      <a-icon type="share-alt"/>
+      Dead Pred
+    </a-button>
+
     <a-button id="algBtn" type="primary" @click="activeAlgModel('test')">
       <a-icon type="share-alt"/>
       Test
@@ -25,15 +30,12 @@
               placeholder="Please enter number of transmit steps"
             />
           </a-form-model-item>
-
         </template>
 
         <template v-else-if="activeAlg=='simphon'">
-
         </template>
 
         <template v-else-if="activeAlg=='ew'">
-
         </template>
 
         <template v-else-if="activeAlg=='generate'">

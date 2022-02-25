@@ -53,7 +53,6 @@ public class StateNode implements Cloneable {
 			for(int i = 0; i < this.state.length; ++i) {
 				ab.append(this.state[i] + " ");
 			}
-
 			return ab.toString();
 		} else {
 			return null;

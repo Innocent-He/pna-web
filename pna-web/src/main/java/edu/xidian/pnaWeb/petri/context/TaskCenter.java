@@ -73,6 +73,7 @@ public class TaskCenter implements InitializingBean {
 					String result = algContext.executeAlg(algReqDO);
 					afterRunning(algReqDO,result);
 				} catch (Exception e) {
+					e.printStackTrace();
 					log.error(e.toString());
 					afterError(algReqDO);
 				}finally {

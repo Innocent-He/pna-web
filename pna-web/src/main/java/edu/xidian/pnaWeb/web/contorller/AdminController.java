@@ -5,9 +5,11 @@ import edu.xidian.pnaWeb.web.model.AdminContext;
 import edu.xidian.pnaWeb.web.model.AdminInfo;
 import edu.xidian.pnaWeb.web.model.Response;
 import edu.xidian.pnaWeb.web.service.api.AdminService;
+import edu.xidian.pnaWeb.web.utils.Util;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -49,5 +51,11 @@ public class AdminController {
 	public Response<AdminInfo> userInfo() {
 		return Response.success(AdminContext.USER_INFO.get());
 	}
+
+	@GetMapping("/ip")
+	public Response<String> getIp(HttpServletRequest request) {
+		return Response.success(Util.getIpAddr(request));
+	}
+
 }
 

@@ -9,9 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @Description
@@ -107,11 +105,11 @@ public class AcNetAlg extends PetriNetAlg {
 
 	@Override
 	public boolean apply(AlgReqDO algReqDO) {
-		String netType = (String) algReqDO.getParams().get("netType");
-		if (StringUtils.equals(netType, "ac")) {
-			return true;
-		}
-		return false;
+		String netType = (String) Optional.ofNullable(algReqDO)
+				.map(AlgReqDO::getParams)
+				.map(map -> map.get("netType"))
+				.orElse("");
+		return StringUtils.equals(netType, "ac");
 	}
 
 	@Override

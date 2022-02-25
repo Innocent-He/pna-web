@@ -1,6 +1,5 @@
 package edu.xidian.pnaWeb.web.model;
 
-import com.baomidou.mybatisplus.extension.api.R;
 import lombok.Data;
 
 /**

@@ -1,0 +1,13 @@
+2022-02-21 15:19:04,048 ERROR [http-nio-9001-exec-1] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:19:29,255 ERROR [http-nio-9001-exec-2] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:19:52,076 ERROR [http-nio-9001-exec-3] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:21:21,020 ERROR [http-nio-9001-exec-4] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:22:44,499 ERROR [http-nio-9001-exec-5] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:25:05,452 ERROR [http-nio-9001-exec-1] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:25:34,177 ERROR [http-nio-9001-exec-3] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:26:11,977 ERROR [http-nio-9001-exec-2] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:27:34,635 ERROR [http-nio-9001-exec-4] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:27:39,475 ERROR [http-nio-9001-exec-6] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:27:43,089 ERROR [http-nio-9001-exec-9] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:27:57,078 ERROR [http-nio-9001-exec-10] e.x.p.w.h.ExceptionAdvice [ExceptionAdvice.java:36] java.lang.NullPointerException
+2022-02-21 15:31:58,742 ERROR [taskThread] e.x.p.p.c.TaskCenter [TaskCenter.java:77] java.lang.NullPointerException

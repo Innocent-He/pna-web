@@ -1,0 +1,24 @@
+2022-02-23 21:12:49,573 WARN [http-nio-9001-exec-4] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 21:14:57,275 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 21:15:43,836 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=45s217ms535µs500ns).
+2022-02-23 21:17:14,470 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=1m30s634ms339µs).
+2022-02-23 21:18:00,637 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 21:18:51,475 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 21:21:01,266 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=1m774ms637µs500ns).
+2022-02-23 21:21:52,210 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=52s642ms753µs200ns).
+2022-02-23 21:27:27,715 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=5m35s504ms671µs600ns).
+2022-02-23 21:40:16,231 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 21:41:51,777 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=1m33s708ms86µs700ns).
+2022-02-23 21:44:46,804 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 21:46:15,595 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=55s265ms151µs300ns).
+2022-02-23 21:49:34,854 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=3m17s555ms545µs600ns).
+2022-02-23 21:52:45,993 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=1m50s316ms232µs800ns).
+2022-02-23 21:55:28,584 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=2m42s591ms507µs).
+2022-02-23 21:55:44,651 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 22:00:30,089 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=4m44s66ms26µs100ns).
+2022-02-23 22:00:41,181 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 22:11:33,599 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=10m50s801ms826µs100ns).
+2022-02-23 22:11:50,027 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 22:16:17,115 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=4m25s755ms128µs201ns).
+2022-02-23 22:16:30,993 WARN [http-nio-9001-exec-1] c.z.h.HikariConfig [HikariConfig.java:973] MyHikariCP - idleTimeout is close to or more than maxLifetime, disabling it.
+2022-02-23 22:25:03,450 WARN [MyHikariCP housekeeper] c.z.h.p.HikariPool [HikariPool.java:766] MyHikariCP - Thread starvation or clock leap detected (housekeeper delta=8m31s144ms572µs101ns).
