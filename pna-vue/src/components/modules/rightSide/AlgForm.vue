@@ -14,8 +14,12 @@
         <slot name="alg" :data="algReq"></slot>
         <a-form-model-item label="最长等待时间">
           <a-slider
-            v-decorator="['slider']"
-            :marks="{ 0: '30min', 20: '1h', 40: '2h', 60: '5h', 80: '1d', 100: '无限制' }"
+            v-model.number="algReq.timeLevel"
+            :max="5"
+            :step="1"
+            :included="false"
+            :range="false"
+            :marks="{ 0: '5min', 1: '10min', 2: '30min', 3: '1hour', 4: '12hour', 5: '1day' }"
           />
         </a-form-model-item>
         <a-form-model-item>
@@ -50,6 +54,7 @@ export default {
           step: null,
         },
         algName: '',
+        timeLevel:1,
         petri: this.flowData,
         email: this.email,
       },
@@ -80,8 +85,10 @@ export default {
     }
   },
   watch: {
-    activeAlg(val) {
-      this.algReq.algName = val;
+    activeAlg:{
+      handler(val){
+        this.algReq.algName = val;
+      }
     },
     email: {
       handler(val) {

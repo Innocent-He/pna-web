@@ -84,4 +84,24 @@ public class ReachGraphTest {
 		}
 		return null;
 	}
+	@Test
+	public void threadTest(){
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+		FutureTask<String> stringFutureTask = new FutureTask<>(() -> {
+			Thread.sleep(1500);
+			return "测试数据";
+		});
+		executorService.submit(stringFutureTask);
+		try {
+			String s = stringFutureTask.get(1, TimeUnit.SECONDS);
+			System.out.println(s);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
+		}
+	}
 }

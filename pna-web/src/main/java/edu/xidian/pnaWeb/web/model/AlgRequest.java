@@ -21,4 +21,5 @@ public class AlgRequest {
 	private String algName;
 	private PetriDTO petri;
 	private String email;
+	private Integer timeLevel;
 }

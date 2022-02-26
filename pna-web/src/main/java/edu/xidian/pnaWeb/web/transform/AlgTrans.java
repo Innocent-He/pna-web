@@ -19,6 +19,7 @@ public class AlgTrans {
 				.algName(algRequest.getAlgName())
 				.params(algRequest.getParams())
 				.petriDO(petriDO)
+				.timeLevel(algRequest.getTimeLevel())
 				.build();
 	}
 

@@ -3,7 +3,7 @@ SOURCE_PATH=/usr/local/docker
 #docker 镜像/容器名字或者jar名字 这里都命名为这个
 SERVER_NAME=pna-web-0.0.1.jar
 TAG=latest
-SERVER_PORT=8080
+SERVER_PORT=9001
 #容器id
 CID=$(docker ps -a| grep "$SERVER_NAME" | awk '{print $1}')
 #镜像id

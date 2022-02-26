@@ -4,6 +4,7 @@ import edu.xidian.pnaWeb.petri.context.state.Action;
 import edu.xidian.pnaWeb.petri.context.state.TaskStateMachine;
 import edu.xidian.pnaWeb.petri.context.state.TaskStatusEnum;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.TimeLevel;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
 import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.exception.BizException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.locks.LockSupport;
 
 /**
@@ -28,8 +30,17 @@ import java.util.concurrent.locks.LockSupport;
 @Component
 @Slf4j
 public class TaskCenter implements InitializingBean {
-
-	private Deque<AlgReqDO> taskDeque = new ArrayDeque<>();
+	/**
+	 * 任务阻塞队列
+	 */
+	private final Deque<AlgReqDO> taskDeque = new ArrayDeque<>();
+	/**
+	 * 任务执行线程池
+	 */
+	private final ExecutorService executorService = Executors.newSingleThreadExecutor();
+	/**
+	 * 队列轮询线程
+	 */
 	private Thread taskThread;
 	@Resource
 	private AlgContext algContext;
@@ -38,7 +49,8 @@ public class TaskCenter implements InitializingBean {
 	@Resource
 	private MessageService messageService;
 
-	private Map<Long, TaskStateMachine> machineMap=new HashMap<>();
+
+	private Map<Long, TaskStateMachine> machineMap = new HashMap<>();
 
 	public void pushTask(AlgReqDO algReqDO) {
 		AdminInfo adminInfo = AdminContext.USER_INFO.get();
@@ -47,9 +59,10 @@ public class TaskCenter implements InitializingBean {
 				.ownerName(adminInfo.getUserName())
 				.algName(algReqDO.getAlgName())
 				.build();
+
 		taskService.save(taskPO);
 		algReqDO.setId(taskPO.getId());
-		machineMap.put(algReqDO.getId(),new TaskStateMachine());
+		machineMap.put(algReqDO.getId(), new TaskStateMachine());
 		taskDeque.offerLast(algReqDO);
 		// 唤醒任务线程执行
 		LockSupport.unpark(taskThread);
@@ -70,13 +83,16 @@ public class TaskCenter implements InitializingBean {
 				}
 				beforeExecute(algReqDO);
 				try {
-					String result = algContext.executeAlg(algReqDO);
-					afterRunning(algReqDO,result);
+					String result = obtainResult(algReqDO);
+					afterRunning(algReqDO, result);
+				} catch (TimeoutException e) {
+					log.error("任务执行超时", algReqDO.getId());
+					afterError(algReqDO);
 				} catch (Exception e) {
 					e.printStackTrace();
 					log.error(e.toString());
 					afterError(algReqDO);
-				}finally {
+				} finally {
 					afterComplete(algReqDO);
 				}
 			}
@@ -84,11 +100,18 @@ public class TaskCenter implements InitializingBean {
 		taskThread.start();
 	}
 
+	private String obtainResult(AlgReqDO algReqDO) throws ExecutionException, InterruptedException, TimeoutException {
+		Future<String> executeFuture = executorService.submit(() -> algContext.executeAlg(algReqDO));
+		Integer level = algReqDO.getTimeLevel();
+		TimeLevel time = TimeLevel.getTime(level);
+		return executeFuture.get(time.getTime(), time.getTimeUnit());
+	}
+
 	private void afterComplete(AlgReqDO algReqDO) {
 		TaskStateMachine taskStateMachine = machineMap.get(algReqDO.getId());
 		TaskStatusEnum status = taskStateMachine.getStatus();
 		if (!StringUtils.isBlank(algReqDO.getEmail())) {
-			noticeUser(algReqDO,status);
+			noticeUser(algReqDO, status);
 		}
 		machineMap.remove(algReqDO.getId());
 	}
@@ -104,7 +127,7 @@ public class TaskCenter implements InitializingBean {
 		taskService.updateById(failed);
 	}
 
-	private void afterRunning(AlgReqDO algReqDO,String result) {
+	private void afterRunning(AlgReqDO algReqDO, String result) {
 		TaskStateMachine taskStateMachine = machineMap.get(algReqDO.getId());
 		TaskStatusEnum status = taskStateMachine.execute(Action.FINISHED);
 		TaskPO success = TaskPO.builder()
@@ -127,10 +150,10 @@ public class TaskCenter implements InitializingBean {
 		taskService.updateById(running);
 	}
 
-	private void noticeUser(AlgReqDO algReqDO,TaskStatusEnum statusEnum) {
+	private void noticeUser(AlgReqDO algReqDO, TaskStatusEnum statusEnum) {
 		String email = algReqDO.getEmail();
-		String content="您在PNA-WEB站点提交的算法已结束，当前状态为:"+statusEnum.status();
-		messageService.senMail(email,Constant.MAIL_SUBJECT_ALG,content);
+		String content = "您在PNA-WEB站点提交的算法已结束，当前状态为:" + statusEnum.status();
+		messageService.senMail(email, Constant.MAIL_SUBJECT_ALG, content);
 	}
 
 	public void cancelTask(Long taskId) {
@@ -141,7 +164,7 @@ public class TaskCenter implements InitializingBean {
 					return;
 				}
 			}
-			throw new BizException(Constant.TASK_CANCEL_FAILED_CODE,Constant.TASK_CANCEL_FAILED_MESSAGE);
+			throw new BizException(Constant.TASK_CANCEL_FAILED_CODE, Constant.TASK_CANCEL_FAILED_MESSAGE);
 		}
 	}
 }

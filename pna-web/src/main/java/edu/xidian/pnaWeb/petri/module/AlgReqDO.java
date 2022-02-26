@@ -19,4 +19,5 @@ public class AlgReqDO {
 	private String algName;
 	private boolean cancel;
 	private String email;
+	private Integer timeLevel;
 }
