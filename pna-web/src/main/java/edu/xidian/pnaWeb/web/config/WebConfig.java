@@ -57,7 +57,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://127.0.0.1:8080", "http://82.157.55.18")
+				.allowedOrigins("http://127.0.0.1:8080", "http://82.157.55.18:9001","https://pna.codey.top","http://pna.codey.top")
 				.allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
 				.allowCredentials(true)
 				.maxAge(3600 * 24)

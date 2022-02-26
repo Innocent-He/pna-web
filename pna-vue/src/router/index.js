@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import FlowDesigner from '../components/FlowDesigner'
 
 Vue.use(Router)
 
@@ -14,5 +13,6 @@ export default new Router({
         title: "PNA-WEB"
       },
     },
-  ]
+  ],
+  mode:'history'
 })

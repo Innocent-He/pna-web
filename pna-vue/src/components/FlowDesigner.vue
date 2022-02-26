@@ -13,7 +13,6 @@
       ></CenterContent>
       <RightSide
         :flowData="flowData">
-
       </RightSide>
     </a-layout>
   </div>
@@ -636,7 +635,7 @@ $primary-color: #409EFF;
 .container {
   border: 2px solid #e4e7ed;
   height: 100%;
-
+  display: flex;
   moz-user-select: -moz-none;
   -moz-user-select: none;
   -o-user-select: none;
