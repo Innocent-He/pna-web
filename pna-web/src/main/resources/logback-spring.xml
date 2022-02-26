@@ -4,19 +4,14 @@
 
     <springProperty scope="context" name="LOG_PATH"  source="logging.path"/>
     <springProperty scope="context" name="APP_NAME" source="spring.application.name"/>
-
-
-
-    <property name="LOG_PATH" value="${logging.path}"/>    <!-- 日志存放目录 -->
-    <property name="APP_NAME" value="${project.name}"/> <!-- 项目目录，日志存放目录可能存放多个项目 -->
-<!--    <springProfile name="dev"></springProfile>-->
+<!--    <springProfile name="prod"></springProfile>-->
     <!-- error file 配置error级别相关的日志 -->
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${APP_NAME}/%d{yyyy-MM-dd}.error</file>    <!-- error日志目录路径+日志文件名 -->
+        <file>${LOG_PATH}/${APP_NAME}/error.log</file>    <!-- error日志目录路径+日志文件名 -->
         <!-- 文件存放策略，如果一个文件存放不下，怎么创建新的文件 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--日志文件的命名方式：%d：日期，日期格式；%i是变量，1、2、3等-->
-            <fileNamePattern>log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}/log-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>  <!-- 单个日志文件大小上限，大小到5MB后创建新日志文件存储 -->
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -38,9 +33,9 @@
     <!-- 各个级别的配置方式大同小异，注释参考error -->
     <!-- warn file -->
     <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${APP_NAME}/%d{yyyy-MM-dd}.warn</file>    <!-- error日志目录路径+日志文件名 -->
+        <file>${LOG_PATH}/${APP_NAME}/warn.log</file>    <!-- error日志目录路径+日志文件名 -->
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>log-warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${APP_NAME}/log-warn-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>5MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -84,7 +79,6 @@
         </filter>
     </appender>
 
-<!--    <logger name="edu.xidian.pnaWeb.petri" level="debug"/>   &lt;!&ndash; 单独声明哪个包下的日志是什么级别 &ndash;&gt;-->
 
     <root level="info"> <!-- 所有项目根目录的级别是info-->
         <!-- 最后，启用这些日志配置 -->
