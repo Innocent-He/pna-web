@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
  */
 @Builder
 @Data
-public class EventCircleInfo {
+public class EventCircleInfo implements AlgResult{
 	private List<List<Integer>> allCircles;
 	private List<List<Integer>> allEws;
 	private List<List<Integer>> allMinEws;
 	@Override
-	public String toString() {
+	public String display() {
 		StringBuilder res=new StringBuilder();
 		res.append("all EWS:\n");
 		for (int i = 0; i < allEws.size(); i++) {

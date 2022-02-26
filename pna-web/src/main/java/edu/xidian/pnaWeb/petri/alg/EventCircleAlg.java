@@ -28,8 +28,8 @@ public class EventCircleAlg implements AlgActuator {
 	}
 
 	@Override
-	public String execute(AlgReqDO algReqDO) {
-		return this.generateEventCircle(algReqDO.getPetriDO()).toString();
+	public AlgResult execute(AlgReqDO algReqDO) {
+		return this.generateEventCircle(algReqDO.getPetriDO());
 	}
 
 	public EventCircleInfo generateEventCircle(PetriDO petriDO) {

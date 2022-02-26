@@ -13,7 +13,7 @@ import java.util.*;
  */
 @Builder
 @Data
-public class ReachGraphInfo {
+public class ReachGraphInfo implements AlgResult{
 	private Map<Integer, StateNode> reachGraphMap;
 	private List<List<Integer>> stateFires;
 	private List<Set<Integer>> stateNotFires;
@@ -21,7 +21,7 @@ public class ReachGraphInfo {
 	private List<String> deadStatesStr;
 
 	@Override
-	public String toString() {
+	public String display() {
 		StringBuilder result = new StringBuilder();
 		for (int i = 0; i < reachGraphMap.size(); i++) {
 			StateNode stateNode = reachGraphMap.get(i);

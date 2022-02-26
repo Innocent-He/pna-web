@@ -2,6 +2,7 @@ package edu.xidian.pnaWeb.petri.alg;
 
 import com.alibaba.fastjson.JSON;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.AlgResult;
 import edu.xidian.pnaWeb.petri.module.PlaceNode;
 import edu.xidian.pnaWeb.petri.module.TranNode;
 import edu.xidian.pnaWeb.web.model.AttrDTO;
@@ -21,14 +22,14 @@ import java.util.*;
 public abstract class PetriNetAlg implements AlgActuator{
 	public static final Random RANDOM = new Random();
 
-	public String execute(AlgReqDO algReqDO) {
+	public AlgResult execute(AlgReqDO algReqDO) {
 		Map params = algReqDO.getParams();
 		Integer placeCount = (Integer) params.get("placeCount");
 		Integer tranCount = (Integer) params.get("tranCount");
 		return generateNet(placeCount,tranCount);
 	}
 
-	public String generateNet(Integer placeCount, Integer tranCount) {
+	public AlgResult generateNet(Integer placeCount, Integer tranCount) {
 		List<PlaceNode> placeNodes = new ArrayList<>();
 		List<TranNode> tranNodes = new ArrayList<>();
 
@@ -37,10 +38,10 @@ public abstract class PetriNetAlg implements AlgActuator{
 			nodeConnect(placeNodes, tranNodes);
 		} while (!this.algPostProcess(placeNodes, tranNodes));
 
-		return JSON.toJSONString(buildPetriData(placeNodes, tranNodes));
+		return buildPetriData(placeNodes, tranNodes);
 	}
 
-	private PetriDTO buildPetriData(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
+	private AlgResult buildPetriData(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
 		PetriDTO petriDTO = new PetriDTO();
 		paddingLink(placeNodes, petriDTO);
 		paddingAttr(petriDTO, placeNodes.size(), tranNodes.size());

@@ -17,16 +17,47 @@ import java.util.List;
 @Builder
 @Data
 public class StateNode implements Cloneable {
+
 	private boolean isChange ;
+	/**
+	 * 距离死锁的距离
+	 */
 	private int toDeadDistance;
+	/**
+	 * 库所标识
+	 */
 	private int[] state;
+	/**
+	 * 状态编号
+	 */
 	private int stateNo;
+	/**
+	 * 是否为死区状态
+	 */
 	private boolean isDeadlock ;
+	/**
+	 * 父状态节点
+	 */
 	private List<StateNode> parentNodes;
+	/**
+	 * 子状态节点
+	 */
 	private List<StateNode> childNodes;
+	/**
+	 * 深度
+	 */
 	private int depth;
+	/**
+	 * 是否为强鲁棒
+	 */
 	private boolean stronglyRobust ;
+	/**
+	 * 是否为弱鲁棒
+	 */
 	private boolean weaklyRobust ;
+	/**
+	 * 是否为非鲁棒
+	 */
 	private boolean noRobust ;
 
 	public boolean equals(Object o) {

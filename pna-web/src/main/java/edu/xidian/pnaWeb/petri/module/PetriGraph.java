@@ -14,8 +14,20 @@ import java.util.Set;
 @Builder
 @Data
 public class PetriGraph {
+	/**
+	 * 库所与它的的后置变迁集合
+	 */
 	Map<Integer, Set<Integer>> placePostGraph;
+	/**
+	 * 变迁与它的的后置库所集合
+	 */
 	Map<Integer, Set<Integer>> tranPostGraph;
+	/**
+	 * 库所与它的的前置变迁集合
+	 */
 	Map<Integer, Set<Integer>> placePreGraph;
+	/**
+	 * 变迁与它的的前置库所集合
+	 */
 	Map<Integer, Set<Integer>> tranPreGraph;
 }

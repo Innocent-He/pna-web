@@ -1,5 +1,7 @@
 package edu.xidian.pnaWeb.web.model;
 
+import com.alibaba.fastjson.JSON;
+import edu.xidian.pnaWeb.petri.module.AlgResult;
 import lombok.*;
 
 import java.io.Serializable;
@@ -16,7 +18,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PetriDTO implements Serializable {
+public class PetriDTO implements AlgResult,Serializable {
 	/**
 	 * petri网属性
 	 */
@@ -29,4 +31,7 @@ public class PetriDTO implements Serializable {
 	 * 连接弧列表
 	 */
 	private List<LinkDTO> linkList;
+	public String display() {
+		return JSON.toJSONString(this);
+	}
 }

@@ -13,12 +13,11 @@ import java.util.List;
  */
 @Data
 @Builder
-public class SimphonInfo {
+public class SimphonInfo implements AlgResult{
 	private List<List<Integer>> simphons;
 	private List<List<Integer>> strictSimphons;
-
 	@Override
-	public String toString() {
+	public String display() {
 		StringBuilder res=new StringBuilder();
 		res.append("all simphons:").append("\n");
 

@@ -3,6 +3,7 @@ package edu.xidian.pnaWeb.petri.context;
 import com.google.common.collect.Lists;
 import edu.xidian.pnaWeb.petri.alg.AlgActuator;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.AlgResult;
 import edu.xidian.pnaWeb.web.enums.Constant;
 import edu.xidian.pnaWeb.web.exception.BizException;
 import org.springframework.beans.BeansException;
@@ -23,7 +24,7 @@ public class AlgContext implements ApplicationContextAware {
 
 	private List<AlgActuator> algActuators;
 
-	public String executeAlg(AlgReqDO algReqDO) {
+	public AlgResult executeAlg(AlgReqDO algReqDO) {
 		for (AlgActuator algActuator : algActuators) {
 			if (algActuator.apply(algReqDO)) {
 				return algActuator.execute(algReqDO);

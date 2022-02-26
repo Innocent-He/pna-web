@@ -4,6 +4,7 @@ import edu.xidian.pnaWeb.petri.context.state.Action;
 import edu.xidian.pnaWeb.petri.context.state.TaskStateMachine;
 import edu.xidian.pnaWeb.petri.context.state.TaskStatusEnum;
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.AlgResult;
 import edu.xidian.pnaWeb.petri.module.TimeLevel;
 import edu.xidian.pnaWeb.web.dao.po.TaskPO;
 import edu.xidian.pnaWeb.web.enums.Constant;
@@ -101,10 +102,10 @@ public class TaskCenter implements InitializingBean {
 	}
 
 	private String obtainResult(AlgReqDO algReqDO) throws ExecutionException, InterruptedException, TimeoutException {
-		Future<String> executeFuture = executorService.submit(() -> algContext.executeAlg(algReqDO));
+		Future<AlgResult> executeFuture = executorService.submit(() -> algContext.executeAlg(algReqDO));
 		Integer level = algReqDO.getTimeLevel();
 		TimeLevel time = TimeLevel.getTime(level);
-		return executeFuture.get(time.getTime(), time.getTimeUnit());
+		return executeFuture.get(time.getTime(), time.getTimeUnit()).display();
 	}
 
 	private void afterComplete(AlgReqDO algReqDO) {

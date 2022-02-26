@@ -1,6 +1,7 @@
 package edu.xidian.pnaWeb.petri.alg;
 
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.AlgResult;
 import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.petri.module.SimphonInfo;
 import edu.xidian.pnaWeb.petri.util.PetriUtils;
@@ -67,8 +68,7 @@ public class SimphonAlg implements AlgActuator{
 	}
 
 	@Override
-	public String execute(AlgReqDO algReqDO) {
-		SimphonInfo simphonInfo = this.generateSimphon(algReqDO.getPetriDO());
-		return simphonInfo.toString();
+	public AlgResult execute(AlgReqDO algReqDO) {
+		return this.generateSimphon(algReqDO.getPetriDO());
 	}
 }

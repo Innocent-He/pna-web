@@ -1,6 +1,7 @@
 package edu.xidian.pnaWeb.petri.alg;
 
 import edu.xidian.pnaWeb.petri.module.AlgReqDO;
+import edu.xidian.pnaWeb.petri.module.AlgResult;
 
 /**
  * @Description
@@ -9,5 +10,5 @@ import edu.xidian.pnaWeb.petri.module.AlgReqDO;
  */
 public interface AlgActuator {
 	public boolean apply(AlgReqDO algReqDO);
-	public String execute(AlgReqDO algReqDO);
+	public AlgResult execute(AlgReqDO algReqDO);
 }

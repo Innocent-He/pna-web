@@ -22,21 +22,37 @@ import java.util.stream.IntStream;
 public class FwDeadPredAlg implements AlgActuator{
 	@Resource
 	private EventCircleAlg eventCircleAlg;
-	//	可达图序号
+	/**
+	 * 可达图序号
+	 */
 	private int stateNo = 1;
-	//存放每个状态序号及其详情的map
+	/**
+	 * 存放每个状态序号及其详情的map
+	 */
 	private Map<Integer, StateNode> reachGraphMap;
-	//存放每个状态下可以发射的变迁集合
+	/**
+	 * 存放每个状态下可以发射的变迁集合
+	 */
 	private List<List<Integer>> stateFire;
-	//	存放每个状态下不能发射的变迁集合
+	/**
+	 * 存放每个状态下不能发射的变迁集合
+	 */
 	private List<Set<Integer>> stateNotFire;
-	// 存放所有死区标识的字符串
+	/**
+	 * 存放所有死区标识的字符串
+	 */
 	private List<String> deadStatesStr;
-	// 存放所有死区标识
+	/**
+	 * 存放所有死区标识
+	 */
 	private List<StateNode> deadStates;
-	// 每个状态唯一标识key，及其状态详情
+	/**
+	 * 每个状态唯一标识key，及其状态详情
+	 */
 	private Map<ReachableGraphAlg.StateKey, StateNode> happened;
-	// 事件循环等待信息
+	/**
+	 * 事件循环等待信息
+	 */
 	private EventCircleInfo eventCircleInfo;
 
 
@@ -262,8 +278,7 @@ public class FwDeadPredAlg implements AlgActuator{
 	}
 
 	@Override
-	public String execute(AlgReqDO algReqDO) {
-		DeadPredInfo deadPredInfo = this.generateReachWithPred(algReqDO.getPetriDO());
-		return deadPredInfo.toString();
+	public AlgResult execute(AlgReqDO algReqDO) {
+		return this.generateReachWithPred(algReqDO.getPetriDO());
 	}
 }

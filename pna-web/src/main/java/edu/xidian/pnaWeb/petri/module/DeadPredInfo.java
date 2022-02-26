@@ -14,11 +14,11 @@ import java.util.List;
  * @Date 2022/2/13 19:46
  */
 @Data
-public class DeadPredInfo {
+public class DeadPredInfo implements AlgResult{
 	private List<PredInfo> predInfos=new ArrayList<>();
 
 	@Override
-	public String toString() {
+	public String display() {
 		StringBuilder sb=new StringBuilder();
 		for (PredInfo predInfo : predInfos) {
 			StateNode stateNode = predInfo.getStateNode();

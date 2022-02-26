@@ -11,8 +11,14 @@ import java.util.Set;
  * @Author He
  * @Date 2022/2/23 22:40
  */
-public class DependInfo {
+public class DependInfo implements AlgResult{
 	private List<DependTransInfo> dependInfos;
+
+	@Override
+	public String display() {
+		return null;
+	}
+
 	@Builder
 	static class DependTransInfo {
 		private List<Set<Integer>> initialDependTrans;

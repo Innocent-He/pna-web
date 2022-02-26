@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * @Description 死锁预测
+ * @Description 多步向后死锁预测算法
  * @Author He
  * @Date 2021/12/21 10:56
  */
@@ -176,8 +176,7 @@ public class BwDeadPredAlg implements AlgActuator {
 	}
 
 	@Override
-	public String execute(AlgReqDO algReqDO) {
-		DeadPredInfo deadPredInfo = this.generateReachWithPred(algReqDO.getPetriDO());
-		return deadPredInfo.toString();
+	public AlgResult execute(AlgReqDO algReqDO) {
+		return this.generateReachWithPred(algReqDO.getPetriDO());
 	}
 }

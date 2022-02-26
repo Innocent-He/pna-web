@@ -1,10 +1,7 @@
 package edu.xidian.pnaWeb.petri.alg;
 
 import com.google.common.collect.Sets;
-import edu.xidian.pnaWeb.petri.module.AlgReqDO;
-import edu.xidian.pnaWeb.petri.module.EventCircleInfo;
-import edu.xidian.pnaWeb.petri.module.PetriDO;
-import edu.xidian.pnaWeb.petri.module.PetriGraph;
+import edu.xidian.pnaWeb.petri.module.*;
 import edu.xidian.pnaWeb.petri.util.PetriUtils;
 import lombok.Builder;
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +32,7 @@ public class DependTranAlg implements AlgActuator {
 	}
 
 	@Override
-	public String execute(AlgReqDO algReqDO) {
+	public AlgResult execute(AlgReqDO algReqDO) {
 		method(algReqDO.getPetriDO());
 		return null;
 	}

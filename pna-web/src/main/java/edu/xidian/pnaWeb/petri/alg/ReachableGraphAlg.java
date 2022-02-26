@@ -1,9 +1,6 @@
 package edu.xidian.pnaWeb.petri.alg;
 
-import edu.xidian.pnaWeb.petri.module.AlgReqDO;
-import edu.xidian.pnaWeb.petri.module.PetriDO;
-import edu.xidian.pnaWeb.petri.module.ReachGraphInfo;
-import edu.xidian.pnaWeb.petri.module.StateNode;
+import edu.xidian.pnaWeb.petri.module.*;
 import edu.xidian.pnaWeb.petri.util.PetriUtils;
 import lombok.Builder;
 import lombok.Data;
@@ -118,9 +115,8 @@ public class ReachableGraphAlg implements AlgActuator{
 	}
 
 	@Override
-	public String execute(AlgReqDO algReqDO) {
-		ReachGraphInfo reachGraphInfo = this.generateReachGraph(algReqDO.getPetriDO());
-		return reachGraphInfo.toString();
+	public AlgResult execute(AlgReqDO algReqDO) {
+		return this.generateReachGraph(algReqDO.getPetriDO());
 	}
 
 	@Builder
