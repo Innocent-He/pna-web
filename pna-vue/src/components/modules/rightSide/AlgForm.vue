@@ -54,7 +54,7 @@ export default {
           step: null,
         },
         algName: '',
-        timeLevel:1,
+        timeLevel:0,
         petri: this.flowData,
         email: this.email,
       },

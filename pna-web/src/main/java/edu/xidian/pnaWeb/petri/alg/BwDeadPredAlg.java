@@ -169,7 +169,7 @@ public class BwDeadPredAlg implements AlgActuator {
 
 	@Override
 	public boolean apply(AlgReqDO algReqDO) {
-		if (StringUtils.equals(algReqDO.getAlgName(), "deadPred")) {
+		if (StringUtils.equals(algReqDO.getAlgName(), "bwDeadPred")) {
 			return true;
 		}
 		return false;

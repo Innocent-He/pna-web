@@ -105,16 +105,24 @@ public class EventCircleAlg implements AlgActuator {
 
 	private void dfsFindCircle(Set<Integer> viewed, Deque<Integer> stack, int curId, List<List<Integer>> allCircle, PetriGraph petriGraph, boolean isTran) {
 		if (isTran) viewed.add(curId);
-		if (isTran && stack.contains(curId)) {
+		if (stack.contains(curId)) {
 			stack.push(curId);
-			List<Integer> circle = new ArrayList<>(stack).stream().map(id -> {
+			List<Integer> circle = new ArrayList<>(stack);
+			if (isTran) {
+				dealCircle(circle);
+
+			}else{
+				dealCircle(circle);
+				circle.remove(0);
+				circle.add(circle.get(0));
+			}
+			List<Integer> result = circle.stream().map(id -> {
 				if (id >= petriGraph.getTranPostGraph().size()) {
 					return id - petriGraph.getTranPostGraph().size();
 				}
 				return id;
 			}).collect(Collectors.toList());
-			dealCircle(circle);
-			allCircle.add(circle);
+			allCircle.add(result);
 			stack.pop();
 			return;
 		}

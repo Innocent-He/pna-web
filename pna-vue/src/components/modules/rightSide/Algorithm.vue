@@ -16,7 +16,14 @@
       <a-icon type="share-alt"/>
       Dead Pred
     </a-button>
-
+    <a-button id="algBtn" type="primary" @click="activeAlgModel('fwDeadPred')">
+      <a-icon type="share-alt"/>
+      Dead Pred-FW
+    </a-button>
+    <a-button id="algBtn" type="primary" @click="activeAlgModel('bwDeadPred')">
+      <a-icon type="share-alt"/>
+      Dead Pred-BW
+    </a-button>
     <a-button id="algBtn" type="primary" @click="activeAlgModel('test')">
       <a-icon type="share-alt"/>
       Test

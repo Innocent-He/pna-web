@@ -1,9 +1,11 @@
 package edu.xidian.pnaWeb.petri.alg;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import edu.xidian.pnaWeb.petri.module.*;
 import edu.xidian.pnaWeb.petri.util.PetriUtils;
 import lombok.Builder;
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -28,67 +30,64 @@ public class DependTranAlg implements AlgActuator {
 
 	@Override
 	public boolean apply(AlgReqDO algReqDO) {
-		return StringUtils.equals(algReqDO.getAlgName(), "test");
+		return StringUtils.equals(algReqDO.getAlgName(), "fwDeadPred");
 	}
 
 	@Override
 	public AlgResult execute(AlgReqDO algReqDO) {
-		method(algReqDO.getPetriDO());
-		return null;
+		return method(algReqDO.getPetriDO());
 	}
 
 	private PetriGraph petriGraph;
 
-	public void method(PetriDO petriDO) {
+	public AlgResult method(PetriDO petriDO) {
 		this.petriGraph = PetriUtils.buildPetriGraph(petriDO);
 		this.eventCircleInfo = eventCircleAlg.generateEventCircle(petriDO);
 		List<List<Integer>> allCircles = eventCircleInfo.getAllCircles();
 		PetriGraph petriGraph = PetriUtils.buildPetriGraph(petriDO);
 		Map<Integer, Set<Integer>> placePre = petriGraph.getPlacePreGraph();
 		Map<Integer, Set<Integer>> tranPre = petriGraph.getTranPreGraph();
+		List<DependInfo.EWSDependInfo> dependInfos= Lists.newArrayList();
 		for (List<Integer> circle : allCircles) {
 			List<Integer> ews = new ArrayList<>();
 			for (int i = 0; i < circle.size(); i += 2) {
 				ews.add(circle.get(i));
 			}
+			Map<Integer, List<Set<Integer>>> result = new HashMap<>();
+			DependInfo.EWSDependInfo.Builder builder = DependInfo.EWSDependInfo.builder().ews(ews);
+
 			for (int i = 0; i < circle.size(); i++) {
-				Map<Integer, List<Set<Integer>>> result = new HashMap<>();
 				List<Set<Integer>> initialDepend;
+				Integer nodeId = circle.get(i);
 				if (isTran(i)) {
-					if (tranPre.get(circle.get(i)).size() > 1) {
-						findDepend(circle.get(i), Sets.newHashSet(), false, ews, result);
+					if (tranPre.get(nodeId).size() > 1) {
+						findDepend(nodeId, Sets.newHashSet(), false, ews, result);
 					}
-					initialDepend = result.get(circle.get(i));
+					if (!CollectionUtils.isEmpty(result.get(nodeId))) {
+						builder.addSyncDependTrans(result.get(nodeId),result);
+					}
 				} else {
-					if (placePre.get(circle.get(i)).size() > 1) {
-						findDepend(circle.get(i), Sets.newHashSet(), true, ews, result);
+					if (placePre.get(nodeId).size() > 1) {
+						findDepend(nodeId, Sets.newHashSet(), true, ews, result);
 					}
-					Set<Integer> directDepend = placePre.get(circle.get(i))
+					Set<Integer> directDepend = placePre.get(nodeId)
 							.stream()
 							.filter(tran -> !ews.contains(tran))
 							.collect(Collectors.toSet());
 					initialDepend = new ArrayList<>();
 					initialDepend.add(directDepend);
-				}
-				if (!CollectionUtils.isEmpty(result)) {
-					DependTransInfo.builder()
-							.initialDependTrans(initialDepend)
-							.dependTrans(result)
-							.node(circle.get(i))
-							.ews(ews);
+					if (!CollectionUtils.isEmpty(initialDepend)) {
+						builder.addSelectDependTrans(initialDepend, result);
+					}
 				}
 			}
+			DependInfo.EWSDependInfo ewsDependInfo = builder.build();
+			dependInfos.add(ewsDependInfo);
 		}
+		DependInfo dependInfo = new DependInfo();
+		dependInfo.setDependInfos(dependInfos);
+		return dependInfo;
 	}
-
-	@Builder
-	static class DependTransInfo {
-		private List<Set<Integer>> initialDependTrans;
-		private List<Integer> ews;
-		private Integer node;
-		private Map<Integer, List<Set<Integer>>> dependTrans;
-	}
-
 	public Set<Integer> findDepend(Integer nodeId, Set<Integer> path, boolean isPlace, List<Integer> ews, Map<Integer, List<Set<Integer>>> result) {
 		if (isPlace) {
 			Map<Integer, Set<Integer>> placePre = petriGraph.getPlacePreGraph();
@@ -104,7 +103,11 @@ public class DependTranAlg implements AlgActuator {
 		}
 		List<Set<Integer>> curRes = new ArrayList<>();
 		Map<Integer, Set<Integer>> tranPreGraph = petriGraph.getTranPreGraph();
-		for (Integer place : tranPreGraph.get(nodeId)) {
+		outer:for (Integer place : tranPreGraph.get(nodeId)) {
+			Map<Integer, Set<Integer>> placePreGraph = petriGraph.getPlacePreGraph();
+			for (Integer tran : ews) {
+				if (placePreGraph.get(place).contains(tran)) continue outer;
+			}
 			Set<Integer> dependTran = findDepend(place, path, true, ews, result);
 			// 如果变迁的几个库所的前置前边存在“违规”则跳过
 			if (CollectionUtils.isEmpty(dependTran)) return null;

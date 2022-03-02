@@ -1,5 +1,7 @@
 server:
   port: 9001
+  tomcat:
+    uri-encoding: UTF-8
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource

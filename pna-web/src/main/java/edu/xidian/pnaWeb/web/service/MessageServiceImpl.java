@@ -22,7 +22,6 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public void senMail(String targetEmail, String subject,String content) {
-		//todo 测试是否发送成功
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		simpleMailMessage.setFrom(fromEmail);
 		simpleMailMessage.setTo(targetEmail);
