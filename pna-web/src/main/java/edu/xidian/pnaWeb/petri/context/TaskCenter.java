@@ -60,7 +60,6 @@ public class TaskCenter implements InitializingBean {
 				.ownerName(adminInfo.getUserName())
 				.algName(algReqDO.getAlgName())
 				.build();
-
 		taskService.save(taskPO);
 		algReqDO.setId(taskPO.getId());
 		machineMap.put(algReqDO.getId(), new TaskStateMachine());

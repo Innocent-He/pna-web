@@ -28,6 +28,10 @@
       <a-icon type="share-alt"/>
       Test
     </a-button>
+    <a-button id="algBtn" type="primary" @click="activeAlgModel('dead')">
+      <a-icon type="share-alt"/>
+      EventWait
+    </a-button>
     <AlgForm ref="algform" :flowData="flowData" :activeAlg="activeAlg">
       <template slot="alg" slot-scope="props">
         <template v-if="activeAlg=='reach'">
