@@ -1,0 +1,22 @@
+//gitlab的凭证
+def tag = "latest"
+def git_auth = "b280ac3c-a887-41eb-83f8-1cb1c13cbc93"
+node {
+    stage('拉取代码') {
+        checkout([$class: 'GitSCM', branches: [[name: '*/master']],
+                    doGenerateSubmoduleConfigurations: false,
+                    extensions: [],
+                    submoduleCfg: [],
+                    userRemoteConfigs: [[credentialsId: "${git_auth}",
+                    url: 'git@github.com:Innocent-He/pna-web.git']]
+        ])
+    }
+    stage('编译，构建镜像') {
+        //定义镜像名称
+        def imageName = "${project_name}:${tag}"
+        //编译，安装公共工程
+        sh "mvn -f tensquare_common clean install"
+        //编译，构建本地镜像
+        sh "mvn -f ${project_name} clean package dockerfile:build"
+    }
+}

@@ -26,7 +26,7 @@ import java.nio.charset.Charset;
 public class AdminInfoInterceptor implements HandlerInterceptor {
 
 	@Override
-	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) {
 		try {
 			if (!StpUtil.isLogin()) {
 				ServletOutputStream outputStream = httpServletResponse.getOutputStream();
@@ -37,9 +37,8 @@ public class AdminInfoInterceptor implements HandlerInterceptor {
 				outputStream.close();
 				return false;
 			}
-			String token = StpUtil.getTokenValue();
-			SaSession sessionByToken = StpUtil.getTokenSessionByToken(token);
-			AdminInfo admin= (AdminInfo) sessionByToken.get("admin");
+			SaSession sessionByToken = StpUtil.getTokenSession();
+			AdminInfo admin = (AdminInfo) sessionByToken.get("admin");
 			AdminContext.USER_INFO.set(admin);
 			return true;
 		} catch (Exception e) {
@@ -50,13 +49,13 @@ public class AdminInfoInterceptor implements HandlerInterceptor {
 
 	private void extendTimeout(HttpServletRequest httpServletRequest) {
 		long tokenTimeout = StpUtil.getTokenTimeout();
-		// saToken续签token时未延长cookie过期时间，因此在这里需要对cookie过期时间操作
-		if (tokenTimeout < 60 * 60 * 24) {
+		// saToken续签token时未延长cookie过期时间，因此在这里需要对cookie过期时间延长
+		if (tokenTimeout < 60 * 60 * 24 * 15) {
 			StpUtil.updateLastActivityToNow();
 			Cookie[] cookies = httpServletRequest.getCookies();
 			for (Cookie cookie : cookies) {
 				if (StringUtils.equals(cookie.getName(), "pna-token")) {
-					cookie.setMaxAge(60*60*24*30);
+					cookie.setMaxAge(60 * 60 * 24 * 30);
 					return;
 				}
 			}

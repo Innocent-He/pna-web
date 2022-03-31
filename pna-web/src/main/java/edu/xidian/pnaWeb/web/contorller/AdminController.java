@@ -1,5 +1,6 @@
 package edu.xidian.pnaWeb.web.contorller;
 
+import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import edu.xidian.pnaWeb.web.model.AdminContext;
 import edu.xidian.pnaWeb.web.model.AdminInfo;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Objects;
 
 /**
  * @Description
@@ -49,7 +51,9 @@ public class AdminController {
 	 */
 	@GetMapping("/userInfo")
 	public Response<AdminInfo> userInfo() {
-		return Response.success(AdminContext.USER_INFO.get());
+		SaSession tokenSession = StpUtil.getTokenSession();
+		AdminInfo admin =(AdminInfo) tokenSession.get("admin");
+		return Response.success(admin);
 	}
 
 	@GetMapping("/ip")

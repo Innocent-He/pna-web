@@ -60,7 +60,8 @@ mybatis-plus:
 sa-token:
   token-style: uuid
   token-name: pna-token
-#  id-token-timeout:
+  # 默认一天过期时间，修改为一个月，单位秒
+  id-token-timeout: 2626560
   is-read-body: false
   is-read-head: false
 logging:

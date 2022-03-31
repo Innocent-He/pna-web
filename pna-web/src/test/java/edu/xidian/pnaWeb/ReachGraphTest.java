@@ -4,7 +4,9 @@ import edu.xidian.pnaWeb.petri.alg.AcNetAlg;
 import edu.xidian.pnaWeb.petri.alg.PetriNetAlg;
 import edu.xidian.pnaWeb.petri.alg.ReachableGraphAlg;
 import edu.xidian.pnaWeb.web.model.PetriDTO;
+import org.assertj.core.util.Lists;
 import org.junit.Test;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.io.BufferedReader;
@@ -13,10 +15,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.IntStream;
 
@@ -103,5 +102,13 @@ public class ReachGraphTest {
 		} catch (TimeoutException e) {
 			e.printStackTrace();
 		}
+	}
+	@Test
+	public void collectionTest(){
+		ArrayList<Integer> a = Lists.newArrayList(1, 2, 3);
+		ArrayList<Integer> b = Lists.newArrayList(1, 2, 3);
+
+		System.out.println(a.equals(b));
+
 	}
 }

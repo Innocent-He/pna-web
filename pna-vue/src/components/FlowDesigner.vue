@@ -151,7 +151,7 @@ export default {
         that.saveFlow();
       })
       that.$bus.$on('loginTemp', () => {
-        that.loginTempAdmin();
+        that.acquireAdminInfo();
       })
     },
     clearEventListener() {
@@ -322,7 +322,7 @@ export default {
         return "关闭提示";
       };
     },
-    loginTempAdmin() {
+    acquireAdminInfo() {
       let that = this;
       let cookie = that.$cookies.get('pna-token')
       if (!cookie) {
@@ -342,7 +342,7 @@ export default {
     },
     initFlow() {
       const that = this;
-      that.loginTempAdmin();
+      that.acquireAdminInfo();
       if (that.flowData.status == flowConfig.flowStatus.CREATE) {
         that.flowData.attr.name = "flow-" + Utils.getId();
         that.flowData.attr.createTime = new Date().format("yyyy-MM-dd hh:mm:ss");
