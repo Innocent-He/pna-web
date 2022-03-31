@@ -12,11 +12,19 @@ node {
         ])
     }
     stage('编译，构建镜像') {
-        //定义镜像名称
-        def imageName = "${project_name}:${tag}"
-        //编译，安装公共工程
-        sh "mvn -f tensquare_common clean install"
         //编译，构建本地镜像
-        sh "mvn -f ${project_name} clean package dockerfile:build"
+        sh "mvn -f pna-web  clean package"
+        sh "sh ./pna-web/pna-start.sh"
+    }
+    stage('打包，部署前端'){
+        nodejs('nodejs16'){
+            sh '''
+                cd ./pna-vue
+                npm install
+                npm run build
+                mv -fu ./dist/* /usr/local/html/pna
+            '''
+        }
+
     }
 }

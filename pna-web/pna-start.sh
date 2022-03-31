@@ -1,5 +1,5 @@
 #源jar路径
-SOURCE_PATH=/usr/local/docker/pna-web
+SOURCE_PATH=/root/.jenkins/workspace/pna/pna-web
 #docker 镜像/容器名字或者jar名字 这里都命名为这个
 SERVER_NAME=pna-web-0.0.1.jar
 TAG=latest
