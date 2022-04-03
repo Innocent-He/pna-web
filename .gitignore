@@ -1,7 +1,6 @@
 #project
 logs
 .log
-package-lock.json
 ### Maven ###
 mvnw
 HELP.md
