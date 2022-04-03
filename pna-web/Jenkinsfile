@@ -25,6 +25,5 @@ node {
                 mv -fu ./dist/* /usr/local/html/pna
             '''
         }
-
     }
 }
