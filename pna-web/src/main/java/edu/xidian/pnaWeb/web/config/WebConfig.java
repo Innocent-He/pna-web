@@ -23,22 +23,12 @@ import java.util.List;
  */
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-	//	/**
-//	 * 注入一个ServerEndpointExporter,该Bean会自动注册使用@ServerEndpoint注解申明的websocket endpoint
-//	 */
-//	@Bean
-//	public ServerEndpointExporter serverEndpointExporter() {
-//		return new ServerEndpointExporter();
-//	}
-
-
-
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new AdminInfoInterceptor())
 				.addPathPatterns("/*")
-				.excludePathPatterns("/login", "/ip", "/register", "/logout");
+				.excludePathPatterns("/login", "/ip", "/register", "/logout","/error");
 	}
 
 	/**
@@ -49,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://127.0.0.1:8080","https://pna.codey.top","http://pna.codey.top")
+				.allowedOrigins("http://127.0.0.1:8080","http://localhost:8080","https://pna.codey.top","http://pna.codey.top")
 				.allowedMethods("GET", "HEAD", "POST", "PUT", "DELETE", "OPTIONS")
 				.allowCredentials(true)
 				.maxAge(3600 * 24)

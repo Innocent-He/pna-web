@@ -52,6 +52,7 @@ export default {
           tranCount:0,
           placeCount:0,
           step: null,
+          sync:"",
         },
         algName: '',
         timeLevel:0,

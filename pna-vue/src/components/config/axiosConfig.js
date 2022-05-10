@@ -1,12 +1,13 @@
 import axios from "axios";  //导入axios
 import notification from "ant-design-vue/es/notification";
 
-if (process.env.NODE_ENV == 'development') {
-  axios.defaults.baseURL = 'http://127.0.0.1:8080';}
-else if (process.env.NODE_ENV == 'dev') {
-  axios.defaults.baseURL = 'https://127.0.0.1:9001';
-}
-else if (process.env.NODE_ENV == 'production') {
+// if (process.env.NODE_ENV === 'development') {
+//   axios.defaults.baseURL = 'http://localhost:9001';}
+// else if (process.env.NODE_ENV === 'dev') {
+//   axios.defaults.baseURL = 'http://localhost:9001';
+// }
+// else if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   axios.defaults.baseURL = 'https://pna.codey.top';
 }
 

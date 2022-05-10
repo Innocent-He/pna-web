@@ -1,6 +1,7 @@
 package edu.xidian.pnaWeb.petri.util;
 
 
+import com.google.common.collect.Sets;
 import edu.xidian.pnaWeb.petri.module.PetriDO;
 import edu.xidian.pnaWeb.petri.module.PetriGraph;
 
@@ -34,9 +35,45 @@ public class PetriUtils {
 		return res;
 	}
 
+	public static boolean judgeCanFire(int[][] preMatrix, int tran, int[] marking) {
+		for (int i = 0; i < preMatrix.length; i++) {
+			if (marking[i] < preMatrix[i][tran]) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static List<Set<Integer>> getCanFireWithSync(int[][] preMatrix, int[] markings, Map<Integer, Set<Integer>> sync) {
+		List<Set<Integer>> res = new ArrayList<>();
+		Set<Integer> temp = new HashSet<>();
+		outer:
+		for (int j = 0; j < preMatrix[0].length; j++) {
+			for (int i = 0; i < preMatrix.length; i++) {
+				if (markings[i] < preMatrix[i][j]) {
+					continue outer;
+				}
+			}
+			temp.add(j);
+		}
+		for (Integer tran : temp) {
+			if (sync == null) {
+				res.add(Sets.newHashSet(tran));
+			} else {
+				Set<Integer> syncTrans = sync.get(tran);
+				Set<Integer> fireTrans = new HashSet<>();
+				if (syncTrans != null) {
+					fireTrans.addAll(syncTrans);
+				}
+				fireTrans.add(tran);
+				res.add(fireTrans);
+			}
+		}
+		return res;
+	}
+
 	/**
 	 * 变迁发射，修改各个库所的token值
-	 *
 	 * @param postMatrix 后置变迁
 	 * @param preMatrix  前置变迁
 	 * @param fireTranId 发射的变迁id
@@ -177,7 +214,8 @@ public class PetriUtils {
 		dfsCircle(stack, allCircles, postTranGraph);
 	}
 
-	private static void dfsCircle(Deque<Integer> stack, List<List<Integer>> allCircles, Map<Integer, Set<Integer>> postTranGraph) {
+	private static void dfsCircle
+			(Deque<Integer> stack, List<List<Integer>> allCircles, Map<Integer, Set<Integer>> postTranGraph) {
 		Integer peek = stack.peek();
 		for (Integer postTran : postTranGraph.get(peek)) {
 			if (stack.contains(postTran)) {

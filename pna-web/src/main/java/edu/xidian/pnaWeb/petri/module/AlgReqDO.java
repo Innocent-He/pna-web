@@ -20,7 +20,7 @@ public class AlgReqDO {
 	/**
 	 * 当前请求参数
 	 */
-	private Map params;
+	private Map<String,Object> params;
 	/**
 	 * Petri网模型数据
 	 */

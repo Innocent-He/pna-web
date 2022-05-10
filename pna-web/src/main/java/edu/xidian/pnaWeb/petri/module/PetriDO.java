@@ -33,11 +33,11 @@ public class PetriDO {
 	 */
 	private String name;
 	/**
-	 * 前置矩阵
+	 * 前置矩阵 p->t
 	 */
 	private int[][] preMatrix;
 	/**
-	 * 后置矩阵
+	 * 后置矩阵 t->p
 	 */
 	private int[][] postMatrix;
 	/**

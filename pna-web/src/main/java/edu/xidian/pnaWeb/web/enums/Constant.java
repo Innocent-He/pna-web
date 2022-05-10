@@ -36,6 +36,7 @@ public class Constant {
 	public static final String NO_SUCH_ALG_CODE="512";
 	public static final String TASK_CANCEL_FAILED_CODE="513";
 	public static final String STATE_TRAN_CODE="514";
+	public static final String REQUEST_PARAM_CODE="515";
 
 
 	/**
@@ -50,6 +51,7 @@ public class Constant {
 	public static final String NO_SUCH_ALG_MESSAGE="当前算法还没实现";
 	public static final String TASK_CANCEL_FAILED_MESSAGE="任务取消失败，可能已经在执行";
 	public static final String STATE_TRAN_CODE_MESSAGE="任务状态变化失败";
+	public static final String REQUEST_PARAM_MESSAGE="请求参数格式错误";
 
 
 

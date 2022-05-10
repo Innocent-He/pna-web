@@ -32,8 +32,7 @@ import Admin from "./Admin";
 import TaskList from "./TaskList";
 import AlgForm from "./AlgForm"
 import Algorithm from "./Algorithm";
-import LoginModel from "../admin/LoginModel";
-import RegisterModel from "../admin/RegisterModel";
+
 export default {
   name: "RightSide",
   props:['flowData'],

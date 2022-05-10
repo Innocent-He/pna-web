@@ -41,6 +41,12 @@
               placeholder="Please enter number of transmit steps"
             />
           </a-form-model-item>
+          <a-form-model-item label="同步变迁:">
+            <a-input
+              v-model="props.data.params.sync"
+              placeholder="Please sync transmits"
+            />
+          </a-form-model-item>
         </template>
 
         <template v-else-if="activeAlg=='simphon'">
@@ -92,7 +98,13 @@ export default {
   },
   data() {
     return {
+      syncTrans:[],
       activeAlg: '',
+      provinceData: ['Zhejiang', 'Jiangsu'],
+      cityData: {
+        Zhejiang: ['Hangzhou', 'Ningbo', 'Wenzhou'],
+        Jiangsu: ['Nanjing', 'Suzhou', 'Zhenjiang'],
+      },
     };
   },
   methods: {

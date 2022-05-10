@@ -111,4 +111,13 @@ public class ReachGraphTest {
 		System.out.println(a.equals(b));
 
 	}
+	Map<Integer,Integer> map=new HashMap<>();
+	public Integer getMajor(){
+		for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+			if (entry.getValue() > map.size() / 2) {
+				return entry.getKey();
+			}
+		}
+		return null;
+	}
 }

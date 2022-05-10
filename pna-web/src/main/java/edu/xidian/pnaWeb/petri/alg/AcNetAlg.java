@@ -57,6 +57,12 @@ public class AcNetAlg extends PetriNetAlg {
 		return true;
 	}
 
+	/**
+	 * 判断节点连接是否满足定义
+	 * @param placeNode
+	 * @param tranNode
+	 * @return
+	 */
 	public boolean dataCorrection(PlaceNode placeNode, TranNode tranNode) {
 		Set<PlaceNode> prePlaces =new HashSet<>( tranNode.getPrePlaces());
 		placeNode.addPostTran(tranNode);
@@ -83,6 +89,12 @@ public class AcNetAlg extends PetriNetAlg {
 		return true;
 	}
 
+	/**
+	 * 判断库所的前置变迁是否满足定义
+	 * @param tranNode
+	 * @param selectedPlace
+	 * @return
+	 */
 	@Override
 	public boolean validPre(TranNode tranNode, PlaceNode selectedPlace) {
 		if (tranNode.getPostPlaceCount() + tranNode.getPrePlaceCount() >= 3
@@ -90,14 +102,6 @@ public class AcNetAlg extends PetriNetAlg {
 				|| tranNode.containsPre(selectedPlace)) {
 			return false;
 		}
-//		log.info("==============Valid_Pre===========");
-//
-//		log.info(tranNode.toString());
-//		log.info(selectedPlace.toString());
-//		log.info(tranNode.getPrePlaces().toString());
-//		log.info(selectedPlace.getPostTrans().toString());
-//		log.info(tranNode.containsPre(selectedPlace).toString());
-//		log.info("=========================");
 		tranNode.addPostPlace(selectedPlace);
 		selectedPlace.addPreTran(tranNode);
 		return true;
@@ -112,6 +116,11 @@ public class AcNetAlg extends PetriNetAlg {
 		return StringUtils.equals(netType, "ac");
 	}
 
+	/**
+	 * 对节点进行连接操作
+	 * @param placeNodes
+	 * @param tranNodes
+	 */
 	@Override
 	public void nodeConnect(List<PlaceNode> placeNodes, List<TranNode> tranNodes) {
 		NodeDTO initialNode = placeNodes.get(0), curNode = initialNode;
@@ -151,15 +160,6 @@ public class AcNetAlg extends PetriNetAlg {
 				|| selectedTran.containsPost(placeNode)) {
 			return false;
 		}
-//		log.info("==============Valid_Post===========");
-//
-//		log.info(placeNode.toString());
-//		log.info(selectedTran.toString());
-//		log.info(placeNode.getPreTrans().toString());
-//		log.info(selectedTran.getPostPlaces().toString());
-//		log.info(placeNode.containsPre(selectedTran).toString());
-//		log.info("=========================");
-
 		return dataCorrection(placeNode, selectedTran);
 	}
 
